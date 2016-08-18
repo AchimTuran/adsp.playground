@@ -21,7 +21,7 @@
 
 
 
-#include "template/Addon/MVC/Interfaces/Model/IModel.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/Model/IModel.hpp"
 
 #include "GainModeModelMessages.hpp"
 

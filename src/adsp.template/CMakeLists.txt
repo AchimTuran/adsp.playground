@@ -1,4 +1,4 @@
-project(adsp_template)
+project(adsp.template)
 
 #find_package(p8-platform REQUIRED)
 

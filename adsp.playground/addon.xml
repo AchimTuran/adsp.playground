@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon
+  id="adsp.playground"
+  version="1.0.0"
+  name="Audio DSP Playground"
+  provider-name="Team KODI">
+  <requires>
+    <c-pluff version="0.1"/>
+    <import addon="kodi.adsp" version="0.1.7"/>
+  </requires>
+  <extension
+    point="kodi.adsp"
+    library_linux="adsp.playground.so"
+    library_osx="adsp.playground.dylib"
+    library_wingl="adsp.playgrpund.dll"
+    library_windx="adsp.playground.dll"
+    library_android="libadsp.playground.so" />
+  <extension point="kodi.addon.metadata">
+    <summary lang="en">AudioDSP Playground Add-On</summary>
+    <description lang="en">This add-on will include the latest implementations of new algorithms and has the focus on testin. It might have some bugs, so please be careful with it and always keep your speakers quiet during your first tests.</description>
+    <disclaimer lang="en">Just contains  latest processing algorithms for testing.</disclaimer>
+    <platform>all</platform>
+  </extension>
+</addon>

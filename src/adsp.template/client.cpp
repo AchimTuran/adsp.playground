@@ -28,7 +28,7 @@
 
 // include template configuration header files
 #include "configuration/templateConfiguration.h"
-#include "template/include/MACROHelper.h"
+#include "adsp.template/include/MACROHelper.h"
 #include "include/checkTemplateConfig.h"
 
 // include adsp template specific header files
@@ -117,7 +117,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-  KODI->Log(LOG_DEBUG, "%s, %i, - Creating the Audio DSP add-on template", __FUNCTION__, __LINE__);
+  KODI->Log(LOG_DEBUG, "%s, %i, - Creating Audio DSP template", __FUNCTION__, __LINE__);
   SetKodiThreadsLogger(loc_KodiLoggerCallback);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;

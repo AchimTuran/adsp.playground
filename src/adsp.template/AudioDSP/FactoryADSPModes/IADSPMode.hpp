@@ -22,7 +22,7 @@
 
 #include "kodi/kodi_adsp_types.h"
 
-#include "template/ADSPHelpers.h"
+#include "adsp.template/ADSPHelpers.h"
 
 #include <memory.h>
 

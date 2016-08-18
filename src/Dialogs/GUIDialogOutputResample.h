@@ -19,7 +19,7 @@
  *
  */
 
-#include "template/include/GUIDialogBase.h"
+#include "adsp.template/include/GUIDialogBase.h"
 
 class CGUIDialogOutputResample : public CGUIDialogBase
 {

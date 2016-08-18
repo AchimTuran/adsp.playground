@@ -1,6 +1,6 @@
 include(cmake/addon-template-helpers.cmake)
 
-project(adsp.template C CXX)
+project(adsp.playground C CXX)
 
 cmake_minimum_required(VERSION 2.6)
 
@@ -17,8 +17,8 @@ add_subdirectory(src/KodiThreads)
 set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
 #set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
 
-add_subdirectory(src/template)
-set_property(TARGET adsp_template PROPERTY FOLDER "depends")
+add_subdirectory(src/adsp.template)
+set_property(TARGET adsp.template PROPERTY FOLDER "depends")
 #set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
 
 include_directories(${kodiplatform_INCLUDE_DIRS}
@@ -28,7 +28,7 @@ include_directories(${kodiplatform_INCLUDE_DIRS}
                     #${PROJECT_SOURCE_DIR}/src/template)
                     #${PROJECT_SOURCE_DIR}/src/KodiThreads)
                                           
-set(ADSP_TEMPLATE_SOURCES     #src/ADDONOptional.cpp
+set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
                               #src/channelUpmixer.cpp
                               #src/DSPProcessor.cpp
                               src/Dialogs/GUIDialogMasterProcess.cpp
@@ -91,7 +91,7 @@ set(ADSP_TEMPLATE_SOURCES     #src/ADDONOptional.cpp
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES}
             kodi::KodiThreads
-            adsp::adsp_template)
+            adsp::adsp.template)
             #winmm.lib)#todo implement switches for Windows
 
 # if(MSVC)
@@ -101,9 +101,9 @@ set(DEPLIBS ${kodiplatform_LIBRARIES}
   # list(APPEND DEPLIBS winmm.lib)
 # endif()
 
-addon_source_group("${ADSP_TEMPLATE_SOURCES}")
+addon_source_group("${ADSP_PLAYGROUND_SOURCES}")
             
-build_addon(adsp.template ADSP_TEMPLATE DEPLIBS)
+build_addon(adsp.playground ADSP_PLAYGROUND DEPLIBS)
 
 # For generating the doxy
 find_package(Doxygen QUIET)

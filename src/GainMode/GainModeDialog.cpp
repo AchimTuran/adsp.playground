@@ -23,7 +23,7 @@
 #include "GainMode/GainModeDialogSettings.hpp"
 #include "GainMode/GainModeDialog.hpp"
 #include "GainModeEnvironment.hpp"
-#include "template/Addon/Process/AddonProcessManager.hpp"
+#include "adsp.template/Addon/Process/AddonProcessManager.hpp"
 
 #include "EnumStrIDs.hpp"
 

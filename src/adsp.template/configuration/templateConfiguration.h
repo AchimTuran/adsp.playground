@@ -30,7 +30,7 @@
 //! Here you must define the name of the header file from your processing class.
 #define ADSP_PROCESSOR_HEADER_FILE    "DSPProcessor.h"
 //! Here you must define the name of your ADSP addon.
-#define ADSP_ADDON_NAME          "ADSP Template"
+#define ADSP_ADDON_NAME          "AudioDSP Playground"
 //! Here you must define the version of your ADSP addon.
 #define ADSP_ADDON_VERSION        "1.0.0"
 //#define ADSP_ADDON_ID

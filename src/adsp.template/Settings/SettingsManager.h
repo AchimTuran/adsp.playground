@@ -24,7 +24,7 @@
 #include <map>
 #include <list>
 #include <string>
-#include <template/include/client.h>
+#include "include/client.h"
 
 #include "TSettingsElement.h"
 

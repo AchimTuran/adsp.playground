@@ -21,7 +21,7 @@
 
 
 
-#include "template/Addon/MVC/Interfaces/Controller/IController.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/Controller/IController.hpp"
 
 #include "GainMode/GainModeControllerMessages.hpp"
 

@@ -25,7 +25,7 @@
 #define __ADDON_ENUM_IDS__
 #endif
 
-#include "template/Addon/Utils/EnumIDsToString.hpp"
+#include "adsp.template/Addon/Utils/EnumIDsToString.hpp"
 
 // Gain Mode Socket IDs
 BEGIN_ENUM_ID_CLASS(SocketGainModeIDs)
