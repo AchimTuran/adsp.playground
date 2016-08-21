@@ -245,28 +245,35 @@ bool CMessageDispatcher::RemoveSocket(int SocketID)
 
 bool CMessageDispatcher::SendMsg(int SocketID, int DispatcherID/* = -1*/)
 {
-  if (SocketID < 0)
+  CSingleLock socketLock(m_SocketLock);
+  int socketIdx = GetSocketID(SocketID);
+  if(socketIdx < 0)
+  {
+    return false;
+  }
+
+  CSingleLock socketArrayLock(m_SocketArray[socketIdx]->Lock);
+  if (!m_SocketArray[socketIdx]->HasUpdated)
+  {
+    return false;
+  }
+
+  CSingleLock lock(m_ConnectionLock);
+  if (DispatcherID < 0)
   { // send this Socket ID to all connected Dispatchers
+    for (int ii = 0; ii < m_MaxConnectedDispatchers; ii++)
+    {// TODO: check return value
+      m_DispatcherArray[ii]->m_Protocol->SendInMessage(m_SocketArray[socketIdx]->ID,
+                                                       m_SocketArray[socketIdx]->Get(),
+                                                       m_SocketArray[socketIdx]->Size);
+    }
+
+    return true;
   }
   else
   {
-    CSingleLock SocketLock(m_SocketLock);
-    int socketIdx = GetSocketID(SocketID);
-    if(socketIdx < 0)
-    {
-      return false;
-    }
-
-    CSingleLock lock(m_ConnectionLock);
     int DispatcherIdx = GetDispatcherIdx(DispatcherID);
     if (DispatcherIdx < 0)
-    {
-      return false;
-    }
-
-    CSingleLock socketLock(m_SocketArray[socketIdx]->Lock);
-    
-    if (!m_SocketArray[socketIdx]->HasUpdated)
     {
       return false;
     }
@@ -277,21 +284,34 @@ bool CMessageDispatcher::SendMsg(int SocketID, int DispatcherID/* = -1*/)
                                                                        m_SocketArray[socketIdx]->Size);
   }
 
-  return true;
+  return false;
 }
 
 bool CMessageDispatcher::SendMsg(void *Data, size_t Size, int SocketID, int DispatcherID/* = -1*/)
 {
-  CSingleLock SocketLock(m_SocketLock);
-
   CSingleLock lock(m_ConnectionLock);
-  int DispatcherIdx = GetDispatcherIdx(DispatcherID);
-  if (DispatcherIdx < 0)
+
+  if (DispatcherID < 0)
+  {// send message to all connected dispatchers
+    for (int ii = 0; ii < m_MaxConnectedDispatchers; ii++)
+    {// TODO: check return value
+      m_DispatcherArray[ii]->m_Protocol->SendInMessage(SocketID, Data, Size);
+    }
+
+    return true;
+  }
+  else
   {
-    return false;
+    int dispatcherIdx = GetDispatcherIdx(DispatcherID);
+    if (dispatcherIdx < 0)
+    {
+      return false;
+    }
+
+    return m_DispatcherArray[dispatcherIdx]->m_Protocol->SendInMessage(SocketID, Data, Size);
   }
 
-  return m_DispatcherArray[DispatcherIdx]->m_Protocol->SendInMessage(SocketID, Data, Size);
+  return false;
 }
 
 
