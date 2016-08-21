@@ -36,6 +36,8 @@
 
 #include "AudioDSP/Streams/ADSPStreamManager.hpp"
 #include "Addon/Process/AddonProcessManager.hpp"
+#include "EnumStrIDs.hpp"
+#include "GainMode/GainModeDialog.hpp"
 
 #include "KodiThreads/system.h"
 
@@ -258,10 +260,6 @@ const char* GetDSPVersion(void)
 {
   return ADSP_ADDON_VERSION;
 }
-
-// TODO move to top
-#include "EnumStrIDs.hpp"
-#include "GainMode/GainModeDialog.hpp"
 
 AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item)
 {
