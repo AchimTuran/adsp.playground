@@ -52,7 +52,6 @@ END_ENUM_ID_CLASS(ControllerIDs)
 // Add-On AudioDSP Mode IDs
 BEGIN_ENUM_ID_CLASS(ViewIDs)
   ADD_ENUM_ID(GainModeDialog)
-  ADD_ENUM_ID(GainModeController)
 END_ENUM_ID_CLASS(ViewIDs)
 
 
