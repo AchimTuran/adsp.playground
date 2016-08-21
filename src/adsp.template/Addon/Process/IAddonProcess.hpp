@@ -24,21 +24,40 @@
 
 #include "Addon/MVC/Interfaces/MVCObject.hpp"
 
+#include <list>
+
 class CAddonProcessManager;
 
 
 class IAddonProcess
 {
   friend class CAddonProcessManager;
-
+  typedef std::list<MVCObject*> MVCObjectList_t;
 public:
   IAddonProcess(int ConnectionID) :
     ConnectionID(ConnectionID)
   {
+    m_Controller  = nullptr;
+    m_Model       = nullptr;
+    m_Views.clear();
   }
 
   virtual ~IAddonProcess()
   {
+    if (m_Controller)
+    {
+      for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+      {
+        (*iter)->DisconnectDispatcher(m_Controller);
+      }
+
+      if (m_Model)
+      {
+        m_Model->DisconnectDispatcher(m_Controller);
+      }
+    }
+    m_Views.clear();
+
   }
 
   const int ConnectionID;
@@ -54,6 +73,49 @@ public:
       return false;
     }
 
+    switch (Object->Type)
+    {
+      case MVCObject::MODEL_OBJECT:
+        if (m_Model && m_Controller)
+        {
+          m_Model->DisconnectDispatcher(m_Controller);
+        }
+        m_Model = Object;
+      break;
+
+      case MVCObject::VIEW_OBJECT:
+        m_Views.push_back(Object);
+      break;
+
+      case MVCObject::CONTROLLER_OBJECT:
+        if (m_Controller)
+        {
+          for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+          {
+            (*iter)->DisconnectDispatcher(m_Controller);
+          }
+        }
+        m_Controller = Object;
+        for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+        {
+          (*iter)->ConnectDispatcher(m_Controller);
+        }
+
+        if (m_Model)
+        {
+          m_Model->ConnectDispatcher(m_Controller);
+        }
+      break;
+
+      default:
+        return false;
+    }
+
+    if (Object->Type != MVCObject::CONTROLLER_OBJECT && m_Controller)
+    {
+      Object->ConnectDispatcher(m_Controller);
+    }
+
     return true;
   }
 
@@ -66,4 +128,9 @@ public:
 
     return true;
   }
+
+private:
+  MVCObject *m_Controller;
+  MVCObject *m_Model;
+  std::list<MVCObject*> m_Views;
 };
