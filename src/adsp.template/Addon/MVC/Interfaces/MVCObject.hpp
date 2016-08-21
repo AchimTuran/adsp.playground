@@ -24,6 +24,8 @@
 #include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
 #include "Addon/MessageSystem/Communication/ActorProtocol.h"
 
+#include <KodiThreads/threads/Event.h>
+
 
 class MVCObject : public CMessageDispatcher
 {
@@ -39,7 +41,7 @@ public:
   }eMVCObjectType_t;
 
   MVCObject(eMVCObjectType_t Type, std::string Name, int ID, int ConnectionID) :
-    CMessageDispatcher(new CActorProtocol(Name), Name, ID),
+    CMessageDispatcher(new CActorProtocol(Name, &m_InEvent, &m_OutEvent), Name, ID),
     Type(Type),
     ID(ID),
     ConnectionID(ConnectionID)
@@ -52,4 +54,8 @@ public:
 
   virtual int Create() = 0;
   virtual void Destroy() = 0;
+
+protected:
+  CEvent m_InEvent;
+  CEvent m_OutEvent;
 };
