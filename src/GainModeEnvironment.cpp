@@ -10,7 +10,7 @@
 using namespace ADDON;
 
 
-const std::string CGainModeEnvironmentName::ProcessName = CModeEnvironmentIDs::ToString(CModeEnvironmentIDs::GainMode);
+const std::string CGainModeEnvironmentName::ProcessName = CDispatcherIDs::ToString(CDispatcherIDs::GainMode);
 
 #define SET_MODEL_FLOAT_PARAM(ErrCnt, Model, ParameterClass, ParameterID, Data)                                             \
                                     if (Model.SetParameter(ParameterClass::ParameterID, &fVal, sizeof(fVal)) != 0) {  \
@@ -18,7 +18,8 @@ const std::string CGainModeEnvironmentName::ProcessName = CModeEnvironmentIDs::T
                                       KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::ToString(ParameterClass::ParameterID), Model.Name.c_str());}\
 
 
-CGainModeEnvironment::CGainModeEnvironment()
+CGainModeEnvironment::CGainModeEnvironment() :
+  IAddonProcess(CADSPModeIDs::PostProcessingModeGain)
 {
 }
 
@@ -41,7 +42,7 @@ AE_DSP_ERROR CGainModeEnvironment::Create()
     return AE_DSP_ERROR_FAILED;
   }
 
-  if (!m_GainModeController.ConnectDispatcher(&m_GainModeModel) || !m_GainModeModel.ConnectDispatcher(&m_GainModeController))
+  if (!this->ConnectObject(&m_GainModeController) || !this->ConnectObject(&m_GainModeModel))
   {
     // TODO: log error
     return AE_DSP_ERROR_FAILED;
@@ -55,6 +56,7 @@ AE_DSP_ERROR CGainModeEnvironment::Create()
 
 AE_DSP_ERROR CGainModeEnvironment::Destroy()
 {
+  m_GainModeController.Destroy();
   m_GainModeModel.Destroy();
 
   return AE_DSP_ERROR_NO_ERROR;

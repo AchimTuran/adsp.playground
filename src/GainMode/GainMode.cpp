@@ -72,7 +72,7 @@ AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP
 
   if (!CGainModeMessages::Create(this))
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CGainModeMessages::DispatcherName.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CGainModeMessages::Name.c_str());
     return AE_DSP_ERROR_FAILED;
   }
 

@@ -22,14 +22,11 @@
 
 #include "GainMode/GainModeControllerMessages.hpp"
 #include "GainMode/GainModeController.hpp"
-#include "Addon/MessageSystem/Communication/ActorProtocol.h"
 #include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
 
 
-CGainModeControllerMessages::CGainModeControllerMessages() :
-  CMessageDispatcher(new CActorProtocol(CControllerIDs::ToString(CControllerIDs::GainModeController)),
-                     CControllerIDs::ToString(CControllerIDs::GainModeController))
+CGainModeControllerMessages::CGainModeControllerMessages()
 {
 }
 
@@ -44,5 +41,5 @@ bool CGainModeControllerMessages::Create(CGainModeController *Controller)
 
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeController, Controller, &CGainModeController::SetMainGain, CSocketGainModeIDs, UpdateMainGain));
 
-  return this->SetSockets(sockets);
+  return Controller->SetSockets(sockets);
 }

@@ -21,11 +21,9 @@
 
 
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
-
 class CGainModeController;
 
-class CGainModeControllerMessages : public CMessageDispatcher
+class CGainModeControllerMessages
 {
 public:
   CGainModeControllerMessages();

@@ -21,12 +21,9 @@
 
 
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
-
 class CGainModeDialog;
 
-
-class CGainModeDialogMessages : public CMessageDispatcher
+class CGainModeDialogMessages
 {
 public:
   CGainModeDialogMessages();

@@ -26,7 +26,8 @@
 
 
 CGainModeModel::CGainModeModel() :
-  IModel(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain),
+  IModel(CDispatcherIDs::ToString(CDispatcherIDs::GainModeModel),
+         CDispatcherIDs::GainModeModel,
          CADSPModeIDs::PostProcessingModeGain)
 {
 }
@@ -46,13 +47,13 @@ int CGainModeModel::Create()
   if (this->SetParameterVector(paramVector) <= 0)
   {
     // TODO error message
-    return 0;
+    return -1;
   }
 
   if (!CGainModeModelMessages::Create(this))
   {
     // TODO error message
-    return 0;
+    return -1;
   }
 
   return 0;

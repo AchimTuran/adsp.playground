@@ -27,7 +27,9 @@
 #define MAX_GAIN 24.0f
 
 CGainModeController::CGainModeController() :
-  IController("GainModeController", 0) // TODO: create ID list
+  IController(CDispatcherIDs::ToString(CDispatcherIDs::GainModeController),
+              CDispatcherIDs::GainModeController,
+              CADSPModeIDs::PostProcessingModeGain)
 {
 }
 
@@ -42,7 +44,7 @@ int CGainModeController::Create()
   if (!CGainModeControllerMessages::Create(this))
   {
     // TODO error message
-    return 0;
+    return -1;
   }
 
   return 0;

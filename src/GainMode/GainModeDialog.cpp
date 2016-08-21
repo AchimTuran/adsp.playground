@@ -48,7 +48,10 @@ std::string float_dB_toString(float dB);
 
 
 CGainModeDialog::CGainModeDialog() :
-  IKodiGUIView("DialogGainMode.xml", false, true, CViewIDs::ToString(CViewIDs::GainModeDialog), CViewIDs::GainModeDialog)
+  IKodiGUIView("DialogGainMode.xml", false, true, 
+               CDispatcherIDs::ToString(CDispatcherIDs::GainModeDialog), 
+               CDispatcherIDs::GainModeDialog,
+               CADSPModeIDs::PostProcessingModeGain)
 {
   m_MainGain = 0.0f;
   m_PageActionValue = 0.0f;
@@ -76,9 +79,15 @@ bool CGainModeDialog::OnInit()
   //  return false;
   //}
 
-  if (!CGainModeDialogMessages::Create(this) || !CAddonProcessManager::ConnectDispatcher(this))
+  if (!CGainModeDialogMessages::Create(this))
   {
-    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CGainModeDialogMessages::DispatcherName.c_str());
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to connect sockets from %s", __FUNCTION__, __LINE__, this->Name.c_str());
+    return false;
+  }
+
+  if(CAddonProcessManager::ConnectObject(this) != 0)
+  {
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, this->Name.c_str());
     return false;
   }
 
@@ -151,7 +160,7 @@ bool CGainModeDialog::OnAction(int actionId)
 
 void CGainModeDialog::OnClose()
 {
-  CAddonProcessManager::DisconnectDispatcher(this);
+  CAddonProcessManager::DisconnectObject(this);
   GUI->Control_releaseSettingsSlider(m_MainGainSlider);
 }
 

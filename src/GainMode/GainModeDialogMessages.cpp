@@ -28,10 +28,7 @@
 #include "EnumStrIDs.hpp"
 
 
-CGainModeDialogMessages::CGainModeDialogMessages() :
-  CMessageDispatcher(new CActorProtocol(CViewIDs::ToString(CViewIDs::GainModeDialog)),
-                     CViewIDs::ToString(CViewIDs::GainModeDialog),
-                     true)
+CGainModeDialogMessages::CGainModeDialogMessages()
 {
 }
 
@@ -47,5 +44,5 @@ bool CGainModeDialogMessages::Create(CGainModeDialog *Dialog)
   
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateMainGain, CSocketGainModeIDs, UpdateMainGain));
 
-  return this->SetSockets(sockets);
+  return Dialog->SetSockets(sockets);
 }

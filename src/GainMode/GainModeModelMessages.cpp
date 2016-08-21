@@ -22,17 +22,13 @@
 
 #include "GainMode/GainModeModelMessages.hpp"
 #include "GainMode/GainModeModel.hpp"
-#include "Addon/MessageSystem/Communication/ActorProtocol.h"
 #include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
 #include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
 #include "EnumStrIDs.hpp"
 
 
-CGainModeModelMessages::CGainModeModelMessages() :
-  CMessageDispatcher(new CActorProtocol(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain)),
-                     CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain),
-                     true)
+CGainModeModelMessages::CGainModeModelMessages()
 {
 }
 
@@ -49,5 +45,5 @@ bool CGainModeModelMessages::Create(CGainModeModel *Model)
   sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_MainGain), CSocketGainModeIDs, UpdateMainGain));
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeModel, Model, &CGainModeModel::RequestMainGain, CSocketGainModeIDs, RequestMainGain));
 
-  return this->SetSockets(sockets);
+  return Model->SetSockets(sockets);
 }
