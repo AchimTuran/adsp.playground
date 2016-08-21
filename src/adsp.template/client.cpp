@@ -259,6 +259,7 @@ const char* GetDSPVersion(void)
   return ADSP_ADDON_VERSION;
 }
 
+// TODO move to top
 #include "EnumStrIDs.hpp"
 #include "GainMode/GainModeDialog.hpp"
 
@@ -267,7 +268,7 @@ AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK
   if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeGain/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
   {
     CGainModeDialog dialog;
-    IView *view = dynamic_cast<IView*>(&dialog);
+    IKodiGUIView *view = dynamic_cast<IKodiGUIView*>(&dialog);
     view->DoModal();
     //view->Destroy();
     return AE_DSP_ERROR_NO_ERROR;

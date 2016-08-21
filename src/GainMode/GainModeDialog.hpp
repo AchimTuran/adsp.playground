@@ -21,11 +21,11 @@
 
 
 
-#include "Addon/MVC/Interfaces/View/IView.hpp"
+#include "Addon/MVC/Interfaces/View/IKodiGUIView.hpp"
 #include "GainMode/GainModeDialogMessages.hpp"
 
 
-class CGainModeDialog : public IView,
+class CGainModeDialog : public IKodiGUIView,
                         public CGainModeDialogMessages
 {
   friend class CGainModeDialogMessages;

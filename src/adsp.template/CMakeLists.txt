@@ -5,21 +5,14 @@ project(adsp.template)
 set(SOURCES ADSPHelpers.cpp
             client.cpp
             GUIDialogBase.cpp
-            Addon/MVC/Interfaces/Controller/IController.hpp
-            Addon/MVC/Interfaces/Model/IModel.hpp
-            Addon/MVC/Interfaces/Model/IParameter.hpp
-            Addon/MVC/Model/TParameter.hpp
             #Addon/UI/Controller.cpp
             #Addon/UI/Model.cpp
             #Addon/UI/Observer.cpp
             #Addon/UI/View.cpp
             Addon/MessageSystem/Communication/Message.cpp
             Addon/MessageSystem/Communication/ActorProtocol.cpp
-            Addon/MessageSystem/Communication/MessageDispatcher.hpp
             Addon/MessageSystem/Communication/MessageDispatcher.cpp
             Addon/MessageSystem/Sockets/TSocketMemcpy.hpp
-            Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp
-            Addon/Utils/EnumIDsToString.hpp
             Addon/Process/AddonProcessManager.cpp
             AudioDSP/FactoryADSPModes/FactoryADSPModes.cpp
             AudioDSP/Streams/ADSPStreamManager.cpp
@@ -30,9 +23,17 @@ set(SOURCES ADSPHelpers.cpp
 
 set(HEADERS ADSPHelpers.h
             doxygenDocu.h
+            Addon/Utils/EnumIDsToString.hpp
+            Addon/MVC/Interfaces/MVCObject.hpp
+            Addon/MVC/Interfaces/Controller/IController.hpp
+            Addon/MVC/Interfaces/Model/IModel.hpp
+            Addon/MVC/Interfaces/Model/IParameter.hpp
+            Addon/MVC/Model/TParameter.hpp
             Addon/MessageSystem/Interfaces/IProtocol.hpp
             Addon/MessageSystem/Communication/ActorProtocol.h
+            Addon/MessageSystem/Communication/MessageDispatcher.hpp
             Addon/MessageSystem/Communication/Message.hpp
+            Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp
             #Addon/MessageSystem/Communication/ActorPort.hpp
             #Addon/MessageSystem/Interfaces/IPort.hpp
             #Addon/MessageSystem/Interfaces/IPortPool.hpp
@@ -59,6 +60,7 @@ set(HEADERS ADSPHelpers.h
             #Addon/UI/Model.hpp
             #Addon/UI/Observer.hpp
             Addon/MVC/Interfaces/View/IView.hpp
+            Addon/MVC/Interfaces/View/IKodiGUIView.hpp
             Addon/MVC/Interfaces/View/ActionIDs.hpp
             Addon/Utils/TCreationStatistics.hpp
             AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp

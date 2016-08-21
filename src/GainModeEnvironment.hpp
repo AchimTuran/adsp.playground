@@ -43,8 +43,8 @@ public:
   virtual AE_DSP_ERROR Create();
   virtual AE_DSP_ERROR Destroy();
   
-  virtual bool ConnectDispatcher(CMessageDispatcher *Dispatcher);
-  virtual bool DisconnectDispatcher(CMessageDispatcher *Dispatcher);
+  //virtual bool ConnectDispatcher(MVCObject *Object);
+  //virtual bool DisconnectDispatcher(MVCObject *Object);
 
 private: // private member methods
   int InitGainModel();

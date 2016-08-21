@@ -22,7 +22,7 @@
 
 #include "kodi/kodi_adsp_types.h"
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 class CAddonProcessManager;
 
@@ -32,23 +32,38 @@ class IAddonProcess
   friend class CAddonProcessManager;
 
 public:
-  IAddonProcess()
+  IAddonProcess(int ID) :
+    ID(ID)
   {
-    m_ProcessID = -1;
   }
 
   virtual ~IAddonProcess()
   {
   }
 
+  const int ID;
 
 // Fixed public methods
   virtual AE_DSP_ERROR Create() = 0;
   virtual AE_DSP_ERROR Destroy() = 0;
 
-  virtual bool ConnectDispatcher(CMessageDispatcher *Dispatcher) = 0;
-  virtual bool DisconnectDispatcher(CMessageDispatcher *Dispatcher) = 0;
+  virtual bool ConnectObject(MVCObject *Object)
+  {
+    if (Object->ID != this->ID)
+    {
+      return false;
+    }
 
-private:
-  int m_ProcessID;
+    return true;
+  }
+
+  virtual bool DisconnectObject(MVCObject *Object)
+  {
+    if (Object->ID != this->ID)
+    {
+      return false;
+    }
+
+    return true;
+  }
 };

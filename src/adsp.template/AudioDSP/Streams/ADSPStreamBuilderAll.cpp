@@ -67,11 +67,11 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
         KODI->Log(LOG_ERROR, "%s, %i, Failed to create AudioDSP mode \"%s\"", __FUNCTION__, __LINE__, iter->ModeName.c_str());
       }
 
-      CMessageDispatcher *messageDispatcher = dynamic_cast<CMessageDispatcher*>(mode);
-      if (messageDispatcher)
+      MVCObject *object = dynamic_cast<MVCObject*>(mode);
+      if (object)
       { // when this mode can be casted to CMessageDispatcher
         // notify all created addon processes about this new dispatcher
-        CAddonProcessManager::ConnectDispatcher(messageDispatcher);
+        CAddonProcessManager::ConnectObject(object);
       }
     }
     else

@@ -23,7 +23,7 @@
 #include "ADSPStream.hpp"
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include "Addon/Process/AddonProcessManager.hpp"
 
@@ -61,11 +61,11 @@ AE_DSP_ERROR CADSPStream::Destroy()
     IADSPMode *mode = *iter;
     if (mode)
     {
-      CMessageDispatcher *messageDispatcher = dynamic_cast<CMessageDispatcher*>(*iter);
-      if (messageDispatcher)
+      MVCObject *object = dynamic_cast<MVCObject*>(*iter);
+      if (object)
       { // when this mode can be casted to CMessageDispatcher
-        // notify all created addon processes about this new dispatcher
-        CAddonProcessManager::DisconnectDispatcher(messageDispatcher);
+        // notify all created addon processes to disconnect this object
+        CAddonProcessManager::DisconnectObject(object);
       }
 
       mode->ModeDestroy();

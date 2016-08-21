@@ -48,7 +48,7 @@ std::string float_dB_toString(float dB);
 
 
 CGainModeDialog::CGainModeDialog() :
-  IView("DialogGainMode.xml", false, true)
+  IKodiGUIView("DialogGainMode.xml", false, true, CViewIDs::ToString(CViewIDs::GainModeDialog), CViewIDs::GainModeDialog)
 {
   m_MainGain = 0.0f;
   m_PageActionValue = 0.0f;

@@ -22,19 +22,19 @@
  
 
 #include "Addon/MVC/Interfaces/Model/IParameter.hpp"
+#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include <vector>
 #include <string>
 
 
-class IModel
+class IModel : public MVCObject
 {
 public:
   typedef std::vector<IParameter*> ParameterVector_t;
 
   IModel(std::string Name, int ID) :
-    Name(Name),
-    ID(ID)
+    MVCObject(MVCObject::MODEL_OBJECT, Name, ID)
   {
     m_ParameterIDMapping  = NULL;
     m_MaxParameters       = 0;
@@ -45,10 +45,6 @@ public:
   {
     DestroyParameters();
   }
-
-  
-  const std::string Name;
-  const int ID;
 
 
   virtual int SetParameter(int ID, void* Data, size_t Size)
@@ -145,12 +141,7 @@ public:
 
     return 0;
   }
-
-   
-  virtual int Create() = 0;
-  virtual void Destroy() = 0;
-
-  
+    
 protected: // protected member methods
   virtual void DestroyParameters()
   {

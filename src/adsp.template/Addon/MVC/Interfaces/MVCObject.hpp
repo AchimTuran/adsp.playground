@@ -18,21 +18,36 @@
  *  <http://www.gnu.org/licenses/>.
  *
  */
- 
- 
 
-#include "Addon/MVC/Interfaces/Model/IParameter.hpp"
-#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
-#include <vector>
+
 #include <string>
 
 
-class IController : public MVCObject
+class MVCObject
 {
 public:
-  IController(std::string Name, int ID) :
-    MVCObject(MVCObject::CONTROLLER_OBJECT, Name, ID)
+  typedef enum {
+    INVALID_OBJECT = -1,
+
+    MODEL_OBJECT,
+    VIEW_OBJECT,
+    CONTROLLER_OBJECT,
+
+    MAX
+  }eMVCObjectType_t;
+
+  MVCObject(eMVCObjectType_t Type, std::string Name, int ID) :
+    Type(Type),
+    Name(Name),
+    ID(ID)
   {
   }
+
+  const int ID;
+  const std::string Name;
+  const eMVCObjectType_t Type;
+
+  virtual int Create() = 0;
+  virtual void Destroy() = 0;
 };

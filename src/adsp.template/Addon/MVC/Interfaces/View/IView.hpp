@@ -21,130 +21,16 @@
 
 
 
-#include <kodi/libKODI_guilib.h>
-
-#include "ActionIDs.hpp"
+#include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include "include/client.h"
 
 
-class IView
+class IView : public MVCObject
 {
 public:
-  IView(std::string XMLFileName, bool ForceFallback, bool AsDialog, std::string DefaultSkin = "Confluence")
+  IView(std::string Name, int ID) :
+    MVCObject(MVCObject::VIEW_OBJECT, Name, ID)
   {
-    m_XMLFileName = XMLFileName;
-    m_DefaultSkin = DefaultSkin;
-    m_ForceFallback = ForceFallback;
-    m_AsDialog = AsDialog;
   }
-
-  virtual ~IView()
-  {
-    Destroy();
-  }
-
-  void Destroy()
-  {
-    if (m_window)
-    {
-      GUI->Window_destroy(m_window);
-    }
-
-    m_window = NULL;
-  }
-
-  bool Create()
-  {
-    m_window = GUI->Window_create(m_XMLFileName.c_str(),
-                                  m_DefaultSkin.c_str(),
-                                  m_ForceFallback,
-                                  m_AsDialog);
-    if (!m_window)
-    {
-      KODI->Log(ADDON::LOG_ERROR, "%s, %i, Couldn't create IView!", __FUNCTION__, __LINE__);
-      return false;
-    }
-
-    m_window->m_cbhdl     = this;
-    m_window->CBOnInit    = OnInitCB;
-    m_window->CBOnFocus   = OnFocusCB;
-    m_window->CBOnClick   = OnClickCB;
-    m_window->CBOnAction  = OnActionCB;
-
-    return true;
-  }
-
-  bool Show()
-  {
-    if (!Create() || !m_window)
-    {
-      return false;
-    }
-
-    return m_window->Show();
-  }
-
-  void Close()
-  {
-    if (m_window)
-    {
-      m_window->Close();
-    }
-
-    OnClose();
-
-    Destroy();
-  }
-
-  void DoModal()
-  {
-    if (!Create() || !m_window)
-    {
-      return;
-    }
-
-    
-    m_window->DoModal();
-  }
-
-private:
-  static bool OnClickCB(GUIHANDLE cbhdl, int controlId)
-  {
-    IView *dialog = static_cast<IView*>(cbhdl);
-    return dialog->OnClick(controlId);
-  }
-
-  static bool OnFocusCB(GUIHANDLE cbhdl, int controlId)
-  {
-    IView *dialog = static_cast<IView*>(cbhdl);
-    return dialog->OnFocus(controlId);
-  }
-
-  static bool OnInitCB(GUIHANDLE cbhdl)
-  {
-    IView *dialog = static_cast<IView*>(cbhdl);
-    return dialog->OnInit();
-  }
-
-  static bool OnActionCB(GUIHANDLE cbhdl, int actionId)
-  {
-    IView *dialog = static_cast<IView*>(cbhdl);
-    return dialog->OnAction(actionId);
-  }
-
-protected:
-  CAddonGUIWindow          *m_window;  // window handle
-
-private:  // private virtual methods
-  virtual bool OnInit() = 0;
-  virtual bool OnClick(int controlId) = 0;
-  virtual bool OnFocus(int controlId) = 0;
-  virtual bool OnAction(int actionId) = 0;
-  virtual void OnClose() = 0;
-
-  std::string m_XMLFileName;
-  bool m_ForceFallback;
-  bool m_AsDialog;
-  std::string m_DefaultSkin;
 };
