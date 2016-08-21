@@ -31,8 +31,8 @@
 class IController : public MVCObject
 {
 public:
-  IController(std::string Name, int ID) :
-    MVCObject(MVCObject::CONTROLLER_OBJECT, Name, ID)
+  IController(std::string Name, int ID, int ConnectionID) :
+    MVCObject(MVCObject::CONTROLLER_OBJECT, Name, ID, ConnectionID)
   {
   }
 };

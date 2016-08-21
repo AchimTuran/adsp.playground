@@ -21,10 +21,11 @@
 
 
 
-#include <string>
+#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "Addon/MessageSystem/Communication/ActorProtocol.h"
 
 
-class MVCObject
+class MVCObject : public CMessageDispatcher
 {
 public:
   typedef enum {
@@ -37,15 +38,16 @@ public:
     MAX
   }eMVCObjectType_t;
 
-  MVCObject(eMVCObjectType_t Type, std::string Name, int ID) :
+  MVCObject(eMVCObjectType_t Type, std::string Name, int ID, int ConnectionID) :
+    CMessageDispatcher(new CActorProtocol(Name), Name, ID),
     Type(Type),
-    Name(Name),
-    ID(ID)
+    ID(ID),
+    ConnectionID(ConnectionID)
   {
   }
 
   const int ID;
-  const std::string Name;
+  const int ConnectionID;
   const eMVCObjectType_t Type;
 
   virtual int Create() = 0;

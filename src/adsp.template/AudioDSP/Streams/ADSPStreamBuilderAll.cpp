@@ -71,7 +71,7 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
       if (object)
       { // when this mode can be casted to CMessageDispatcher
         // notify all created addon processes about this new dispatcher
-        CAddonProcessManager::ConnectObject(object);
+        CAddonProcessManager::ConnectObject(object); // TODO: check return value
       }
     }
     else

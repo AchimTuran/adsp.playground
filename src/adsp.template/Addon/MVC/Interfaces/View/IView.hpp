@@ -29,8 +29,8 @@
 class IView : public MVCObject
 {
 public:
-  IView(std::string Name, int ID) :
-    MVCObject(MVCObject::VIEW_OBJECT, Name, ID)
+  IView(std::string Name, int ID, int ConnectionID) :
+    MVCObject(MVCObject::VIEW_OBJECT, Name, ID, ConnectionID)
   {
   }
 };

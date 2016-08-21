@@ -32,8 +32,8 @@ class IAddonProcess
   friend class CAddonProcessManager;
 
 public:
-  IAddonProcess(int ID) :
-    ID(ID)
+  IAddonProcess(int ConnectionID) :
+    ConnectionID(ConnectionID)
   {
   }
 
@@ -41,7 +41,7 @@ public:
   {
   }
 
-  const int ID;
+  const int ConnectionID;
 
 // Fixed public methods
   virtual AE_DSP_ERROR Create() = 0;
@@ -49,7 +49,7 @@ public:
 
   virtual bool ConnectObject(MVCObject *Object)
   {
-    if (Object->ID != this->ID)
+    if (Object->ConnectionID != this->ConnectionID)
     {
       return false;
     }
@@ -59,7 +59,7 @@ public:
 
   virtual bool DisconnectObject(MVCObject *Object)
   {
-    if (Object->ID != this->ID)
+    if (Object->ConnectionID != this->ConnectionID)
     {
       return false;
     }

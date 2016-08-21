@@ -33,8 +33,8 @@ class IModel : public MVCObject
 public:
   typedef std::vector<IParameter*> ParameterVector_t;
 
-  IModel(std::string Name, int ID) :
-    MVCObject(MVCObject::MODEL_OBJECT, Name, ID)
+  IModel(std::string Name, int ID, int ConnectionID) :
+    MVCObject(MVCObject::MODEL_OBJECT, Name, ID, ConnectionID)
   {
     m_ParameterIDMapping  = NULL;
     m_MaxParameters       = 0;

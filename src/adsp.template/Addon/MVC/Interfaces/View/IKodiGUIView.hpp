@@ -32,8 +32,8 @@
 class IKodiGUIView : public IView
 {
 public:
-  IKodiGUIView(std::string XMLFileName, bool ForceFallback, bool AsDialog, std::string Name, int ID, std::string DefaultSkin = "Confluence") :
-    IView(Name, ID)
+  IKodiGUIView(std::string XMLFileName, bool ForceFallback, bool AsDialog, std::string Name, int ID, int ConnectionID, std::string DefaultSkin = "Confluence") :
+    IView(Name, ID, ConnectionID)
   {
     m_XMLFileName = XMLFileName;
     m_DefaultSkin = DefaultSkin;
