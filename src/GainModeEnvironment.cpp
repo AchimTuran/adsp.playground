@@ -62,33 +62,6 @@ AE_DSP_ERROR CGainModeEnvironment::Destroy()
   return AE_DSP_ERROR_NO_ERROR;
 }
 
-//
-//bool CGainModeEnvironment::ConnectDispatcher(MVCObject *Object)
-//{
-//  if(Object->ID == CADSPModeIDs::PostProcessingModeGain)
-//  {
-//    if (!m_GainModeModel.ConnectDispatcher(Dispatcher)) return false;
-//    if (!m_GainModeController.ConnectDispatcher(Dispatcher)) return false;
-//
-//    return true;
-//  }
-//
-//  return false;
-//}
-//
-//bool CGainModeEnvironment::DisconnectDispatcher(MVCObject *Object)
-//{
-//  if (Object->ID == CADSPModeIDs::PostProcessingModeGain)
-//  {
-//    if (!m_GainModeModel.DisconnectDispatcher(Dispatcher)) return false;
-//    if (!m_GainModeController.DisconnectDispatcher(Dispatcher)) return false;
-//
-//    return true;
-//  }
-//
-//  return false;
-//}
-
 
 int CGainModeEnvironment::InitGainModel()
 {
