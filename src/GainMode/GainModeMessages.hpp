@@ -25,7 +25,7 @@
 
 class CGainMode;
 
-class CGainModeMessages : public CMessageDispatcher
+class CGainModeMessages
 {
 public:
   CGainModeMessages();

@@ -27,9 +27,7 @@
 #include "EnumStrIDs.hpp"
 
 
-CGainModeMessages::CGainModeMessages() :
-  CMessageDispatcher(new CActorProtocol(CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain)),
-                     CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain))
+CGainModeMessages::CGainModeMessages()
 {
 }
 

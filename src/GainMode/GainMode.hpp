@@ -24,6 +24,7 @@
 #include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 #include "GainModeSettings.hpp"
 #include "GainModeMessages.hpp"
+#include "Addon/MVC/Interfaces/View/IView.hpp"
 
 #include "EnumStrIDs.hpp"
 
@@ -35,7 +36,8 @@ public:
 
 
 class CGainMode : REGISTER_ADSP_MODE_CLASS(CGainMode, CGainModeName, CGainModeSettings, AE_DSP_MODE_TYPE_POST_PROCESS),
-                  public CGainModeMessages
+                  public CGainModeMessages,
+                  public IView
 {
   friend class CGainModeMessages;
 
@@ -45,6 +47,10 @@ public:
 
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
   virtual void ModeDestroy();
+
+  // TODO remove
+  virtual int Create() { return 0; }
+  virtual void Destroy() {}
 
   // Requiered Processing Methods
   virtual unsigned int ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples);

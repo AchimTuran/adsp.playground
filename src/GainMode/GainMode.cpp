@@ -24,6 +24,7 @@
 
 #include "ADSPHelpers.h"
 #include "include/client.h"
+#include "Addon/Process/AddonProcessManager.hpp"
 
 using namespace ADDON;
 
@@ -31,7 +32,10 @@ using namespace ADDON;
 const std::string CGainModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain);
 
 
-CGainMode::CGainMode()
+CGainMode::CGainMode() :
+  IView(CDispatcherIDs::ToString(CDispatcherIDs::GainMode),
+        CDispatcherIDs::GainMode,
+        CADSPModeIDs::PostProcessingModeGain)
 {
   m_MainGain = 1.0f;
 }
@@ -72,7 +76,13 @@ AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP
 
   if (!CGainModeMessages::Create(this))
   {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, CGainModeMessages::Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, Name.c_str());
+    return AE_DSP_ERROR_FAILED;
+  }
+
+  if (CAddonProcessManager::ConnectObject(this) != 0)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, Name.c_str());
     return AE_DSP_ERROR_FAILED;
   }
 
@@ -82,13 +92,14 @@ AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP
 
 void CGainMode::ModeDestroy()
 {
+  CAddonProcessManager::DisconnectObject(this);
 }
 
 
 // Requiered Processing Methods
 unsigned int CGainMode::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
-  CGainModeMessages::ProcessMessages();
+  this->ProcessMessages();
 
   for (int ch = 0; ch < m_InChannels; ch++)
   { 
