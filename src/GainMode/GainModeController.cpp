@@ -56,8 +56,13 @@ void CGainModeController::Destroy()
 
 int CGainModeController::SetMainGain(Message &Msg)
 {
-  float gain = *((float*)(Msg.data));
+  if (Msg.size != 4)
+  {
+    // TODO: error code
+    return -1;
+  }
 
+  float gain = *((float*)(Msg.data));
   if (gain >= MAX_GAIN || gain <= -MAX_GAIN)
   {
     // TODO: error code
