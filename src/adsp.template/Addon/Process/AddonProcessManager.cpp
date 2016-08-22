@@ -188,7 +188,7 @@ int CAddonProcessManager::ConnectObject(MVCObject *Object)
     (*iter)->ConnectObject(Object);
   }
 
-  return 0;
+  return 0; // TODO return value
 }
 
 int CAddonProcessManager::DisconnectObject(MVCObject *Object)

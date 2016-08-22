@@ -84,7 +84,7 @@ public:
       break;
 
       case MVCObject::VIEW_OBJECT:
-        m_Views.push_back(Object);
+        m_Views.push_back(Object); // only connect an object once
       break;
 
       case MVCObject::CONTROLLER_OBJECT:
@@ -114,6 +114,7 @@ public:
     if (Object->Type != MVCObject::CONTROLLER_OBJECT && m_Controller)
     {
       Object->ConnectDispatcher(m_Controller);
+      m_Controller->ConnectDispatcher(Object);
     }
 
     return true;
