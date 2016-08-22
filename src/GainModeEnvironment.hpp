@@ -26,6 +26,8 @@
 #include "GainMode/GainModeModel.hpp"
 #include "GainMode/GainModeController.hpp"
 
+#include <KodiThreads/threads/Thread.h>
+
 
 class CGainModeEnvironmentName
 {
@@ -34,7 +36,9 @@ public:
 };
 
 
-class CGainModeEnvironment : REGISTER_ADDON_PROCESS_CLASS(CGainModeEnvironment, CGainModeEnvironmentName)
+class CGainModeEnvironment : 
+  public IRunnable,
+  REGISTER_ADDON_PROCESS_CLASS(CGainModeEnvironment, CGainModeEnvironmentName)
 {
 public:
   CGainModeEnvironment();
@@ -48,8 +52,10 @@ public:
 
 private: // private member methods
   int InitGainModel();
+  virtual void Run();
   
 private: // private member variables
   CGainModeModel      m_GainModeModel;
   CGainModeController m_GainModeController;
+  CThread             m_Thread;
 };
