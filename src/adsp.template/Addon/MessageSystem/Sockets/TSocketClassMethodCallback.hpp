@@ -46,7 +46,7 @@ public:
 
   virtual int Set(Message &Msg)
   {
-    if (!Msg.data || Msg.signal != this->ID || Msg.size != this->Size)
+    if (!Msg.data || Msg.signal != this->ID)
     {
       // TODO: error code
       return -1;
