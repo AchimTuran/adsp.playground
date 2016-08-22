@@ -34,10 +34,21 @@ class Message
 public:
   Message() 
   {
+    signal = -1;
     isSync = false;
-    data = NULL;
-    event = NULL;
-    replyMessage = NULL;
+    isSyncFini = false;
+    isOut = false;
+    isSyncTimeout = false;
+    payloadSize = MSG_INTERNAL_BUFFER_SIZE;
+    size = MSG_INTERNAL_BUFFER_SIZE;
+    memset(buffer, 0, sizeof(uint8_t)*MSG_INTERNAL_BUFFER_SIZE);
+    data = buffer;
+    replyMessage = nullptr;
+
+    origin = nullptr;
+    destiny = nullptr;
+
+    event = nullptr;
   };
 
   int       signal;
