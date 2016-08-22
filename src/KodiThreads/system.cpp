@@ -27,6 +27,11 @@
 static CCriticalSection loc_CriticalSection;
 static LogCallback_t loc_LoggerCallback;
 
+int g_LOGERROR;
+int g_LOGDEBUG;
+int g_LOGINFO;
+int g_LOGNOTICE;
+
 
 void KodiThreadsLogger(int LogLevel, const char *format, ...)
 {
