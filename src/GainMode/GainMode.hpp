@@ -56,6 +56,9 @@ public:
   virtual unsigned int ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples);
 
 private:
+  int SetMainGain(Message &Msg);
+
+private:
   int           m_InChannels;               /*!< @brief the amount of input channels */
   unsigned long m_InChannelPresentFlags;    /*!< @brief the exact channel mapping flags of input */
   

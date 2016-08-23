@@ -26,7 +26,13 @@
 #include "include/client.h"
 #include "Addon/Process/AddonProcessManager.hpp"
 
+#include <math.h>
+
 using namespace ADDON;
+
+
+// Helper function prototypes
+float dB_to_Gain(float dB);
 
 
 const std::string CGainModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain);
@@ -112,4 +118,26 @@ unsigned int CGainMode::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned 
   }
 
   return Samples;
+}
+
+
+// message method callbacks
+int CGainMode::SetMainGain(Message &Msg)
+{
+  if (Msg.size != sizeof(float))
+  {
+    // TODO: error code
+    return -1;
+  }
+
+  m_MainGain = dB_to_Gain(*((float*)(Msg.data)));
+
+  return 0;
+}
+
+
+// Helper functions
+float dB_to_Gain(float dB)
+{
+  return powf(10, dB / 20.0f);
 }
