@@ -77,32 +77,56 @@ public:
     {
       case MVCObject::MODEL_OBJECT:
         if (m_Model && m_Controller)
-        {
+        {// disconnect this model
           m_Model->DisconnectDispatcher(m_Controller);
+          m_Controller->DisconnectDispatcher(m_Model);
+          m_Model = nullptr;
         }
+
         m_Model = Object;
       break;
 
       case MVCObject::VIEW_OBJECT:
-        m_Views.push_back(Object); // only connect an object once
+      {// register view only once
+        bool found = false;
+        for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+        {
+          if (*iter == Object)
+          {
+            found = true;
+            break;
+          }
+        }
+        
+        if (!found)
+        {
+          m_Views.push_back(Object);
+        }
+      }
       break;
 
       case MVCObject::CONTROLLER_OBJECT:
         if (m_Controller)
         {
           for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
-          {
+          {// disconnect all views
             (*iter)->DisconnectDispatcher(m_Controller);
           }
+
+          if (m_Model)
+          {// disconnect model
+            m_Model->DisconnectDispatcher(m_Controller);
+          }
         }
+
         m_Controller = Object;
         for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
-        {
+        {// connect all registered views
           (*iter)->ConnectDispatcher(m_Controller);
         }
 
         if (m_Model)
-        {
+        {// connect registered model
           m_Model->ConnectDispatcher(m_Controller);
         }
       break;
@@ -127,11 +151,62 @@ public:
       return false;
     }
 
+    switch (Object->Type)
+    {
+      case MVCObject::MODEL_OBJECT:
+        if (m_Model == Object && m_Controller)
+        {
+          m_Controller->DisconnectDispatcher(m_Model);
+          m_Model->DisconnectDispatcher(m_Controller);
+        }
+        m_Model = nullptr;
+      break;
+
+      case MVCObject::VIEW_OBJECT:
+        for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+        {
+          if (*iter == Object)
+          {
+            if (m_Controller)
+            {
+              m_Controller->DisconnectDispatcher(*iter);
+              (*iter)->DisconnectDispatcher(m_Controller);
+            }
+
+            m_Views.erase(iter);
+            break;
+          }
+        }
+      break;
+
+      case MVCObject::CONTROLLER_OBJECT:
+        if (m_Controller == Object)
+        {
+          for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+          {
+            (*iter)->DisconnectDispatcher(m_Controller);
+            m_Controller->DisconnectDispatcher(*iter);
+          }
+
+          if (m_Model)
+          {
+            m_Model->DisconnectDispatcher(m_Controller);
+            m_Controller->DisconnectDispatcher(m_Model);
+          }
+
+          m_Controller = nullptr;
+        }
+      break;
+
+      default:
+        return false;
+    }
+
     return true;
   }
 
 private:
   MVCObject *m_Controller;
   MVCObject *m_Model;
-  std::list<MVCObject*> m_Views;
+  MVCObjectList_t m_Views;
 };
