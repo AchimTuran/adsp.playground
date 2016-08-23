@@ -56,7 +56,7 @@ void CGainModeController::Destroy()
 
 int CGainModeController::SetMainGain(Message &Msg)
 {
-  if (Msg.size != 4)
+  if (Msg.size != sizeof(float))
   {
     // TODO: error code
     return -1;
