@@ -24,7 +24,7 @@
 #include "GainMode/GainModeController.hpp"
 #include "EnumStrIDs.hpp"
 
-#define MAX_GAIN 24.0f
+#define MAX_GAIN 90.0f
 
 CGainModeController::CGainModeController() :
   IController(CDispatcherIDs::ToString(CDispatcherIDs::GainModeController),

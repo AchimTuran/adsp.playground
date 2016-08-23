@@ -39,8 +39,8 @@
 #define SLIDER_MAIN_GAIN          8000
 #define LABEL_MAIN_GAIN_DB_LEVEL  8200
 
-#define MAIN_GAIN_MAX_DB          24.0f
-#define MAIN_GAIN_MIN_DB          -24.0f
+#define MAIN_GAIN_MAX_DB          90.0f
+#define MAIN_GAIN_MIN_DB          -90.0f
 #define MAIN_GAIN_PAGE_STEP       1.0f
 
 
