@@ -86,19 +86,12 @@ AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP
     return AE_DSP_ERROR_FAILED;
   }
 
-  if (CAddonProcessManager::ConnectObject(this) != 0)
-  {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, Name.c_str());
-    return AE_DSP_ERROR_FAILED;
-  }
-
   return AE_DSP_ERROR_NO_ERROR;
 }
 
 
 void CGainMode::ModeDestroy()
 {
-  CAddonProcessManager::DisconnectObject(this);
 }
 
 
