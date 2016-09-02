@@ -401,30 +401,30 @@ AE_DSP_ERROR CADSPStreamManager::StreamDestroy(unsigned int Id)
 
 bool CADSPStreamManager::SupportsInputProcess()
 {
-  return (bool)(m_HasProcesses & (1 << AE_DSP_MODE_TYPE_MAX));
+  return m_HasProcesses & (1 << AE_DSP_MODE_TYPE_MAX) ? true : false;;
 }
 
 bool CADSPStreamManager::SupportsPreProcess()
 {
-  return (bool)(m_HasProcesses & (1 << AE_DSP_MODE_TYPE_PRE_PROCESS));
+  return m_HasProcesses & (1 << AE_DSP_MODE_TYPE_PRE_PROCESS) ? true : false;;
 }
 
 bool CADSPStreamManager::SupportsMasterProcess()
 {
-  return (bool)(m_HasProcesses & (1 << AE_DSP_MODE_TYPE_MASTER_PROCESS));
+  return m_HasProcesses & (1 << AE_DSP_MODE_TYPE_MASTER_PROCESS) ? true : false;
 }
 
 bool CADSPStreamManager::SupportsPostProcess()
 {
-  return (bool)(m_HasProcesses & (1 << AE_DSP_MODE_TYPE_POST_PROCESS));
+  return m_HasProcesses & (1 << AE_DSP_MODE_TYPE_POST_PROCESS) ? true : false;;
 }
 
 bool CADSPStreamManager::SupportsInputResample()
 {
-  return (bool)(m_HasProcesses & (1 << AE_DSP_MODE_TYPE_INPUT_RESAMPLE));
+  return m_HasProcesses & (1 << AE_DSP_MODE_TYPE_INPUT_RESAMPLE) ? true : false;
 }
 
 bool CADSPStreamManager::SupportsOutputResample()
 {
-  return (bool)(m_HasProcesses & (1 << AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE));
+  return m_HasProcesses & (1 << AE_DSP_MODE_TYPE_OUTPUT_RESAMPLE) ? true : false;
 }
