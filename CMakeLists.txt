@@ -80,6 +80,29 @@ set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
                               src/GainMode/GainModeControllerMessages.hpp
                               src/GainModeEnvironment.cpp
                               src/GainModeEnvironment.hpp
+                              
+                              src/CompressorMode/CompressorMode.cpp
+                              src/CompressorMode/CompressorMode.hpp
+                              src/CompressorMode/CompressorModeController.cpp
+                              src/CompressorMode/CompressorModeController.hpp
+                              src/CompressorMode/CompressorModeControllerMessages.cpp
+                              src/CompressorMode/CompressorModeControllerMessages.hpp
+                              src/CompressorMode/CompressorModeDialog.cpp
+                              src/CompressorMode/CompressorModeDialog.hpp
+                              src/CompressorMode/CompressorModeDialogMessages.cpp
+                              src/CompressorMode/CompressorModeDialogMessages.hpp
+                              src/CompressorMode/CompressorModeDialogSettings.cpp
+                              src/CompressorMode/CompressorModeDialogSettings.hpp
+                              src/CompressorMode/CompressorModeMessages.cpp
+                              src/CompressorMode/CompressorModeMessages.hpp
+                              src/CompressorMode/CompressorModeModel.cpp
+                              src/CompressorMode/CompressorModeModel.hpp
+                              src/CompressorMode/CompressorModeModelMessages.cpp
+                              src/CompressorMode/CompressorModeModelMessages.hpp
+                              src/CompressorMode/CompressorModeSettings.cpp
+                              src/CompressorMode/CompressorModeSettings.hpp
+                              src/CompressorModeEnvironment.cpp
+                              src/CompressorModeEnvironment.hpp
 
                               src/EnumStrIDs.cpp
                               src/EnumStrIDs.hpp)

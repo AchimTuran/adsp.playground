@@ -1,0 +1,362 @@
+/*
+ *      Copyright (C) 2005-2016 Team Kodi
+ *      http://xbmc.org
+ *
+ *  This Program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3, or (at your option)
+ *  any later version.
+ *
+ *  This Program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with XBMC; see the file COPYING.  If not, see
+ *  <http://www.gnu.org/licenses/>.
+ *
+ */
+
+
+
+#include "CompressorMode/CompressorModeDialogSettings.hpp"
+#include "CompressorMode/CompressorModeDialog.hpp"
+#include "CompressorModeEnvironment.hpp"
+#include "adsp.template/Addon/Process/AddonProcessManager.hpp"
+
+#include "EnumStrIDs.hpp"
+
+#include "utils/stdStringUtils.h"
+
+#include <math.h>
+
+
+#define BUTTON_OK                 10050
+#define BUTTON_CANCEL             10051
+#define BUTTON_DEFAULT            10052
+
+#define SPIN_GainCurve                  8000
+#define SLIDER_TauRelease               8001
+#define SLIDER_TauAttack                8002
+#define SLIDER_Threshold                8003
+#define SLIDER_CompressionRatio         8004
+#define SLIDER_KneeWidth                8005
+
+#define LABEL_MAIN_Compressor_DB_LEVEL  8200
+
+#define MAIN_Compressor_MAX_DB          90.0f
+#define MAIN_Compressor_MIN_DB          -90.0f
+#define MAIN_Compressor_PAGE_STEP       1.0f
+
+
+static std::string float_dB_toString(float dB);
+
+
+CCompressorModeDialog::CCompressorModeDialog() :
+  IKodiGUIView("DialogCompressorMode.xml", false, true, 
+               CDispatcherIDs::ToString(CDispatcherIDs::CompressorModeDialog), 
+               CDispatcherIDs::CompressorModeDialog,
+               CADSPModeIDs::PostProcessingModeCompressor)
+{
+  m_PageActionValue  = 0.0f;
+  m_GainCurve        = 0;
+  m_TauAttack        = 0.0f;
+  m_Threshold        = 0.0f;
+  m_KneeWidth        = 0.0f;
+  m_TauRelease       = 0.0f;
+  m_CompressionRatio = 0.0f;
+}
+
+
+bool CCompressorModeDialog::OnInit()
+{
+  m_SpinGainCurve          = GUI->Control_getSpin(this->m_window, SPIN_GainCurve);
+  m_SliderTauAttack        = GUI->Control_getSettingsSlider(this->m_window, SLIDER_TauAttack);
+  m_SliderThreshold        = GUI->Control_getSettingsSlider(this->m_window, SLIDER_Threshold);
+  m_SliderKneeWidth        = GUI->Control_getSettingsSlider(this->m_window, SLIDER_KneeWidth);
+  m_SliderTauRelease       = GUI->Control_getSettingsSlider(this->m_window, SLIDER_TauRelease);
+  m_SliderCompressionRatio = GUI->Control_getSettingsSlider(this->m_window, SLIDER_CompressionRatio);
+
+
+  if (!m_SpinGainCurve || !m_SliderTauAttack || !m_SliderThreshold || !m_SliderKneeWidth || !m_SliderTauRelease || !m_SliderCompressionRatio)
+  {
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, One ore more controls not found!", __FUNCTION__, __LINE__);
+    return false;
+  }
+  m_SpinGainCurve->SetValue(m_GainCurve);
+  m_SpinGainCurve->SetVisible(true);
+  m_SliderTauAttack->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderTauAttack->SetFloatValue(m_TauAttack);
+  m_SliderTauAttack->SetVisible(true);
+  m_SliderThreshold->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderThreshold->SetFloatValue(m_Threshold);
+  m_SliderThreshold->SetVisible(true);
+  m_SliderKneeWidth->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
+  m_SliderKneeWidth->SetVisible(true);
+  m_SliderTauRelease->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderTauRelease->SetFloatValue(m_CompressionRatio);
+  m_SliderTauRelease->SetVisible(true);
+  m_SliderCompressionRatio->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderCompressionRatio->SetFloatValue(m_CompressionRatio);
+  m_SliderCompressionRatio->SetVisible(true);
+
+  if (!CCompressorModeDialogMessages::Create(this))
+  {
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to connect sockets from %s", __FUNCTION__, __LINE__, this->Name.c_str());
+    return false;
+  }
+
+  if(CAddonProcessManager::ConnectObject(this) != 0)
+  {
+    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, this->Name.c_str());
+    return false;
+  }
+
+  return true;
+}
+
+bool CCompressorModeDialog::OnClick(int controlId)
+{
+  switch (controlId)
+  {
+    case BUTTON_OK:
+    {
+      this->Close();
+    }
+    break;
+
+    case BUTTON_CANCEL:
+    {
+      this->Close();
+    }
+    break;
+
+    case BUTTON_DEFAULT:
+    {
+    }
+    break;
+
+    case SPIN_GainCurve:          ProcessSpinGainCurve();           break;
+    case SLIDER_TauAttack:        ProcessSliderTauAttack();         break;
+    case SLIDER_KneeWidth:        ProcessSliderKneeWidth();         break;
+    case SLIDER_Threshold:        ProcessSliderThreshold();         break;
+    case SLIDER_TauRelease:       ProcessSliderTauRelease();        break;
+    case SLIDER_CompressionRatio: ProcessSliderCompressionRatio();  break;
+  }
+
+  if(m_PageActionValue != 0.0f)
+  {
+    m_PageActionValue = 0.0f;
+  }
+
+  return true;
+}
+
+bool CCompressorModeDialog::OnFocus(int controlId)
+{
+  return false;
+}
+
+bool CCompressorModeDialog::OnAction(int actionId)
+{
+  if (actionId == ADDON_ACTION_CLOSE_DIALOG ||
+      actionId == ADDON_ACTION_PREVIOUS_MENU ||
+      actionId == ADDON_ACTION_NAV_BACK)
+  {
+    return OnClick(BUTTON_CANCEL);
+  }
+
+  if (actionId == ADDON_ACTION_PAGE_DOWN)
+  {
+    m_PageActionValue = -MAIN_Compressor_PAGE_STEP;
+    return OnClick(m_window->GetFocusId());
+  }
+
+  if (actionId == ADDON_ACTION_PAGE_UP)
+  {
+    m_PageActionValue = MAIN_Compressor_PAGE_STEP;
+    return OnClick(m_window->GetFocusId());
+  }
+
+  return false;
+}
+
+void CCompressorModeDialog::OnClose()
+{
+  CAddonProcessManager::DisconnectObject(this);
+  GUI->Control_releaseSpin(m_SpinGainCurve);
+  GUI->Control_releaseSettingsSlider(m_SliderTauRelease);
+  GUI->Control_releaseSettingsSlider(m_SliderTauAttack);
+  GUI->Control_releaseSettingsSlider(m_SliderThreshold);
+  GUI->Control_releaseSettingsSlider(m_SliderCompressionRatio);
+  GUI->Control_releaseSettingsSlider(m_SliderKneeWidth);
+}
+
+void CCompressorModeDialog::ProcessSpinGainCurve()
+{
+  // TODO!
+  //if (m_PageActionValue != 0.0f)
+  //{
+  //  m_ += m_PageActionValue;
+  //  m_MainCompressorSlider->SetFloatValue(m_MainCompressor);
+  //  m_MainCompressor = m_MainCompressorSlider->GetFloatValue();
+  //}
+  //else
+  //{
+  //  m_MainCompressor = m_MainCompressorSlider->GetFloatValue();
+  //}
+
+  //m_window->SetControlLabel(LABEL_MAIN_Compressor_DB_LEVEL, float_dB_toString(m_MainCompressor).c_str());
+  ////this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+}
+
+void CCompressorModeDialog::ProcessSliderTauAttack()
+{
+  if (m_PageActionValue != 0.0f)
+  {
+    m_TauAttack += m_PageActionValue;
+    m_SliderTauAttack->SetFloatValue(m_TauAttack);
+    m_TauAttack = m_SliderTauAttack->GetFloatValue();
+  }
+  else
+  {
+    m_TauAttack = m_SliderTauAttack->GetFloatValue();
+  }
+
+  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+}
+
+void CCompressorModeDialog::ProcessSliderKneeWidth()
+{
+  if (m_PageActionValue != 0.0f)
+  {
+    m_KneeWidth += m_PageActionValue;
+    m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
+    m_KneeWidth = m_SliderKneeWidth->GetFloatValue();
+  }
+  else
+  {
+    m_KneeWidth = m_SliderKneeWidth->GetFloatValue();
+  }
+
+  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+}
+
+void CCompressorModeDialog::ProcessSliderThreshold()
+{
+  if (m_PageActionValue != 0.0f)
+  {
+    m_Threshold += m_PageActionValue;
+    m_SliderThreshold->SetFloatValue(m_Threshold);
+    m_Threshold = m_SliderThreshold->GetFloatValue();
+  }
+  else
+  {
+    m_Threshold = m_SliderThreshold->GetFloatValue();
+  }
+
+  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+}
+
+void CCompressorModeDialog::ProcessSliderTauRelease()
+{
+  if (m_PageActionValue != 0.0f)
+  {
+    m_TauRelease += m_PageActionValue;
+    m_SliderTauRelease->SetFloatValue(m_TauRelease);
+    m_TauRelease = m_SliderTauRelease->GetFloatValue();
+  }
+  else
+  {
+    m_TauRelease = m_SliderTauRelease->GetFloatValue();
+  }
+
+  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+}
+
+void CCompressorModeDialog::ProcessSliderCompressionRatio()
+{
+  if (m_PageActionValue != 0.0f)
+  {
+    m_CompressionRatio += m_PageActionValue;
+    m_SliderCompressionRatio->SetFloatValue(m_CompressionRatio);
+    m_CompressionRatio = m_SliderCompressionRatio->GetFloatValue();
+  }
+  else
+  {
+    m_CompressionRatio = m_SliderCompressionRatio->GetFloatValue();
+  }
+
+  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+}
+
+// private MC callback methods
+int CCompressorModeDialog::UpdateTauRelease(Message & Msg)
+{
+  m_TauRelease = *(float*)(Msg.data);
+  m_SliderTauRelease->SetFloatValue(m_TauRelease);
+
+  return 0;
+}
+
+int CCompressorModeDialog::UpdateTauAttack(Message & Msg)
+{
+  m_TauAttack = *(float*)(Msg.data);
+  m_SliderTauAttack->SetFloatValue(m_TauAttack);
+
+  return 0;
+}
+
+int CCompressorModeDialog::UpdateThreshold(Message & Msg)
+{
+  m_Threshold = *(float*)(Msg.data);
+  m_SliderThreshold->SetFloatValue(m_Threshold);
+
+  return 0;
+}
+
+int CCompressorModeDialog::UpdateCompressionRation(Message & Msg)
+{
+  m_CompressionRatio = *(float*)(Msg.data);
+  m_SliderCompressionRatio->SetFloatValue(m_CompressionRatio);
+
+  return 0;
+}
+
+int CCompressorModeDialog::UpdateKneeWidth(Message & Msg)
+{
+  m_KneeWidth = *(float*)(Msg.data);
+  m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
+  m_window->SetControlLabel(LABEL_MAIN_Compressor_DB_LEVEL, float_dB_toString(m_KneeWidth).c_str());
+
+  return 0;
+}
+
+int CCompressorModeDialog::UpdateGainCurve(Message & Msg)
+{
+  m_GainCurve = *(int*)(Msg.data);
+  m_SpinGainCurve->SetValue(m_GainCurve);
+  m_window->SetControlLabel(LABEL_MAIN_Compressor_DB_LEVEL, float_dB_toString(m_GainCurve).c_str());
+
+  return 0;
+}
+
+
+// helper functions
+static std::string float_dB_toString(float dB)
+{
+  std::string str = toString(roundf(dB*10.0f)/10.0f);
+  float val10 = (float)((int)fabsf(roundf(dB*10.0f)));
+  int fraction = (int)(val10 - ((int)(val10/10.0f)*10.0f));
+
+  if (fraction == 0 || dB == 0.0f)
+  {
+    str += ".0";
+  }
+
+  str += "dB";
+
+  return str;
+}

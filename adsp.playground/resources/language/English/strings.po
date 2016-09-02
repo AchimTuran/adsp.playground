@@ -115,6 +115,22 @@ msgctxt "#30023"
 msgid "Here you can place your help for Postprocess Gain Mode. All strings are placed in resources/language/<Language>/strings.po"
 msgstr ""
 
+msgctxt "#30024"
+msgid "Postprocess Compressor Mode"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Setup Postprocess Compressor Mode"
+msgstr ""
+
+msgctxt "#30026"
+msgid "Here you can place your description for Postprocess Compressor Mode (see help for more details)"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Here you can place your help for Postprocess Compressor Mode. All strings are placed in resources/language/<Language>/strings.po"
+msgstr ""
+
 msgctxt "#30100"
 msgid "Post Processing Gain Settings"
 msgstr ""

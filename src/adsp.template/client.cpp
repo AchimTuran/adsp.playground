@@ -38,6 +38,7 @@
 #include "Addon/Process/AddonProcessManager.hpp"
 #include "EnumStrIDs.hpp"
 #include "GainMode/GainModeDialog.hpp"
+#include "CompressorMode/CompressorModeDialog.hpp"
 
 #include "KodiThreads/system.h"
 
@@ -263,6 +264,7 @@ const char* GetDSPVersion(void)
 
 AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK_DATA &Item)
 {
+  // TODO implement an generic interface to open any kind of dialogs
   if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeGain/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
   {
     CGainModeDialog dialog;
@@ -270,6 +272,15 @@ AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK
     view->DoModal();
     //view->Destroy();
     return AE_DSP_ERROR_NO_ERROR;
+  }
+
+  if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeCompressor/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
+  {
+	  CCompressorModeDialog dialog;
+	  IKodiGUIView *view = dynamic_cast<IKodiGUIView*>(&dialog);
+	  view->DoModal();
+	  //view->Destroy();
+	  return AE_DSP_ERROR_NO_ERROR;
   }
 
   KODI->Log(LOG_ERROR, "called unknown menu hook!");
