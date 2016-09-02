@@ -13,9 +13,9 @@ using namespace ADDON;
 const std::string CGainModeEnvironmentName::ProcessName = CDispatcherIDs::ToString(CDispatcherIDs::GainMode);
 
 #define SET_MODEL_FLOAT_PARAM(ErrCnt, Model, ParameterClass, ParameterID, Data)                                             \
-                                    if (Model.SetParameter(ParameterClass::ParameterID, &fVal, sizeof(fVal)) != 0) {  \
-                                      ErrCnt++;                                                                       \
-                                      KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::ToString(ParameterClass::ParameterID), Model.Name.c_str());}\
+                                          if (Model.SetParameter(ParameterClass::ParameterID, &fVal, sizeof(fVal)) != 0) {  \
+                                            ErrCnt++;                                                                       \
+                                            KODI->Log(LOG_ERROR, "%s, %i, Failed set parameter %s in %s model", __FUNCTION__, __LINE__, ParameterClass::ToString(ParameterClass::ParameterID), Model.Name.c_str());}\
 
 
 CGainModeEnvironment::CGainModeEnvironment() :
