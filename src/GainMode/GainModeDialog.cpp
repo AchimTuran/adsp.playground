@@ -44,7 +44,7 @@
 #define MAIN_GAIN_PAGE_STEP       1.0f
 
 
-std::string float_dB_toString(float dB);
+static std::string float_dB_toString(float dB);
 
 
 CGainModeDialog::CGainModeDialog() :
@@ -193,7 +193,7 @@ int CGainModeDialog::UpdateMainGain(Message &Msg)
 
 
 // helper functions
-std::string float_dB_toString(float dB)
+static std::string float_dB_toString(float dB)
 {
   std::string str = toString(roundf(dB*10.0f)/10.0f);
   float val10 = (float)((int)fabsf(roundf(dB*10.0f)));

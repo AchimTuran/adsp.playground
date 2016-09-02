@@ -32,7 +32,7 @@ using namespace ADDON;
 
 
 // Helper function prototypes
-float dB_to_Gain(float dB);
+static float dB_to_Gain(float dB);
 
 
 const std::string CGainModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeGain);
@@ -130,7 +130,7 @@ int CGainMode::SetMainGain(Message &Msg)
 
 
 // Helper functions
-float dB_to_Gain(float dB)
+static float dB_to_Gain(float dB)
 {
   return powf(10, dB / 20.0f);
 }
