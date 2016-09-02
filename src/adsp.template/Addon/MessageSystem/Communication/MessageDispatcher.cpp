@@ -33,7 +33,7 @@ using namespace ADDON;
 int CMessageDispatcher::m_UniqueIDCount = 0;
 
 
-CMessageDispatcher::CMessageDispatcher(IProtocol *Protocol, std::string Name, bool IsMaster/* = false*/) :
+CMessageDispatcher::CMessageDispatcher(IProtocol *Protocol, std::string Name, int ID/*=-1*/, bool IsMaster/* = false*/) :
   ID(++m_UniqueIDCount),
   Name(Name)
 {
