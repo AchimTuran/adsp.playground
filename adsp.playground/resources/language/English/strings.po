@@ -108,7 +108,7 @@ msgid "Setup Postprocess Gain Mode"
 msgstr ""
 
 msgctxt "#30022"
-msgid "Here you can place your description for PPostprocess Gain Mode (see help for more details)"
+msgid "Here you can place your description for Postprocess Gain Mode (see help for more details)"
 msgstr ""
 
 msgctxt "#30023"
