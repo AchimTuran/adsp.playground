@@ -25,7 +25,7 @@
 #include "Addon/MessageSystem/Communication/Message.hpp"
 
 
-#define CreateTSocketMemcpy(Type, ControlledMember, StringClass, ID) dynamic_cast<ISocket*>(new TSocketMemcpy<float>(ControlledMember, StringClass::ToString(StringClass::ID), StringClass::ID))
+#define CreateTSocketMemcpy(Type, ControlledMember, StringClass, ID) dynamic_cast<ISocket*>(new TSocketMemcpy<Type>(ControlledMember, StringClass::ToString(StringClass::ID), StringClass::ID))
 
 
 template<class T>
