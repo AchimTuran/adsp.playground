@@ -70,7 +70,7 @@ void CCompressorModeModel::Destroy()
 
 int CCompressorModeModel::RequestGainCurve(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<int*>(&m_GainCurve), sizeof(float), CSocketCompressorModeIDs::UpdateGainCurve))
+  if (!this->SendMsg(static_cast<void*>(&m_GainCurve), sizeof(float), CSocketCompressorModeIDs::UpdateGainCurve))
   {
     return -1;
   }
@@ -80,7 +80,7 @@ int CCompressorModeModel::RequestGainCurve(Message &Msg)
 
 int CCompressorModeModel::RequestTauRelease(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<float*>(&m_TauRelease), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease))
+  if (!this->SendMsg(static_cast<void*>(&m_TauRelease), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease))
   {
     return -1;
   }
@@ -90,7 +90,7 @@ int CCompressorModeModel::RequestTauRelease(Message &Msg)
 
 int CCompressorModeModel::RequestTauAttack(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<float*>(&m_TauAttack), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack))
+  if (!this->SendMsg(static_cast<void*>(&m_TauAttack), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack))
   {
     return -1;
   }
@@ -100,7 +100,7 @@ int CCompressorModeModel::RequestTauAttack(Message &Msg)
 
 int CCompressorModeModel::RequestThreshold(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<float*>(&m_Threshold), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold))
+  if (!this->SendMsg(static_cast<void*>(&m_Threshold), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold))
   {
     return -1;
   }
@@ -110,7 +110,7 @@ int CCompressorModeModel::RequestThreshold(Message &Msg)
 
 int CCompressorModeModel::RequestCompressionRatio(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<float*>(&m_CompressionRatio), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio))
+  if (!this->SendMsg(static_cast<void*>(&m_CompressionRatio), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio))
   {
     return -1;
   }
@@ -120,7 +120,7 @@ int CCompressorModeModel::RequestCompressionRatio(Message &Msg)
 
 int CCompressorModeModel::RequestKneeWidth(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<float*>(&m_KneeWidth), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth))
+  if (!this->SendMsg(static_cast<void*>(&m_KneeWidth), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth))
   {
     return -1;
   }
