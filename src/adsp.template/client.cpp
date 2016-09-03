@@ -276,11 +276,11 @@ AE_DSP_ERROR CallMenuHook(const AE_DSP_MENUHOOK& Menuhook, const AE_DSP_MENUHOOK
 
   if (Menuhook.iHookId == CADSPModeIDs::PostProcessingModeCompressor/* && Item.category == AE_DSP_MENUHOOK_POST_PROCESS*/)
   {
-	  CCompressorModeDialog dialog;
-	  IKodiGUIView *view = dynamic_cast<IKodiGUIView*>(&dialog);
-	  view->DoModal();
-	  //view->Destroy();
-	  return AE_DSP_ERROR_NO_ERROR;
+    CCompressorModeDialog dialog;
+    IKodiGUIView *view = dynamic_cast<IKodiGUIView*>(&dialog);
+    view->DoModal();
+    //view->Destroy();
+    return AE_DSP_ERROR_NO_ERROR;
   }
 
   KODI->Log(LOG_ERROR, "called unknown menu hook!");
