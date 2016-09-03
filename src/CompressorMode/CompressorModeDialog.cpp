@@ -36,12 +36,12 @@
 #define BUTTON_CANCEL             10051
 #define BUTTON_DEFAULT            10052
 
-#define SPIN_GainCurve                  8000
-#define SLIDER_TauRelease               8001
-#define SLIDER_TauAttack                8002
-#define SLIDER_Threshold                8003
-#define SLIDER_CompressionRatio         8004
-#define SLIDER_KneeWidth                8005
+#define SPIN_GainCurve                  8001
+#define SLIDER_TauRelease               8002
+#define SLIDER_TauAttack                8003
+#define SLIDER_Threshold                8004
+#define SLIDER_CompressionRatio         8005
+#define SLIDER_KneeWidth                8006
 
 #define LABEL_MAIN_Compressor_DB_LEVEL  8200
 

@@ -139,6 +139,30 @@ msgstr ""
 #msgid "Preprocess"
 #msgstr ""
 
+#msgctxt "#32001"
+#msgid "Gain Curve"
+#msgstr ""
+
+#msgctxt "#32002"
+#msgid "Release Time [ms]"
+#msgstr ""
+
+#msgctxt "#32003"
+#msgid "Attack Time [ms]"
+#msgstr ""
+
+#msgctxt "#32004"
+#msgid "Threshold [dB]"
+#msgstr ""
+
+#msgctxt "#32005"
+#msgid "Compression Ratio [dB]"
+#msgstr ""
+
+#msgctxt "#32006"
+#msgid "Knee Width [dB]"
+#msgstr ""
+
 # Speaker Channel Names
 msgctxt "#35000"
 msgid "Front left"
