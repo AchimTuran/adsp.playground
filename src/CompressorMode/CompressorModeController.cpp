@@ -70,11 +70,11 @@ int CCompressorModeController::SetTauRelease(Message & Msg)
   }
 
   m_TauRelease = tauRelease;
-  //if (!this->SendMsg(&m_MainCompressor, sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor))
-  //{
-  //  // TODO: error code
-  //  return -1;
-  //}
+  if (!this->SendMsg(&m_TauRelease, sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease))
+  {
+    // TODO: error code
+    return -1;
+  }
   return 0;
 }
 
@@ -94,11 +94,11 @@ int CCompressorModeController::SetTauAttack(Message & Msg)
   }
 
   m_TauAttack = tauAttack;
-  //if (!this->SendMsg(&m_MainCompressor, sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor))
-  //{
-  //  // TODO: error code
-  //  return -1;
-  //}
+  if (!this->SendMsg(&m_TauAttack, sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack))
+  {
+    // TODO: error code
+    return -1;
+  }
   return 0;
 }
 
@@ -118,11 +118,11 @@ int CCompressorModeController::SetThreshold(Message & Msg)
   }
 
   m_Threshold = threshold;
-  //if (!this->SendMsg(&m_MainCompressor, sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor))
-  //{
-  //  // TODO: error code
-  //  return -1;
-  //}
+  if (!this->SendMsg(&m_Threshold, sizeof(float), CSocketCompressorModeIDs::UpdateThreshold))
+  {
+    // TODO: error code
+    return -1;
+  }
   return 0;
 }
 
@@ -142,11 +142,11 @@ int CCompressorModeController::SetCompressionRation(Message & Msg)
   }
 
   m_CompressionRatio = compressionRatio;
-  //if (!this->SendMsg(&m_MainCompressor, sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor))
-  //{
-  //  // TODO: error code
-  //  return -1;
-  //}
+  if (!this->SendMsg(&m_CompressionRatio, sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio))
+  {
+    // TODO: error code
+    return -1;
+  }
   return 0;
 }
 
@@ -166,11 +166,11 @@ int CCompressorModeController::SetKneeWidth(Message & Msg)
   }
 
   m_KneeWidth = kneeWidth;
-  //if (!this->SendMsg(&m_MainCompressor, sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor))
-  //{
-  //  // TODO: error code
-  //  return -1;
-  //}
+  if (!this->SendMsg(&m_KneeWidth, sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth))
+  {
+    // TODO: error code
+    return -1;
+  }
   return 0;
 }
 
@@ -190,11 +190,11 @@ int CCompressorModeController::SetGainCurve(Message & Msg)
   }
 
   m_GainCurve = gainCurve;
-  //if (!this->SendMsg(&m_MainCompressor, sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor))
-  //{
-  //  // TODO: error code
-  //  return -1;
-  //}
+  if (!this->SendMsg(&m_GainCurve, sizeof(int), CSocketCompressorModeIDs::UpdateGainCurve))
+  {
+    // TODO: error code
+    return -1;
+  }
   return 0;
 }
 

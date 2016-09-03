@@ -225,7 +225,7 @@ void CCompressorModeDialog::ProcessSliderTauAttack()
     m_TauAttack = m_SliderTauAttack->GetFloatValue();
   }
 
-  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+  this->SendMsg(static_cast<void*>(&m_TauAttack), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack);
 }
 
 void CCompressorModeDialog::ProcessSliderKneeWidth()
@@ -241,7 +241,7 @@ void CCompressorModeDialog::ProcessSliderKneeWidth()
     m_KneeWidth = m_SliderKneeWidth->GetFloatValue();
   }
 
-  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+  this->SendMsg(static_cast<void*>(&m_KneeWidth), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth);
 }
 
 void CCompressorModeDialog::ProcessSliderThreshold()
@@ -257,7 +257,7 @@ void CCompressorModeDialog::ProcessSliderThreshold()
     m_Threshold = m_SliderThreshold->GetFloatValue();
   }
 
-  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+  this->SendMsg(static_cast<void*>(&m_Threshold), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold);
 }
 
 void CCompressorModeDialog::ProcessSliderTauRelease()
@@ -273,7 +273,7 @@ void CCompressorModeDialog::ProcessSliderTauRelease()
     m_TauRelease = m_SliderTauRelease->GetFloatValue();
   }
 
-  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+  this->SendMsg(static_cast<void*>(&m_TauRelease), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease);
 }
 
 void CCompressorModeDialog::ProcessSliderCompressionRatio()
@@ -289,7 +289,7 @@ void CCompressorModeDialog::ProcessSliderCompressionRatio()
     m_CompressionRatio = m_SliderCompressionRatio->GetFloatValue();
   }
 
-  //this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
+  this->SendMsg(static_cast<void*>(&m_CompressionRatio), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio);
 }
 
 // private MC callback methods
@@ -329,7 +329,6 @@ int CCompressorModeDialog::UpdateKneeWidth(Message & Msg)
 {
   m_KneeWidth = *(float*)(Msg.data);
   m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
-  m_window->SetControlLabel(LABEL_MAIN_Compressor_DB_LEVEL, float_dB_toString(m_KneeWidth).c_str());
 
   return 0;
 }
@@ -338,7 +337,6 @@ int CCompressorModeDialog::UpdateGainCurve(Message & Msg)
 {
   m_GainCurve = *(int*)(Msg.data);
   m_SpinGainCurve->SetValue(m_GainCurve);
-  m_window->SetControlLabel(LABEL_MAIN_Compressor_DB_LEVEL, float_dB_toString(m_GainCurve).c_str());
 
   return 0;
 }
