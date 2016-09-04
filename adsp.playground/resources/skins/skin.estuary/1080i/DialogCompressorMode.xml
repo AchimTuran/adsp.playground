@@ -53,7 +53,7 @@
         <control type="sliderex" id="8004">
 					<description>Threshold</description>
 					<width>1160</width>
-					<label>$ADDON[adsp.playground 32003]</label>
+					<label>$ADDON[adsp.playground 32004]</label>
 					<include>DefaultSettingButton</include>
 				</control>
         <control type="sliderex" id="8005">
