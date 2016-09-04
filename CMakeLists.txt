@@ -13,6 +13,16 @@ find_package(kodiplatform REQUIRED)
 find_package(p8-platform REQUIRED)
 find_package(TinyXML REQUIRED)
 
+include(cmake/helpers/gitCloneProject.cmake)
+# Include asplib
+if(NOT ASPLIB_MODULES_TO_BUILD)
+  set(ASPLIB_MODULES_TO_BUILD Dynamics)
+endif()
+git_clone_project(PROJ                asplib
+                  GIT_REPOSITORY      https://github.com/AchimTuran/asplib
+                  GIT_TAG             adding_dynamics_module)
+add_subdirectory(${asplib_SOURCE_DIR} ${asplib_BINARY_DIR})
+
 add_subdirectory(src/KodiThreads)
 set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
 #set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
@@ -114,7 +124,9 @@ set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES}
             kodi::KodiThreads
-            adsp::adsp.template)
+            adsp::adsp.template
+            asplib::Core
+            asplib::Dynamics)
             #winmm.lib)#todo implement switches for Windows
 
 # if(MSVC)
