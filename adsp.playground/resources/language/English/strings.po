@@ -163,6 +163,18 @@ msgctxt "#32006"
 msgid "Knee Width [dB]"
 msgstr ""
 
+msgctxt "#32007"
+msgid "Hard Clipping"
+msgstr ""
+
+msgctxt "#32008"
+msgid "Soft Clipping"
+msgstr ""
+
+msgctxt "#32009"
+msgid "Tanh"
+msgstr ""
+
 # Speaker Channel Names
 msgctxt "#35000"
 msgid "Front left"

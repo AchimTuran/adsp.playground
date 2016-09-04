@@ -29,7 +29,12 @@
 
 #include "utils/stdStringUtils.h"
 
+#include "asplib/Dynamics/asplib_DynamicsOptions.hpp"
+
 #include <math.h>
+
+
+using namespace asplib;
 
 
 #define BUTTON_OK                 10050
@@ -86,6 +91,8 @@ bool CCompressorModeDialog::OnInit()
   }
   m_SpinGainCurve->SetValue(m_GainCurve);
   m_SpinGainCurve->SetVisible(true);
+  m_SpinGainCurve->AddLabel(KODI->GetLocalizedString(32007), CompressorOptions::COMPRESSION_HARD_CLIPPING);
+  
   m_SliderTauAttack->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
   m_SliderTauAttack->SetFloatValue(m_TauAttack);
   m_SliderTauAttack->SetVisible(true);
