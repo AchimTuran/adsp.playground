@@ -46,6 +46,11 @@ Use the visual studio command line or run `call "%VS120COMNTOOLS%..\..\VC\bin\vc
 5. `cmake --build "%cd%" --target "{addon-id}"`
 
 
+### Issues
+
+- On Windows it can happen that you see the error message "Filename too long" to solve the issue run "git config --system core.longpaths true" as administrator in cmd.exe
+
+
 ## Useful links
 
 * [Kodi's PVR user support] (http://forum.kodi.tv/forumdisplay.php?fid=167)
