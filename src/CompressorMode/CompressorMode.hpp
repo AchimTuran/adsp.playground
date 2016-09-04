@@ -26,7 +26,11 @@
 #include "CompressorModeMessages.hpp"
 #include "Addon/MVC/Interfaces/View/IView.hpp"
 
+#include "asplib/Dynamics/Interfaces/asplib_IDynamics.hpp"
+#include "asplib/Dynamics/Compressor/asplib_DynamicsCompressorOptions.hpp"
+
 #include "EnumStrIDs.hpp"
+
 
 class CCompressorModeName
 {
@@ -64,12 +68,8 @@ private:
   int SetGainCurve(Message &Msg);
 
 private:
-  int   m_GainCurve;
-  float m_TauRelease;
-  float m_TauAttack;
-  float m_Threshold;
-  float m_CompressionRatio;
-  float m_KneeWidth;
+  int ConfigureCompressors();
+  asplib::CompressorOptions m_CompressorOptions[AE_DSP_CH_MAX];
 
   int           m_InChannels;               /*!< @brief the amount of input channels */
   unsigned long m_InChannelPresentFlags;    /*!< @brief the exact channel mapping flags of input */
@@ -77,6 +77,10 @@ private:
   int           m_ChannelMappingIdx[AE_DSP_CH_MAX];
   unsigned long m_ChannelMappingFlags[AE_DSP_CH_MAX];
 
+  uint32_t m_SampleFrequency;
+  uint32_t m_FrameSize;
+
+  asplib::IDynamics *m_Compressors[AE_DSP_CH_MAX];
   // Process parameters
   float m_MainCompressor;
 };

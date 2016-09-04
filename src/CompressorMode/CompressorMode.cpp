@@ -26,9 +26,12 @@
 #include "include/client.h"
 #include "Addon/Process/AddonProcessManager.hpp"
 
+#include "asplib/Dynamics/asplib_DynamicsFactory.hpp"
+
 #include <math.h>
 
 using namespace ADDON;
+using namespace asplib;
 
 
 const std::string CCompressorModeName::ModeName = CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeCompressor);
@@ -40,6 +43,10 @@ CCompressorMode::CCompressorMode() :
         CADSPModeIDs::PostProcessingModeCompressor)
 {
   m_MainCompressor = 1.0f;
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_Compressors[ii] = nullptr;
+  }
 }
 
 
@@ -50,8 +57,15 @@ CCompressorMode::~CCompressorMode()
 
 AE_DSP_ERROR CCompressorMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
+  if (Settings.iOutFrames <= 0 || Settings.iOutSamplerate <= 0)
+  {
+    return AE_DSP_ERROR_FAILED;
+  }
+
   m_InChannels            = Settings.iInChannels;
   m_InChannelPresentFlags = Settings.lInChannelPresentFlags;
+  m_FrameSize             = (uint32_t)Settings.iOutFrames;
+  m_SampleFrequency       = (uint32_t)Settings.iOutSamplerate;
 
   // reset used channel mapping array
   for (int ch = 0; ch < AE_DSP_CH_MAX; ch++)
@@ -76,6 +90,25 @@ AE_DSP_ERROR CCompressorMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const 
     lastAudioChannel = m_ChannelMappingIdx[ch] + 1;
   }
 
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    ASPLIB_ERR asplibErr = ASPLIB_FACTORY_DYNAMICS.Create(ASPLIB_DYNAMICS_Compressor, ASPLIB_FMT_NATIVE_FLOAT, ASPLIB_FMT_NATIVE_FLOAT, m_Compressors[ii]);
+    if (asplibErr != ASPLIB_ERR_NO_ERROR)
+    {
+      // todo log error!
+      return AE_DSP_ERROR_FAILED;
+    }
+    
+    asplibErr = m_Compressors[ii]->Create(m_FrameSize, m_SampleFrequency, static_cast<void*>(&m_CompressorOptions[ii]));
+    if (asplibErr != ASPLIB_ERR_NO_ERROR)
+    {
+      // todo log error!
+      return AE_DSP_ERROR_FAILED;
+    }
+  }
+
+  ConfigureCompressors();
+
   if (!CCompressorModeMessages::Create(this))
   {
     KODI->Log(LOG_ERROR, "%s, %i, Failed to create message dispachter %s", __FUNCTION__, __LINE__, Name.c_str());
@@ -88,6 +121,15 @@ AE_DSP_ERROR CCompressorMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const 
 
 void CCompressorMode::ModeDestroy()
 {
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    // todo log asplib error
+    if (m_Compressors[ii])
+    {
+      ASPLIB_ERR asplibErr = m_Compressors[ii]->Destroy();
+      asplibErr = ASPLIB_FACTORY_DYNAMICS.Destroy(m_Compressors[ii]);
+    }
+  }
 }
 
 
@@ -95,15 +137,13 @@ void CCompressorMode::ModeDestroy()
 unsigned int CCompressorMode::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples)
 {
   this->ProcessMessages();
+  // todo error checking in debug mode (Samples and m_Compressors[ii]
 
   for (int ch = 0; ch < m_InChannels; ch++)
   { 
-    float *out      = ArrayOut[m_ChannelMappingIdx[ch]];
-    const float *in = ArrayIn[m_ChannelMappingIdx[ch]];
-    for (unsigned int ii = 0; ii < Samples; ii++)
-    {
-      out[ii] = in[ii];
-    }
+    float *out  = ArrayOut[m_ChannelMappingIdx[ch]];
+    float *in   = ArrayIn[m_ChannelMappingIdx[ch]];
+    m_Compressors[m_ChannelMappingIdx[ch]]->Process(in, out);
   }
 
   return Samples;
@@ -119,9 +159,12 @@ int CCompressorMode::SetTauRelease(Message &Msg)
     return -1;
   }
 
-  m_TauRelease = *((float*)Msg.data);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_CompressorOptions[ii].tauRelease = (long double)(*((float*)Msg.data));
+  }
 
-  return 0;
+  return ConfigureCompressors();
 }
 
 int CCompressorMode::SetTauAttack(Message &Msg)
@@ -132,9 +175,12 @@ int CCompressorMode::SetTauAttack(Message &Msg)
     return -1;
   }
 
-  m_TauAttack = *((float*)Msg.data);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_CompressorOptions[ii].tauAttack = (long double)(*((float*)Msg.data));
+  }
 
-  return 0;
+  return ConfigureCompressors();
 }
 
 int CCompressorMode::SetThreshold(Message &Msg)
@@ -145,10 +191,12 @@ int CCompressorMode::SetThreshold(Message &Msg)
     return -1;
   }
 
-  // TODO: linear?
-  m_Threshold = *((float*)Msg.data);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_CompressorOptions[ii].threshold = (long double)(*((float*)Msg.data));
+  }
 
-  return 0;
+  return ConfigureCompressors();
 }
 
 int CCompressorMode::SetCompressionRation(Message &Msg)
@@ -159,10 +207,12 @@ int CCompressorMode::SetCompressionRation(Message &Msg)
     return -1;
   }
 
-  // TODO: linear?
-  m_CompressionRatio = *((float*)Msg.data);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_CompressorOptions[ii].compressionRatio = (long double)(*((float*)Msg.data));
+  }
 
-  return 0;
+  return ConfigureCompressors();
 }
 
 int CCompressorMode::SetKneeWidth(Message &Msg)
@@ -173,10 +223,12 @@ int CCompressorMode::SetKneeWidth(Message &Msg)
     return -1;
   }
 
-  // TODO: linear?
-  m_KneeWidth = *((float*)Msg.data);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_CompressorOptions[ii].kneeWidth = (long double)(*((float*)Msg.data));
+  }
 
-  return 0;
+  return ConfigureCompressors();
 }
 
 int CCompressorMode::SetGainCurve(Message &Msg)
@@ -187,7 +239,22 @@ int CCompressorMode::SetGainCurve(Message &Msg)
     return -1;
   }
 
-  m_GainCurve = *((int*)Msg.data);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_CompressorOptions[ii].gainCurve = (CompressorOptions::eGainCurve_t)(*((int*)Msg.data));
+  }
 
+  return ConfigureCompressors();
+}
+
+int CCompressorMode::ConfigureCompressors()
+{
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    if (m_Compressors[ii])
+    {
+      ASPLIB_ERR asplibErr = m_Compressors[ii]->Create(m_FrameSize, m_SampleFrequency, static_cast<void*>(&m_CompressorOptions[ii]));
+    }
+  }
   return 0;
 }
