@@ -47,6 +47,7 @@ BEGIN_ENUM_ID_CLASS(SocketCompressorModeIDs)
   ADD_ENUM_ID(RequestKneeWidth)
   ADD_ENUM_ID(UpdateGainCurve)
   ADD_ENUM_ID(RequestGainCurve)
+  ADD_ENUM_ID(RequestModelState)
 END_ENUM_ID_CLASS(SocketCompressorModeIDs)
 
 // Add-On AudioDSP Mode IDs
