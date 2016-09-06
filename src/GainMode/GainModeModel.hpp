@@ -42,7 +42,4 @@ public:
 
 private:
   int RequestMainGain(Message &Msg);
-
-private:
-  float m_MainGain;
 };

@@ -65,7 +65,9 @@ void CGainModeModel::Destroy()
 
 int CGainModeModel::RequestMainGain(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<float*>(&m_MainGain), sizeof(float), CSocketGainModeIDs::UpdateMainGain))
+  float fVal;
+  this->GetParameter(CSocketGainModeIDs::UpdateMainGain, static_cast<void*>(&fVal), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketGainModeIDs::UpdateMainGain))
   {
     return -1;
   }
