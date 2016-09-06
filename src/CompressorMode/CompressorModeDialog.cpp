@@ -48,11 +48,11 @@ using namespace asplib;
 #define SLIDER_CompressionRatio         8005
 #define SLIDER_KneeWidth                8006
 
-#define LABEL_MAIN_Compressor_DB_LEVEL  8200
-
 #define MAIN_Compressor_MAX_DB          90.0f
 #define MAIN_Compressor_MIN_DB          -90.0f
 #define MAIN_Compressor_PAGE_STEP       1.0f
+#define MIN_TAU                         0.0f
+#define MAX_TAU                         10.0f
 
 
 static std::string float_dB_toString(float dB);
@@ -93,7 +93,7 @@ bool CCompressorModeDialog::OnInit()
   m_SpinGainCurve->SetVisible(true);
   m_SpinGainCurve->AddLabel(KODI->GetLocalizedString(32007), CompressorOptions::COMPRESSION_HARD_CLIPPING);
   
-  m_SliderTauAttack->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderTauAttack->SetFloatRange(MIN_TAU, MAX_TAU);
   m_SliderTauAttack->SetFloatValue(m_TauAttack);
   m_SliderTauAttack->SetVisible(true);
   m_SliderThreshold->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
@@ -102,7 +102,7 @@ bool CCompressorModeDialog::OnInit()
   m_SliderKneeWidth->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
   m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
   m_SliderKneeWidth->SetVisible(true);
-  m_SliderTauRelease->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderTauRelease->SetFloatRange(MIN_TAU, MAX_TAU);
   m_SliderTauRelease->SetFloatValue(m_CompressionRatio);
   m_SliderTauRelease->SetVisible(true);
   m_SliderCompressionRatio->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
@@ -215,7 +215,6 @@ void CCompressorModeDialog::ProcessSpinGainCurve()
   //  m_MainCompressor = m_MainCompressorSlider->GetFloatValue();
   //}
 
-  //m_window->SetControlLabel(LABEL_MAIN_Compressor_DB_LEVEL, float_dB_toString(m_MainCompressor).c_str());
   ////this->SendMsg(static_cast<void*>(&m_MainCompressor), sizeof(float), CSocketCompressorModeIDs::UpdateMainCompressor);
 }
 
