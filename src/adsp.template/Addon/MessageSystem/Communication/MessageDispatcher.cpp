@@ -98,6 +98,18 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
     return false;
   }
 
+  CSingleLock lock(m_SocketLock);
+  if (m_Sockets.size() > 0)
+  {
+    for (int ii = 0; ii < m_Sockets.size(); ii++)
+    {
+      SocketVector.push_back(m_Sockets[ii]);
+    }
+
+    m_SocketIDs.clear();
+    m_Sockets.clear();
+  }
+
   // sort the Socket IDs in a ascending consecutive order
   sort(SocketVector.begin(), SocketVector.end(), m_SocketSort);
 
@@ -135,12 +147,6 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
     IDDistance = SocketVector[0]->ID;
   }
 
-  DestroySockets();  // If this class already have some existing
-                        // Sockets delete them
-
-  
-  CSingleLock lock(m_SocketLock);
-
   // if IDDistance is greater 1, this object will need a LUT (Look Up Table) for its Socket IDs
   if (IDDistance != 1)
   {
@@ -160,7 +166,14 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
     m_Sockets.push_back(SocketVector[ii]);
   }
 
-  m_SocketIDLUT  = m_SocketIDs.data();
+  if (m_SocketIDs.size() > 0)
+  {
+    m_SocketIDLUT  = m_SocketIDs.data();
+  }
+  else
+  {
+    m_SocketIDLUT = nullptr;
+  }
   m_MaxSockets   = m_Sockets.size();
   m_SocketArray  = m_Sockets.data();
 
@@ -178,10 +191,10 @@ bool CMessageDispatcher::AddSocket(ISocket *Socket)
   int id = GetSocketID(Socket->ID);
   if (id != -1)
   {
+    delete Socket;
     KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add socket %s with ID %i, which is already available at message dispatcher %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, Name.c_str());
     return false;
   }
-
 
   CSingleLock lock(m_SocketLock);
   m_Sockets.push_back(Socket);
