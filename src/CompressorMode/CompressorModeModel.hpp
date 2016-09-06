@@ -41,18 +41,11 @@ public:
   virtual void Destroy();
 
 private:
+  int RequestModelState(Message &Msg);
   int RequestGainCurve(Message &Msg);
   int RequestTauRelease(Message &Msg);
   int RequestTauAttack(Message &Msg);
   int RequestThreshold(Message &Msg);
   int RequestCompressionRatio(Message &Msg);
   int RequestKneeWidth(Message &Msg);
-
-private:
-  int   m_GainCurve;
-  float m_TauRelease;
-  float m_TauAttack;
-  float m_Threshold;  
-  float m_CompressionRatio;
-  float m_KneeWidth;
 };

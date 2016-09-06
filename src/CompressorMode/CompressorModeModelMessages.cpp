@@ -41,13 +41,14 @@ CCompressorModeModelMessages::~CCompressorModeModelMessages()
 bool CCompressorModeModelMessages::Create(CCompressorModeModel *Model)
 {
   SocketVector_t sockets;
-  
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_TauRelease),       CSocketCompressorModeIDs, UpdateTauRelease));
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_TauAttack),        CSocketCompressorModeIDs, UpdateTauAttack));
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_Threshold),        CSocketCompressorModeIDs, UpdateThreshold));
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_CompressionRatio), CSocketCompressorModeIDs, UpdateCompressionRatio));
-  sockets.push_back(CreateTSocketMemcpy(float, &(Model->m_KneeWidth),        CSocketCompressorModeIDs, UpdateKneeWidth));
-  sockets.push_back(CreateTSocketMemcpy(int,   &(Model->m_GainCurve),        CSocketCompressorModeIDs, UpdateGainCurve));
+
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestModelState,       CSocketCompressorModeIDs, RequestModelState));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestCompressionRatio, CSocketCompressorModeIDs, RequestCompressionRatio));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestKneeWidth,        CSocketCompressorModeIDs, RequestKneeWidth));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestGainCurve,        CSocketCompressorModeIDs, RequestGainCurve));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestTauAttack,        CSocketCompressorModeIDs, RequestTauAttack));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestTauRelease,       CSocketCompressorModeIDs, RequestTauRelease));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeModel, Model, &CCompressorModeModel::RequestThreshold,        CSocketCompressorModeIDs, RequestThreshold));
 
   return Model->SetSockets(sockets);
 }

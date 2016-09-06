@@ -47,7 +47,7 @@ int CCompressorModeModel::Create()
   paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateThreshold));
   paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateCompressionRatio));
   paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateKneeWidth));
-  paramVector.push_back(CreateTParameter(int, CSocketCompressorModeIDs, UpdateGainCurve));
+  paramVector.push_back(CreateTParameter(int,   CSocketCompressorModeIDs, UpdateGainCurve));
 
   if (this->SetParameterVector(paramVector) <= 0)
   {
@@ -68,9 +68,55 @@ void CCompressorModeModel::Destroy()
 {
 }
 
+int CCompressorModeModel::RequestModelState(Message &Msg)
+{
+  int iVal = 0;
+  float fVal = 0.0;
+
+  this->GetParameter(CSocketCompressorModeIDs::UpdateGainCurve, static_cast<void*>(&iVal), sizeof(int));
+  if (!this->SendMsg(static_cast<void*>(&iVal), sizeof(int), CSocketCompressorModeIDs::UpdateGainCurve))
+  {
+    return -1;
+  }
+
+  this->GetParameter(CSocketCompressorModeIDs::UpdateTauRelease, static_cast<void*>(&fVal), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease))
+  {
+    return -1;
+  }
+
+  this->GetParameter(CSocketCompressorModeIDs::UpdateKneeWidth, static_cast<void*>(&fVal), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth))
+  {
+    return -1;
+  }
+
+  this->GetParameter(CSocketCompressorModeIDs::UpdateCompressionRatio, static_cast<void*>(&fVal), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio))
+  {
+    return -1;
+  }
+
+  this->GetParameter(CSocketCompressorModeIDs::UpdateThreshold, static_cast<void*>(&fVal), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold))
+  {
+    return -1;
+  }
+
+  this->GetParameter(CSocketCompressorModeIDs::UpdateTauAttack, static_cast<void*>(&fVal), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack))
+  {
+    return -1;
+  }
+
+  return 0;
+}
+
 int CCompressorModeModel::RequestGainCurve(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<void*>(&m_GainCurve), sizeof(float), CSocketCompressorModeIDs::UpdateGainCurve))
+  int val = 0;
+  this->GetParameter(CSocketCompressorModeIDs::UpdateGainCurve, static_cast<void*>(&val), sizeof(int));
+  if (!this->SendMsg(static_cast<void*>(&val), sizeof(int), CSocketCompressorModeIDs::UpdateGainCurve))
   {
     return -1;
   }
@@ -80,7 +126,9 @@ int CCompressorModeModel::RequestGainCurve(Message &Msg)
 
 int CCompressorModeModel::RequestTauRelease(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<void*>(&m_TauRelease), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease))
+  float val = 0.0;
+  this->GetParameter(CSocketCompressorModeIDs::UpdateTauRelease, static_cast<void*>(&val), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&val), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease))
   {
     return -1;
   }
@@ -90,7 +138,9 @@ int CCompressorModeModel::RequestTauRelease(Message &Msg)
 
 int CCompressorModeModel::RequestTauAttack(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<void*>(&m_TauAttack), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack))
+  float val = 0.0;
+  this->GetParameter(CSocketCompressorModeIDs::UpdateTauAttack, static_cast<void*>(&val), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&val), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack))
   {
     return -1;
   }
@@ -100,7 +150,9 @@ int CCompressorModeModel::RequestTauAttack(Message &Msg)
 
 int CCompressorModeModel::RequestThreshold(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<void*>(&m_Threshold), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold))
+  float val = 0.0;
+  this->GetParameter(CSocketCompressorModeIDs::UpdateThreshold, static_cast<void*>(&val), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&val), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold))
   {
     return -1;
   }
@@ -110,7 +162,9 @@ int CCompressorModeModel::RequestThreshold(Message &Msg)
 
 int CCompressorModeModel::RequestCompressionRatio(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<void*>(&m_CompressionRatio), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio))
+  float val = 0.0;
+  this->GetParameter(CSocketCompressorModeIDs::UpdateCompressionRatio, static_cast<void*>(&val), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&val), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio))
   {
     return -1;
   }
@@ -120,7 +174,9 @@ int CCompressorModeModel::RequestCompressionRatio(Message &Msg)
 
 int CCompressorModeModel::RequestKneeWidth(Message &Msg)
 {
-  if (!this->SendMsg(static_cast<void*>(&m_KneeWidth), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth))
+  float val = 0.0;
+  this->GetParameter(CSocketCompressorModeIDs::UpdateKneeWidth, static_cast<void*>(&val), sizeof(float));
+  if (!this->SendMsg(static_cast<void*>(&val), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth))
   {
     return -1;
   }
