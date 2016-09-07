@@ -458,6 +458,25 @@ void CMessageDispatcher::ProcessMessages()
   }
 }
 
+void CMessageDispatcher::ProcessConnectedMessage()
+{
+  CSingleLock lock(m_ConnectionLock);
+
+  for (int ii = 0; ii < m_MaxConnectedDispatchers; ii++)
+  {
+    m_DispatcherArray[ii]->ProcessMessage();
+  }
+}
+
+void CMessageDispatcher::ProcessConnectedMessages()
+{
+  CSingleLock lock(m_ConnectionLock);
+
+  for (int ii = 0; ii < m_MaxConnectedDispatchers; ii++)
+  {
+    m_DispatcherArray[ii]->ProcessMessages();
+  }
+}
 //bool CMessageDispatcher::RemoveDispatcher(CMessageDispatcher *Dispatcher)
 //{
 //  if (!Dispatcher)

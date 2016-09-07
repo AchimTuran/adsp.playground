@@ -51,6 +51,8 @@ public:
 
   void ProcessMessage();
   void ProcessMessages();
+  void ProcessConnectedMessage();
+  void ProcessConnectedMessages();
 
   const std::string Name;     // Custom name for this object
   const int         ID;       // assigned unique member ID for message assignment
@@ -66,7 +68,7 @@ private:
     }
 
     CSingleLock lock(m_SocketLock);
-    if (SocketID >= m_MaxSockets || m_MaxSockets == 0)
+    if (m_MaxSockets == 0)
     {
       return -1;
     }
