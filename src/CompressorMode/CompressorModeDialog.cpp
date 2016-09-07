@@ -35,6 +35,7 @@
 
 
 using namespace asplib;
+using namespace ADDON;
 
 
 #define BUTTON_OK                 10050
@@ -86,7 +87,7 @@ bool CCompressorModeDialog::OnInit()
 
   if (!m_SpinGainCurve || !m_SliderTauAttack || !m_SliderThreshold || !m_SliderKneeWidth || !m_SliderTauRelease || !m_SliderCompressionRatio)
   {
-    KODI->Log(ADDON::LOG_ERROR, "%s, %i, One ore more controls not found!", __FUNCTION__, __LINE__);
+    KODI->Log(LOG_ERROR, "%s, %i, One ore more controls not found!", __FUNCTION__, __LINE__);
     return false;
   }
   m_SpinGainCurve->SetValue(m_GainCurve);
@@ -111,14 +112,19 @@ bool CCompressorModeDialog::OnInit()
 
   if (!CCompressorModeDialogMessages::Create(this))
   {
-    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to connect sockets from %s", __FUNCTION__, __LINE__, this->Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to connect sockets from %s", __FUNCTION__, __LINE__, this->Name.c_str());
     return false;
   }
 
   if(CAddonProcessManager::ConnectObject(this) != 0)
   {
-    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, this->Name.c_str());
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, this->Name.c_str());
     return false;
+  }
+
+  if (!this->SendMsg(nullptr, 0, CSocketCompressorModeIDs::RequestModelState))
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed send \"%s\" from dispatcher %s to compressor controller", __FUNCTION__, __LINE__, CSocketCompressorModeIDs::ToString(CSocketCompressorModeIDs::RequestModelState), this->Name.c_str());
   }
 
   return true;
