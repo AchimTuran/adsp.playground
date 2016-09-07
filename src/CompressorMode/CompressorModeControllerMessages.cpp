@@ -45,6 +45,7 @@ bool CCompressorModeControllerMessages::Create(CCompressorModeController *Contro
   sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetCompressionRation, CSocketCompressorModeIDs, UpdateCompressionRatio));
   sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetKneeWidth,         CSocketCompressorModeIDs, UpdateKneeWidth));
   sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetGainCurve,         CSocketCompressorModeIDs, UpdateGainCurve));
+  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::RequestModelState,    CSocketCompressorModeIDs, RequestModelState));
 
   return Controller->SetSockets(sockets);
 }
