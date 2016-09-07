@@ -47,6 +47,7 @@ private:
   int SetCompressionRation(Message &Msg);
   int SetKneeWidth(Message &Msg);
   int SetGainCurve(Message &Msg);
+  int RequestModelState(Message &Msg);
 
 private:
   int   m_GainCurve;

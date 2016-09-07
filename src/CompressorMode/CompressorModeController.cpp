@@ -198,3 +198,14 @@ int CCompressorModeController::SetGainCurve(Message & Msg)
   return 0;
 }
 
+int CCompressorModeController::RequestModelState(Message & Msg)
+{
+  if (!this->SendMsg(nullptr, 0, CSocketCompressorModeIDs::RequestModelState))
+  {
+    // TODO: error code
+    return -1;
+  }
+
+  return 0;
+}
+
