@@ -25,12 +25,27 @@
 #include "Addon/MVC/Interfaces/MVCObject.hpp"
 #include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 
+#include "include/client.h"
+
 #include <vector>
 #include <string>
 
+using namespace ADDON;
 
+// TODO: shift method implementations into an cpp file
 class IModel : public MVCObject
 {
+private: // private declarations
+  typedef std::vector<int> ParameterIDVector_t;
+
+  class CParameterSort
+  {
+  public:
+    bool operator() (IParameter *Lhs, IParameter *Rhs)
+    {
+      return (Lhs->ID < Rhs->ID);
+    }
+  };
 public:
   typedef std::vector<IParameter*> ParameterVector_t;
 
@@ -56,19 +71,13 @@ public:
       return -1;
     }
 
-    if (m_ParameterIDMapping)
+    int id = GetParameterID(ID);
+    if (id < 0)
     {
-      for (int ii = 0; ii < m_MaxParameters; ii++)
-      {
-        if (ID == m_ParameterIDMapping[ii])
-        {
-          ID = m_ParameterIDMapping[ii];
-          break;
-        }
-      }
+      return -1;
     }
 
-    return m_ParameterArray[ID]->Set(ID, Data, Size);
+    return m_ParameterArray[id]->Set(ID, Data, Size);
   }
 
   virtual int GetParameter(int ID, void *Data, size_t Size)
@@ -99,16 +108,77 @@ public:
   {
     if (ParameterVector.size() <= 0)
     {
-      return -1;
+      KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign an empty parameter vector to model %s!", __FUNCTION__, __LINE__, Name.c_str());
+      return false;
     }
 
-    // TODO: sort parameter IDs
-    SocketVector_t sockets;
     CSingleLock lock(m_ParameterLock);
-    for (size_t ii = 0; ii < ParameterVector.size(); ii++)
+    if (m_ParameterVector.size() > 0)
     {
-      // TODO: how to get signal name string?
-      sockets.push_back(dynamic_cast<ISocket*>(new TSocketClassMethodCallback<IModel>(this, &IModel::UpdateModel, "", ParameterVector[ii]->ID)));
+      for (int ii = 0; ii < m_ParameterVector.size(); ii++)
+      {
+        ParameterVector.push_back(m_ParameterVector[ii]);
+      }
+
+      m_ParameterIDs.clear();
+      m_ParameterVector.clear();
+    }
+
+    // sort the Parameter IDs in a ascending consecutive order
+    sort(ParameterVector.begin(), ParameterVector.end(), m_Sort);
+
+    int IDDistance = 1;
+    for (unsigned int ii = 1; ii < ParameterVector.size() && IDDistance == 1; ii++)
+    {
+      int diff = ParameterVector[ii]->ID - ParameterVector[ii - 1]->ID;
+
+      if (diff <= 0)
+      {// Invalid input! Two equal Parameter IDs, which is not supported!
+        KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to assign equal parameters to model %s!", __FUNCTION__, __LINE__, Name.c_str());
+
+        for (size_t ii = 0; ii < ParameterVector.size(); ii++)
+        {
+          if (ParameterVector[ii])
+          {
+            delete ParameterVector[ii];
+            ParameterVector[ii] = NULL;
+          }
+        }
+
+        return false;
+      }
+
+      if (diff > IDDistance)
+      {
+        IDDistance = diff;
+      }
+    }
+
+    // if there is only one Parameter or the first one has an ID > 0
+    // always adjust IDDistance
+    if ((ParameterVector.size() == 1 && ParameterVector[0]->ID > 0) || ParameterVector[0]->ID)
+    {
+      IDDistance = ParameterVector[0]->ID;
+    }
+
+    // if IDDistance is greater 1, this object will need a LUT (Look Up Table) for its Parameter IDs
+    if (IDDistance != 1)
+    {
+      KODI->Log(LOG_DEBUG, "%s, %i, The model %s will use a LUT for Parameter assignment", __FUNCTION__, __LINE__, Name.c_str());
+      m_ParameterIDs.reserve(ParameterVector.size());
+      for (unsigned int ii = 0; ii < ParameterVector.size(); ii++)
+      {
+        m_ParameterIDs.push_back(ParameterVector[ii]->ID);
+      }
+    }
+
+    KODI->Log(LOG_DEBUG, "%s, %i, The model %s has the following parameters: ", __FUNCTION__, __LINE__, Name.c_str());
+    m_ParameterVector.reserve(ParameterVector.size());
+    SocketVector_t sockets;
+    for (unsigned int ii = 0; ii < ParameterVector.size(); ii++)
+    {
+      KODI->Log(LOG_DEBUG, "%s, %i,  Parameter: %s ID: %i", __FUNCTION__, __LINE__, ParameterVector[ii]->Name.c_str(), ParameterVector[ii]->ID);
+      sockets.push_back(dynamic_cast<ISocket*>(new TSocketClassMethodCallback<IModel>(this, &IModel::UpdateModel, ParameterVector[ii]->Name, ParameterVector[ii]->ID)));
       m_ParameterVector.push_back(ParameterVector[ii]);
     }
 
@@ -118,10 +188,19 @@ public:
       return -1;
     }
 
-    m_ParameterArray = m_ParameterVector.data();
-    m_MaxParameters = m_ParameterVector.size();
+    if (m_ParameterIDs.size() > 0)
+    {
+      m_ParameterIDMapping = m_ParameterIDs.data();
+    }
+    else
+    {
+      m_ParameterIDMapping = nullptr;
+    }
 
-    return m_ParameterVector.size();
+    m_MaxParameters  = m_ParameterVector.size();
+    m_ParameterArray = m_ParameterVector.data();
+
+    return m_MaxParameters;
   }
 
   virtual int AddParameter(IParameter *Parameter)
@@ -131,36 +210,76 @@ public:
       return -1;
     }
 
-    // TODO: how to get signal name string?
-    if (!this->AddSocket(dynamic_cast<ISocket*>(new TSocketClassMethodCallback<IModel>(this, &IModel::UpdateModel, "", Parameter->ID))))
+    int id = GetParameterID(Parameter->ID);
+    if (id != -1)
+    {
+      KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add parameter %s with ID %i, which is already registered in model %s", __FUNCTION__, __LINE__, Parameter->Name.c_str(), Parameter->ID, Name.c_str());
+      delete Parameter;
+      return false;
+    }
+
+    if (!this->AddSocket(dynamic_cast<ISocket*>(new TSocketClassMethodCallback<IModel>(this, &IModel::UpdateModel, Parameter->Name, Parameter->ID))))
     {
       return -1;
     }
 
     CSingleLock lock(m_ParameterLock);
-    // TODO: sort parameter IDs
     m_ParameterVector.push_back(Parameter);
-    m_ParameterArray = m_ParameterVector.data();
+
+    // sort the Socket IDs in a ascending consecutive order
+    sort(m_ParameterVector.begin(), m_ParameterVector.end(), m_Sort);
+
+    // todo check order!
+    m_ParameterIDs.clear();
+    m_ParameterIDs.reserve(m_ParameterVector.size());
+    for (unsigned int ii = 0; ii < m_ParameterVector.size(); ii++)
+    {
+      m_ParameterIDs[ii] = m_ParameterVector[ii]->ID;
+    }
+
+    KODI->Log(LOG_DEBUG, "%s, %i, Added parameter %s with ID %i to model %s", __FUNCTION__, __LINE__, Parameter->Name.c_str(), Parameter->ID, Name.c_str());
+
+    m_ParameterIDMapping = m_ParameterIDs.data();
     m_MaxParameters = m_ParameterVector.size();
+    m_ParameterArray = m_ParameterVector.data();
 
     return m_MaxParameters;
   }
 
   virtual int RemoveParameter(int ID)
   {
-    if (m_ParameterIDMapping)
+    int id = GetParameterID(ID);
+    if (id < 0)
     {
+      KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to remove a negative ParameterID from model %s!", __FUNCTION__, __LINE__, Name.c_str());
+      return false;
     }
 
-    for (ParameterVector_t::iterator iter = m_ParameterVector.begin(); iter != m_ParameterVector.end(); ++iter)
+    CSingleLock lock(m_ParameterLock);
+
+    ParameterVector_t::iterator iter = m_ParameterVector.begin() + id;
+    delete *iter;
+    *iter = NULL;
+
+    this->RemoveSocket(m_ParameterVector[id]->ID);
+    m_ParameterVector.erase(m_ParameterVector.begin() + id);
+    m_ParameterIDs.erase(m_ParameterIDs.begin() + id);
+
+    if (m_ParameterIDs.size() <= 0 || m_ParameterVector.size() <= 0)
     {
-      if (ID == (*iter)->ID)
-      {
-        this->RemoveSocket((*iter)->ID);
-        delete *iter;
-        *iter = NULL;
-      }
+
+      m_ParameterIDMapping  = nullptr;
+      m_MaxParameters       = 0;
+      m_ParameterArray      = nullptr;
     }
+    else
+    {
+      m_ParameterIDMapping = m_ParameterIDs.data();
+      m_MaxParameters = m_ParameterVector.size();
+      m_ParameterArray = m_ParameterVector.data();
+    }
+
+    KODI->Log(LOG_DEBUG, "%s, %i, Removed Parameter %s with ID %i", __FUNCTION__, __LINE__, m_ParameterArray[id]->Name.c_str(), m_ParameterArray[id]->ID);
 
     return 0;
   }
@@ -201,7 +320,46 @@ protected: // protected member variables
   IParameter  **m_ParameterArray;
 
   ParameterVector_t m_ParameterVector;
+  ParameterIDVector_t m_ParameterIDs;
 
 private:
+  inline int GetParameterID(int ParameterID)
+  {
+    if (ParameterID < 0)
+    {
+      return -1;
+    }
+
+    CSingleLock lock(m_ParameterLock);
+    if (ParameterID >= m_MaxParameters || m_MaxParameters == 0)
+    {
+      return -1;
+    }
+
+    int id = ParameterID;
+    if (m_ParameterIDMapping)
+    {
+      bool ParameterIDFound = false;
+      for (int ii = 0; ii < m_MaxParameters; ii++)
+      {
+        if (m_ParameterIDMapping[ii] == ParameterID)
+        {
+          id = ii;
+          ParameterIDFound = true;
+
+          break;
+        }
+      }
+
+      if (!ParameterIDFound)
+      {
+        return -1;
+      }
+    }
+
+    return id;
+  }
+
   CCriticalSection  m_ParameterLock;
+  CParameterSort    m_Sort;
 };
