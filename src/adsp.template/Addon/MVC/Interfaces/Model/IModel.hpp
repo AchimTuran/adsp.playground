@@ -52,9 +52,9 @@ public:
   IModel(std::string Name, int ID, int ConnectionID) :
     MVCObject(MVCObject::MODEL_OBJECT, Name, ID, ConnectionID)
   {
-    m_ParameterIDMapping  = NULL;
+    m_ParameterIDMapping  = nullptr;
     m_MaxParameters       = 0;
-    m_ParameterArray      = NULL;
+    m_ParameterArray      = nullptr;
   }
 
   virtual ~IModel()
@@ -88,19 +88,13 @@ public:
       return -1;
     }
 
-    if (m_ParameterIDMapping)
+    int id = GetParameterID(ID);
+    if (id < 0)
     {
-      for (int ii = 0; ii < m_MaxParameters; ii++)
-      {
-        if (ID == m_ParameterIDMapping[ii])
-        {
-          ID = m_ParameterIDMapping[ii];
-          break;
-        }
-      }
+      return -1;
     }
 
-    return m_ParameterArray[ID]->Get(ID, Data, Size);
+    return m_ParameterArray[id]->Get(ID, Data, Size);
   }
 
 
@@ -331,7 +325,7 @@ private:
     }
 
     CSingleLock lock(m_ParameterLock);
-    if (ParameterID >= m_MaxParameters || m_MaxParameters == 0)
+    if (m_MaxParameters == 0)
     {
       return -1;
     }
