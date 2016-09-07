@@ -76,17 +76,8 @@ int CCompressorModeEnvironment::InitCompressorModel()
       KODI->Log(LOG_ERROR, "%s, %i, Failed to create %s model", __FUNCTION__, __LINE__, m_CompressorModeModel.Name.c_str());
       return AE_DSP_ERROR_FAILED;
   }
-  int errorCounter = 0;
-  // Consquently the model will be initialized with default parameters
-  float fVal = 0.0f;
-  //SET_MODEL_FLOAT_PARAM(errorCounter, m_CompressorModeModel, CSocketCompressorModeIDs, UpdateMainCompressor, fVal);
 
-  if (errorCounter > 0)
-  {
-    KODI->Log(LOG_ERROR, "%s, %i, Failed to set %i parameters in model %s! Please contact the add-on author with this log file.", __FUNCTION__, __LINE__, errorCounter, m_CompressorModeModel.Name.c_str());
-  }
-
-  return errorCounter;
+  return AE_DSP_ERROR_NO_ERROR;;
 }
 
 void CCompressorModeEnvironment::Run()
