@@ -191,8 +191,8 @@ bool CMessageDispatcher::AddSocket(ISocket *Socket)
   int id = GetSocketID(Socket->ID);
   if (id != -1)
   {
-    delete Socket;
     KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add socket %s with ID %i, which is already available at message dispatcher %s", __FUNCTION__, __LINE__, Socket->Name.c_str(), Socket->ID, Name.c_str());
+    delete Socket;
     return false;
   }
 
@@ -202,6 +202,8 @@ bool CMessageDispatcher::AddSocket(ISocket *Socket)
   // sort the Socket IDs in a ascending consecutive order
   sort(m_Sockets.begin(), m_Sockets.end(), m_SocketSort);
 
+  // todo check order!
+  m_SocketIDs.clear();
   m_SocketIDs.reserve(m_Sockets.size());
   for (unsigned int ii = 0; ii < m_Sockets.size(); ii++)
   {
