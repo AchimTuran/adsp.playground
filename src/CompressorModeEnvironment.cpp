@@ -94,8 +94,8 @@ void CCompressorModeEnvironment::Run()
   while (m_Thread.IsRunning())
   {
     m_CompressorModeController.ProcessMessages();
-    m_CompressorModeModel.ProcessMessages();
+    m_CompressorModeController.ProcessConnectedMessages();
     m_CompressorModeModel.SaveParameters();
-    m_Thread.Sleep(10);
+    m_Thread.Sleep(100);
   }
 }

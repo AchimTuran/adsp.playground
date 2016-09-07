@@ -94,7 +94,7 @@ void CGainModeEnvironment::Run()
   while (m_Thread.IsRunning())
   {
     m_GainModeController.ProcessMessages();
-    m_GainModeModel.ProcessMessages();
-    m_Thread.Sleep(10);
+    m_GainModeController.ProcessConnectedMessages();
+    m_Thread.Sleep(100);
   }
 }
