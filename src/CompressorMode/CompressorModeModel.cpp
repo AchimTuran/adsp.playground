@@ -55,6 +55,12 @@ int CCompressorModeModel::Create()
     return -1;
   }
 
+  // set default values
+  float fVal = 0.0f;
+  fVal = 1.0f;
+  this->SetParameter(CSocketCompressorModeIDs::UpdateTauRelease, static_cast<void*>(&fVal), sizeof(float));
+  this->SetParameter(CSocketCompressorModeIDs::UpdateTauAttack, static_cast<void*>(&fVal), sizeof(float));
+
   if (!CCompressorModeModelMessages::Create(this))
   {
     // TODO error message
