@@ -16,7 +16,7 @@ find_package(TinyXML REQUIRED)
 include(cmake/helpers/gitCloneProject.cmake)
 # Include asplib
 if(NOT ASPLIB_MODULES_TO_BUILD)
-  set(ASPLIB_MODULES_TO_BUILD Dynamics)
+  set(ASPLIB_MODULES_TO_BUILD Dynamics Biquad)
 endif()
 git_clone_project(PROJ                asplib
                   GIT_REPOSITORY      https://github.com/AchimTuran/asplib
@@ -126,7 +126,8 @@ set(DEPLIBS ${kodiplatform_LIBRARIES}
             kodi::KodiThreads
             adsp::adsp.template
             asplib::Core
-            asplib::Dynamics)
+            asplib::Dynamics
+            asplib::Biquad)
             #winmm.lib)#todo implement switches for Windows
 
 # if(MSVC)
