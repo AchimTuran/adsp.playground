@@ -39,21 +39,4 @@ public:
 
   virtual int Create();
   virtual void Destroy();
-
-private:
-  int SetTauRelease(Message &Msg);
-  int SetTauAttack(Message &Msg);
-  int SetThreshold(Message &Msg);
-  int SetCompressionRation(Message &Msg);
-  int SetKneeWidth(Message &Msg);
-  int SetGainCurve(Message &Msg);
-  int RequestModelState(Message &Msg);
-
-private:
-  int   m_GainCurve;
-  float m_TauRelease;
-  float m_TauAttack;
-  float m_Threshold;
-  float m_CompressionRatio;
-  float m_KneeWidth;
 };

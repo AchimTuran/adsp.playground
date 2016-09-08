@@ -22,8 +22,12 @@
 
 #include "CompressorMode/CompressorModeControllerMessages.hpp"
 #include "CompressorMode/CompressorModeController.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
+#include "Addon/MessageSystem/Sockets/TSocketNotify.hpp"
+#include "Addon/MessageSystem/Sockets/TSocketRangeCheck.hpp"
 #include "EnumStrIDs.hpp"
+#include "asplib/Dynamics/asplib_DynamicsOptions.hpp"
+
+using namespace asplib;
 
 
 CCompressorModeControllerMessages::CCompressorModeControllerMessages()
@@ -39,13 +43,14 @@ bool CCompressorModeControllerMessages::Create(CCompressorModeController *Contro
 {
   SocketVector_t sockets;
 
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetTauRelease,        CSocketCompressorModeIDs, UpdateTauRelease));
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetTauAttack,         CSocketCompressorModeIDs, UpdateTauAttack));
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetThreshold,         CSocketCompressorModeIDs, UpdateThreshold));
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetCompressionRation, CSocketCompressorModeIDs, UpdateCompressionRatio));
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetKneeWidth,         CSocketCompressorModeIDs, UpdateKneeWidth));
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::SetGainCurve,         CSocketCompressorModeIDs, UpdateGainCurve));
-  sockets.push_back(CreateTSocketClassMethodCallback(CCompressorModeController, Controller, &CCompressorModeController::RequestModelState,    CSocketCompressorModeIDs, RequestModelState));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     30.0f,      CSocketCompressorModeIDs, UpdateTauRelease));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     30.0f,      CSocketCompressorModeIDs, UpdateTauAttack));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, -120.0f,  120.0f,     CSocketCompressorModeIDs, UpdateThreshold));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     120.0f,     CSocketCompressorModeIDs, UpdateCompressionRatio));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     30.0f,      CSocketCompressorModeIDs, UpdateKneeWidth));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, int,   Controller, CompressorOptions::COMPRESSION_HARD_CLIPPING, asplib::CompressorOptions::COMPRESSION_MAX, CSocketCompressorModeIDs, UpdateGainCurve));
+  
+  sockets.push_back(CreateTSocketForward(CCompressorModeController, Controller, CSocketCompressorModeIDs, RequestModelState));
 
   return Controller->SetSockets(sockets);
 }
