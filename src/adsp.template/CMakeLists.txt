@@ -35,7 +35,7 @@ set(HEADERS ADSPHelpers.h
             Addon/MessageSystem/Communication/Message.hpp
             Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp
             Addon/MessageSystem/Sockets/TSocketRangeCheck.hpp
-            Addon/MessageSystem/Sockets/TSocketNotify.hpp
+            Addon/MessageSystem/Sockets/TSocketForward.hpp
             #Addon/MessageSystem/Communication/ActorPort.hpp
             #Addon/MessageSystem/Interfaces/IPort.hpp
             #Addon/MessageSystem/Interfaces/IPortPool.hpp
