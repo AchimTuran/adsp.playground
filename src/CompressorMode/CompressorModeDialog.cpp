@@ -54,9 +54,6 @@ using namespace ADDON;
 #define MAIN_Compressor_PAGE_STEP       1.0f
 
 
-static std::string float_dB_toString(float dB);
-
-
 CCompressorModeDialog::CCompressorModeDialog() :
   IKodiGUIView("DialogCompressorMode.xml", false, true, 
                CDispatcherIDs::ToString(CDispatcherIDs::CompressorModeDialog), 
@@ -303,7 +300,7 @@ void CCompressorModeDialog::ProcessSliderCompressionRatio()
 }
 
 // private MC callback methods
-int CCompressorModeDialog::UpdateTauRelease(Message & Msg)
+int CCompressorModeDialog::UpdateTauRelease(Message &Msg)
 {
   m_TauRelease = *(float*)(Msg.data);
   m_SliderTauRelease->SetFloatValue(m_TauRelease);
@@ -311,7 +308,7 @@ int CCompressorModeDialog::UpdateTauRelease(Message & Msg)
   return 0;
 }
 
-int CCompressorModeDialog::UpdateTauAttack(Message & Msg)
+int CCompressorModeDialog::UpdateTauAttack(Message &Msg)
 {
   m_TauAttack = *(float*)(Msg.data);
   m_SliderTauAttack->SetFloatValue(m_TauAttack);
@@ -319,7 +316,7 @@ int CCompressorModeDialog::UpdateTauAttack(Message & Msg)
   return 0;
 }
 
-int CCompressorModeDialog::UpdateThreshold(Message & Msg)
+int CCompressorModeDialog::UpdateThreshold(Message &Msg)
 {
   m_Threshold = *(float*)(Msg.data);
   m_SliderThreshold->SetFloatValue(m_Threshold);
@@ -327,7 +324,7 @@ int CCompressorModeDialog::UpdateThreshold(Message & Msg)
   return 0;
 }
 
-int CCompressorModeDialog::UpdateCompressionRation(Message & Msg)
+int CCompressorModeDialog::UpdateCompressionRation(Message &Msg)
 {
   m_CompressionRatio = *(float*)(Msg.data);
   m_SliderCompressionRatio->SetFloatValue(m_CompressionRatio);
@@ -335,7 +332,7 @@ int CCompressorModeDialog::UpdateCompressionRation(Message & Msg)
   return 0;
 }
 
-int CCompressorModeDialog::UpdateKneeWidth(Message & Msg)
+int CCompressorModeDialog::UpdateKneeWidth(Message &Msg)
 {
   m_KneeWidth = *(float*)(Msg.data);
   m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
@@ -343,28 +340,10 @@ int CCompressorModeDialog::UpdateKneeWidth(Message & Msg)
   return 0;
 }
 
-int CCompressorModeDialog::UpdateGainCurve(Message & Msg)
+int CCompressorModeDialog::UpdateGainCurve(Message &Msg)
 {
   m_GainCurve = *(int*)(Msg.data);
   m_SpinGainCurve->SetValue(m_GainCurve);
 
   return 0;
-}
-
-
-// helper functions
-static std::string float_dB_toString(float dB)
-{
-  std::string str = toString(roundf(dB*10.0f)/10.0f);
-  float val10 = (float)((int)fabsf(roundf(dB*10.0f)));
-  int fraction = (int)(val10 - ((int)(val10/10.0f)*10.0f));
-
-  if (fraction == 0 || dB == 0.0f)
-  {
-    str += ".0";
-  }
-
-  str += "dB";
-
-  return str;
 }
