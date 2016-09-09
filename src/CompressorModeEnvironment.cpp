@@ -53,7 +53,6 @@ AE_DSP_ERROR CCompressorModeEnvironment::Create()
   ADSP->AddMenuHook((&dialogSettings));
 
   CThread::Create();
-  while (!CThread::IsRunning());
 
   return AE_DSP_ERROR_NO_ERROR;
 }
@@ -61,9 +60,6 @@ AE_DSP_ERROR CCompressorModeEnvironment::Create()
 AE_DSP_ERROR CCompressorModeEnvironment::Destroy()
 {
   CThread::StopThread(true);
-
-  this->DisconnectObject(&m_CompressorModeController);
-  this->DisconnectObject(&m_CompressorModeModel);
 
   m_CompressorModeController.Destroy();
   m_CompressorModeModel.Destroy();
@@ -85,7 +81,7 @@ int CCompressorModeEnvironment::InitCompressorModel()
 
 void CCompressorModeEnvironment::Process()
 {
-  while (CThread::m_bStop)
+  while (!CThread::m_bStop)
   {
     m_CompressorModeController.ProcessMessages();
     m_CompressorModeController.ProcessConnectedMessages();

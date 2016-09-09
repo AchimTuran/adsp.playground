@@ -53,7 +53,6 @@ AE_DSP_ERROR CGainModeEnvironment::Create()
   ADSP->AddMenuHook((&dialogSettings));
 
   CThread::Create();
-  while (!CThread::IsRunning());
 
   return AE_DSP_ERROR_NO_ERROR;
 }
@@ -61,10 +60,7 @@ AE_DSP_ERROR CGainModeEnvironment::Create()
 AE_DSP_ERROR CGainModeEnvironment::Destroy()
 {
   CThread::StopThread(true);
-
-  this->DisconnectObject(&m_GainModeController);
-  this->DisconnectObject(&m_GainModeModel);
-  
+    
   m_GainModeController.Destroy();
   m_GainModeModel.Destroy();
 
@@ -94,7 +90,7 @@ int CGainModeEnvironment::InitGainModel()
 
 void CGainModeEnvironment::Process()
 {
-  while (CThread::m_bStop)
+  while (!CThread::m_bStop)
   {
     m_GainModeController.ProcessMessages();
     m_GainModeController.ProcessConnectedMessages();
