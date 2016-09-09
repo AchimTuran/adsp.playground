@@ -85,6 +85,7 @@ void CAddonProcessManager::DestroyProcesses()
   {
     if (addonProcesses[ii])
     {
+      addonProcesses[ii]->DisconnectAll();
       AE_DSP_ERROR err = addonProcesses[ii]->Destroy();
       if (err != AE_DSP_ERROR_NO_ERROR)
       {

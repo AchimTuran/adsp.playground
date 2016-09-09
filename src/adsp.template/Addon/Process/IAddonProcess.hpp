@@ -44,20 +44,6 @@ public:
 
   virtual ~IAddonProcess()
   {
-    if (m_Controller)
-    {
-      for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
-      {
-        (*iter)->DisconnectDispatcher(m_Controller);
-      }
-
-      if (m_Model)
-      {
-        m_Model->DisconnectDispatcher(m_Controller);
-      }
-    }
-    m_Views.clear();
-
   }
 
   const int ConnectionID;
@@ -203,6 +189,23 @@ public:
     }
 
     return true;
+  }
+
+  void DisconnectAll()
+  {
+    if (m_Controller)
+    {
+      for (MVCObjectList_t::iterator iter = m_Views.begin(); iter != m_Views.end(); ++iter)
+      {
+        (*iter)->DisconnectDispatcher(m_Controller);
+      }
+
+      if (m_Model)
+      {
+        m_Model->DisconnectDispatcher(m_Controller);
+      }
+    }
+    m_Views.clear();
   }
 
 private:
