@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window>
-	<defaultcontrol always="true">10</defaultcontrol>
+	<defaultcontrol always="true">8001</defaultcontrol>
 	<backgroundcolor>background</backgroundcolor>
 	<allowoverlay>no</allowoverlay>
 	<coordinates>
@@ -38,31 +38,31 @@
 					<label>$ADDON[adsp.playground 32001]</label>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8002">
+				<control type="sliderex" id="8002">
 					<description>Tau Release</description>
 					<width>1160</width>
 					<label>$ADDON[adsp.playground 32002]</label>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8003">
+				<control type="sliderex" id="8003">
 					<description>Tau Attack</description>
 					<width>1160</width>
 					<label>$ADDON[adsp.playground 32003]</label>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8004">
+				<control type="sliderex" id="8004">
 					<description>Threshold</description>
 					<width>1160</width>
 					<label>$ADDON[adsp.playground 32004]</label>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8005">
+				<control type="sliderex" id="8005">
 					<description>Compression Ratio</description>
 					<width>1160</width>
 					<label>$ADDON[adsp.playground 32005]</label>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8006">
+				<control type="sliderex" id="8006">
 					<description>Knee Width</description>
 					<width>1160</width>
 					<label>$ADDON[adsp.playground 32006]</label>
@@ -76,6 +76,8 @@
 				<width>300</width>
 				<height>250</height>
 				<itemgap>-10</itemgap>
+				<onleft>8000</onleft>
+				<onright>10000</onright>
 				<control type="button" id="10050">
 					<description>Ok Button</description>
 					<posy>0</posy>
@@ -84,10 +86,10 @@
 					<aligny>center</aligny>
 					<label>186</label>
 					<font>font12_title</font>
-					<onup>2</onup>
-					<onleft>60</onleft>
-					<onright>9000</onright>
-					<ondown>2</ondown>
+					<onup>10000</onup>
+					<onleft>8000</onleft>
+					<onright>10000</onright>
+					<ondown>10051</ondown>
 					<include>DefaultDialogButton</include>
 				</control>
 				<control type="button" id="10051">
@@ -99,12 +101,12 @@
 					<label>222</label>
 					<font>font12_title</font>
 					<onup>10050</onup>
-					<onleft>100</onleft>
-					<onright>800</onright>
+					<onleft>8000</onleft>
+					<onright>10000</onright>
 					<ondown>10052</ondown>
 					<include>DefaultDialogButton</include>
 				</control>
-        <control type="button" id="10052">
+				<control type="button" id="10052">
 					<description>Default Button</description>
 					<posy>150</posy>
 					<height>90</height>
@@ -113,8 +115,8 @@
 					<label>409</label>
 					<font>font12_title</font>
 					<onup>10051</onup>
-					<onleft>100</onleft>
-					<onright>8000</onright>
+					<onleft>8000</onleft>
+					<onright>10000</onright>
 					<ondown>10052</ondown>
 					<include>DefaultDialogButton</include>
 				</control>
