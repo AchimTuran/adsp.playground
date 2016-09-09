@@ -61,6 +61,7 @@ AE_DSP_ERROR CADSPStreamBuilderAll::ConstructStream(CADSPStream &ADSPStream, con
       if (err == AE_DSP_ERROR_NO_ERROR)
       {
         modeVector.push_back(mode);
+        // TODO implement functionality to send messages before dispatcher gets connected to other dispatchers
         //MVCObject *object = dynamic_cast<MVCObject*>(mode);
         //if (object)
         //{ // when this mode can be casted to CMessageDispatcher

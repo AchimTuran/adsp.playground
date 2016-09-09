@@ -27,7 +27,6 @@
 #define COMPRESSOR_TAU_ATTACK_MAX             30.0f
 #define COMPRESSOR_THRESHOLD_MIN              -120.0f
 #define COMPRESSOR_THRESHOLD_MAX              120.0f
-#define COMPRESSOR_THRESHOLD_MAX              0.0f
 #define COMPRESSOR_COMPRESSION_RATIO_MIN      0.0f
 #define COMPRESSOR_COMPRESSION_RATIO_MAX      120.0f
 #define COMPRESSOR_KNEE_WIDTH_MIN             0.0f

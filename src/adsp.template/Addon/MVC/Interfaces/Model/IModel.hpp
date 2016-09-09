@@ -109,7 +109,7 @@ public:
     CSingleLock lock(m_ParameterLock);
     if (m_ParameterVector.size() > 0)
     {
-      for (int ii = 0; ii < m_ParameterVector.size(); ii++)
+      for (int ii = 0; ii < (int)m_ParameterVector.size(); ii++)
       {
         ParameterVector.push_back(m_ParameterVector[ii]);
       }

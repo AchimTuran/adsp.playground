@@ -101,7 +101,7 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
   CSingleLock lock(m_SocketLock);
   if (m_Sockets.size() > 0)
   {
-    for (int ii = 0; ii < m_Sockets.size(); ii++)
+    for (int ii = 0; ii < (int)m_Sockets.size(); ii++)
     {
       SocketVector.push_back(m_Sockets[ii]);
     }
@@ -249,10 +249,8 @@ bool CMessageDispatcher::RemoveSocket(int SocketID)
     m_SocketIDLUT  = m_SocketIDs.data();
     m_MaxSockets   = m_Sockets.size();
     m_SocketArray  = m_Sockets.data();
+    KODI->Log(LOG_DEBUG, "%s, %i, Removed Socket %s with ID %i", __FUNCTION__, __LINE__, m_SocketArray[id]->Name.c_str(), m_SocketArray[id]->ID);
   }
-
-
-  KODI->Log(LOG_DEBUG, "%s, %i, Removed Socket %s with ID %i", __FUNCTION__, __LINE__, m_SocketArray[id]->Name.c_str(), m_SocketArray[id]->ID);
 
   return true;
 }
