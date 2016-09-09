@@ -20,7 +20,7 @@ const std::string CGainModeEnvironmentName::ProcessName = CDispatcherIDs::ToStri
 
 CGainModeEnvironment::CGainModeEnvironment() :
   IAddonProcess(CADSPModeIDs::PostProcessingModeGain),
-  m_Thread(this, CDispatcherIDs::ToString(CDispatcherIDs::GainModeController))
+  CThread(CDispatcherIDs::ToString(CDispatcherIDs::GainModeController))
 {
 }
 
@@ -52,16 +52,19 @@ AE_DSP_ERROR CGainModeEnvironment::Create()
   CGainModeDialogSettings dialogSettings;
   ADSP->AddMenuHook((&dialogSettings));
 
-  m_Thread.Create();
-  while (!m_Thread.IsRunning());
+  CThread::Create();
+  while (!CThread::IsRunning());
 
   return AE_DSP_ERROR_NO_ERROR;
 }
 
 AE_DSP_ERROR CGainModeEnvironment::Destroy()
 {
-  m_Thread.StopThread(true);
+  CThread::StopThread(true);
 
+  this->DisconnectObject(&m_GainModeController);
+  this->DisconnectObject(&m_GainModeModel);
+  
   m_GainModeController.Destroy();
   m_GainModeModel.Destroy();
 
@@ -89,12 +92,12 @@ int CGainModeEnvironment::InitGainModel()
   return errorCounter;
 }
 
-void CGainModeEnvironment::Run()
+void CGainModeEnvironment::Process()
 {
-  while (m_Thread.IsRunning())
+  while (CThread::m_bStop)
   {
     m_GainModeController.ProcessMessages();
     m_GainModeController.ProcessConnectedMessages();
-    m_Thread.Sleep(100);
+    CThread::Sleep(100);
   }
 }

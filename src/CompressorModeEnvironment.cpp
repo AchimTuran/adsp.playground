@@ -20,7 +20,7 @@ const std::string CCompressorModeEnvironmentName::ProcessName = CDispatcherIDs::
 
 CCompressorModeEnvironment::CCompressorModeEnvironment() :
   IAddonProcess(CADSPModeIDs::PostProcessingModeCompressor),
-  m_Thread(this, CDispatcherIDs::ToString(CDispatcherIDs::CompressorModeController))
+  CThread(CDispatcherIDs::ToString(CDispatcherIDs::CompressorModeController))
 {
 }
 
@@ -52,15 +52,18 @@ AE_DSP_ERROR CCompressorModeEnvironment::Create()
   CCompressorModeDialogSettings dialogSettings;
   ADSP->AddMenuHook((&dialogSettings));
 
-  m_Thread.Create();
-  while (!m_Thread.IsRunning());
+  CThread::Create();
+  while (!CThread::IsRunning());
 
   return AE_DSP_ERROR_NO_ERROR;
 }
 
 AE_DSP_ERROR CCompressorModeEnvironment::Destroy()
 {
-  m_Thread.StopThread(true);
+  CThread::StopThread(true);
+
+  this->DisconnectObject(&m_CompressorModeController);
+  this->DisconnectObject(&m_CompressorModeModel);
 
   m_CompressorModeController.Destroy();
   m_CompressorModeModel.Destroy();
@@ -80,13 +83,13 @@ int CCompressorModeEnvironment::InitCompressorModel()
   return AE_DSP_ERROR_NO_ERROR;;
 }
 
-void CCompressorModeEnvironment::Run()
+void CCompressorModeEnvironment::Process()
 {
-  while (m_Thread.IsRunning())
+  while (CThread::m_bStop)
   {
     m_CompressorModeController.ProcessMessages();
     m_CompressorModeController.ProcessConnectedMessages();
     m_CompressorModeModel.SaveParameters();
-    m_Thread.Sleep(100);
+    CThread::Sleep(100);
   }
 }

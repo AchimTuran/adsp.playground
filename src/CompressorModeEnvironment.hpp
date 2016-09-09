@@ -37,7 +37,7 @@ public:
 
 
 class CCompressorModeEnvironment : 
-  public IRunnable,
+  private CThread,
   REGISTER_ADDON_PROCESS_CLASS(CCompressorModeEnvironment, CCompressorModeEnvironmentName)
 {
 public:
@@ -52,10 +52,9 @@ public:
 
 private: // private member methods
   int InitCompressorModel();
-  virtual void Run();
+  virtual void Process();
   
 private: // private member variables
   CCompressorModeModel      m_CompressorModeModel;
   CCompressorModeController m_CompressorModeController;
-  CThread             m_Thread;
 };

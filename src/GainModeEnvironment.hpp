@@ -37,7 +37,7 @@ public:
 
 
 class CGainModeEnvironment : 
-  public IRunnable,
+  private CThread,
   REGISTER_ADDON_PROCESS_CLASS(CGainModeEnvironment, CGainModeEnvironmentName)
 {
 public:
@@ -52,10 +52,9 @@ public:
 
 private: // private member methods
   int InitGainModel();
-  virtual void Run();
+  virtual void Process();
   
 private: // private member variables
   CGainModeModel      m_GainModeModel;
   CGainModeController m_GainModeController;
-  CThread             m_Thread;
 };
