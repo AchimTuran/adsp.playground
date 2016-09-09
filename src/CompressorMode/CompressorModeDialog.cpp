@@ -25,6 +25,8 @@
 #include "CompressorModeEnvironment.hpp"
 #include "adsp.template/Addon/Process/AddonProcessManager.hpp"
 
+#include "CompressorMode/CompressorModeDefaults.h"
+
 #include "EnumStrIDs.hpp"
 
 #include "utils/stdStringUtils.h"
@@ -49,11 +51,7 @@ using namespace ADDON;
 #define SLIDER_CompressionRatio         8005
 #define SLIDER_KneeWidth                8006
 
-#define MAIN_Compressor_MAX_DB          90.0f
-#define MAIN_Compressor_MIN_DB          -90.0f
 #define MAIN_Compressor_PAGE_STEP       1.0f
-#define MIN_TAU                         0.0f
-#define MAX_TAU                         10.0f
 
 
 static std::string float_dB_toString(float dB);
@@ -93,20 +91,20 @@ bool CCompressorModeDialog::OnInit()
   m_SpinGainCurve->SetValue(m_GainCurve);
   m_SpinGainCurve->SetVisible(true);
   m_SpinGainCurve->AddLabel(KODI->GetLocalizedString(32007), CompressorOptions::COMPRESSION_HARD_CLIPPING);
-  
-  m_SliderTauAttack->SetFloatRange(MIN_TAU, MAX_TAU);
+
+  m_SliderTauAttack->SetFloatRange(COMPRESSOR_TAU_ATTACK_MIN, COMPRESSOR_TAU_ATTACK_MAX);
   m_SliderTauAttack->SetFloatValue(m_TauAttack);
   m_SliderTauAttack->SetVisible(true);
-  m_SliderThreshold->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
-  m_SliderThreshold->SetFloatValue(m_Threshold);
-  m_SliderThreshold->SetVisible(true);
-  m_SliderKneeWidth->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
-  m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
-  m_SliderKneeWidth->SetVisible(true);
-  m_SliderTauRelease->SetFloatRange(MIN_TAU, MAX_TAU);
+  m_SliderTauRelease->SetFloatRange(COMPRESSOR_TAU_RELEASE_MIN, COMPRESSOR_TAU_RELEASE_MAX);
   m_SliderTauRelease->SetFloatValue(m_CompressionRatio);
   m_SliderTauRelease->SetVisible(true);
-  m_SliderCompressionRatio->SetFloatRange(MAIN_Compressor_MIN_DB, MAIN_Compressor_MAX_DB);
+  m_SliderThreshold->SetFloatRange(COMPRESSOR_THRESHOLD_MIN, COMPRESSOR_THRESHOLD_MAX);
+  m_SliderThreshold->SetFloatValue(m_Threshold);
+  m_SliderThreshold->SetVisible(true);
+  m_SliderKneeWidth->SetFloatRange(COMPRESSOR_KNEE_WIDTH_MIN, COMPRESSOR_KNEE_WIDTH_MAX);
+  m_SliderKneeWidth->SetFloatValue(m_KneeWidth);
+  m_SliderKneeWidth->SetVisible(true);
+  m_SliderCompressionRatio->SetFloatRange(COMPRESSOR_COMPRESSION_RATIO_MIN, COMPRESSOR_COMPRESSION_RATIO_MAX);
   m_SliderCompressionRatio->SetFloatValue(m_CompressionRatio);
   m_SliderCompressionRatio->SetVisible(true);
 

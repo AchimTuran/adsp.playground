@@ -1,3 +1,4 @@
+#pragma once
 /*
  *      Copyright (C) 2005-2016 Team Kodi
  *      http://xbmc.org
@@ -20,35 +21,15 @@
 
 
 
-#include "Addon/MVC/Model/TParameter.hpp"
-#include "CompressorMode/CompressorModeController.hpp"
-#include "EnumStrIDs.hpp"
-
-
-CCompressorModeController::CCompressorModeController() :
-  IController(CDispatcherIDs::ToString(CDispatcherIDs::CompressorModeController),
-              CDispatcherIDs::CompressorModeController,
-              CADSPModeIDs::PostProcessingModeCompressor)
-{
-}
-
-
-CCompressorModeController::~CCompressorModeController()
-{
-}
-
-
-int CCompressorModeController::Create()
-{
-  if (!CCompressorModeControllerMessages::Create(this))
-  {
-    // TODO error message
-    return -1;
-  }
-
-  return 0;
-}
-
-void CCompressorModeController::Destroy()
-{
-}
+#define COMPRESSOR_TAU_RELEASE_MIN            0.1f
+#define COMPRESSOR_TAU_RELEASE_MAX            30.0f
+#define COMPRESSOR_TAU_ATTACK_MIN             0.1f
+#define COMPRESSOR_TAU_ATTACK_MAX             30.0f
+#define COMPRESSOR_THRESHOLD_MIN              -120.0f
+#define COMPRESSOR_THRESHOLD_MAX              120.0f
+#define COMPRESSOR_THRESHOLD_MAX              0.0f
+#define COMPRESSOR_COMPRESSION_RATIO_MIN      0.0f
+#define COMPRESSOR_COMPRESSION_RATIO_MAX      120.0f
+#define COMPRESSOR_KNEE_WIDTH_MIN             0.0f
+#define COMPRESSOR_KNEE_WIDTH_MAX             120.0f
+ 

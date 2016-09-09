@@ -91,6 +91,7 @@ set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
                               src/GainModeEnvironment.cpp
                               src/GainModeEnvironment.hpp
                               
+                              src/CompressorMode/CompressorModeDefaults.h
                               src/CompressorMode/CompressorMode.cpp
                               src/CompressorMode/CompressorMode.hpp
                               src/CompressorMode/CompressorModeController.cpp

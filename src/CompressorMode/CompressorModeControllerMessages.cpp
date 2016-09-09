@@ -27,6 +27,8 @@
 #include "EnumStrIDs.hpp"
 #include "asplib/Dynamics/asplib_DynamicsOptions.hpp"
 
+#include "CompressorMode/CompressorModeDefaults.h"
+
 using namespace asplib;
 
 
@@ -43,11 +45,11 @@ bool CCompressorModeControllerMessages::Create(CCompressorModeController *Contro
 {
   SocketVector_t sockets;
 
-  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     30.0f,      CSocketCompressorModeIDs, UpdateTauRelease));
-  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     30.0f,      CSocketCompressorModeIDs, UpdateTauAttack));
-  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, -120.0f,  120.0f,     CSocketCompressorModeIDs, UpdateThreshold));
-  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     120.0f,     CSocketCompressorModeIDs, UpdateCompressionRatio));
-  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, 0.0f,     30.0f,      CSocketCompressorModeIDs, UpdateKneeWidth));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, COMPRESSOR_TAU_RELEASE_MIN,       COMPRESSOR_TAU_RELEASE_MAX,       CSocketCompressorModeIDs, UpdateTauRelease));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, COMPRESSOR_TAU_ATTACK_MIN,        COMPRESSOR_TAU_ATTACK_MAX,        CSocketCompressorModeIDs, UpdateTauAttack));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, COMPRESSOR_THRESHOLD_MIN,         COMPRESSOR_THRESHOLD_MAX,         CSocketCompressorModeIDs, UpdateThreshold));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, COMPRESSOR_COMPRESSION_RATIO_MIN, COMPRESSOR_COMPRESSION_RATIO_MAX, CSocketCompressorModeIDs, UpdateCompressionRatio));
+  sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, float, Controller, COMPRESSOR_KNEE_WIDTH_MIN,        COMPRESSOR_KNEE_WIDTH_MAX,        CSocketCompressorModeIDs, UpdateKneeWidth));
   sockets.push_back(CreateTSocketRangeCheck(CCompressorModeController, int,   Controller, CompressorOptions::COMPRESSION_HARD_CLIPPING, asplib::CompressorOptions::COMPRESSION_MAX, CSocketCompressorModeIDs, UpdateGainCurve));
   
   sockets.push_back(CreateTSocketForward(CCompressorModeController, Controller, CSocketCompressorModeIDs, RequestModelState));
