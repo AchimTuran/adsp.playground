@@ -84,7 +84,8 @@ include_directories(${kodiplatform_INCLUDE_DIRS}
 add_library(${PROJECT_NAME} STATIC ${SOURCES} ${HEADERS})
 add_library(adsp::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
-                           PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                           PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+                                  ${CMAKE_CURRENT_SOURCE_DIR}/..
                            INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
                            INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
                            

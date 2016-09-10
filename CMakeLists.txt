@@ -23,9 +23,11 @@ git_clone_project(PROJ                asplib
                   GIT_TAG             adding_dynamics_module)
 add_subdirectory(${asplib_SOURCE_DIR} ${asplib_BINARY_DIR})
 
-add_subdirectory(src/KodiThreads)
+git_clone_project(PROJ                KodiThreads
+                  GIT_REPOSITORY      https://github.com/AchimTuran/KodiThreads
+                  GIT_TAG             develop)
+add_subdirectory(${KodiThreads_SOURCE_DIR} ${KodiThreads_BINARY_DIR})
 set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
-#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
 
 add_subdirectory(src/adsp.template)
 set_property(TARGET adsp.template PROPERTY FOLDER "depends")
