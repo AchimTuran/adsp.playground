@@ -41,6 +41,7 @@ private:
   virtual bool OnAction(int actionId);
   virtual void OnClose();
 
+  void ProcessDefaultButton();
   void ProcessSpinGainCurve();
   void ProcessSliderTauAttack();
   void ProcessSliderKneeWidth();

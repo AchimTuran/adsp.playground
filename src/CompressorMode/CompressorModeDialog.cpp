@@ -141,11 +141,7 @@ bool CCompressorModeDialog::OnClick(int controlId)
     }
     break;
 
-    case BUTTON_DEFAULT:
-    {
-    }
-    break;
-
+    case BUTTON_DEFAULT:          ProcessDefaultButton();           break;
     case SPIN_GainCurve:          ProcessSpinGainCurve();           break;
     case SLIDER_TauAttack:        ProcessSliderTauAttack();         break;
     case SLIDER_KneeWidth:        ProcessSliderKneeWidth();         break;
@@ -200,6 +196,20 @@ void CCompressorModeDialog::OnClose()
   GUI->Control_releaseSettingsSlider(m_SliderThreshold);
   GUI->Control_releaseSettingsSlider(m_SliderCompressionRatio);
   GUI->Control_releaseSettingsSlider(m_SliderKneeWidth);
+}
+
+void CCompressorModeDialog::ProcessDefaultButton()
+{
+  float fVal = COMPRESSOR_TAU_ATTACK_DEFAULT;
+  this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateTauAttack);
+  fVal = COMPRESSOR_TAU_RELEASE_DEFAULT;
+  this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateTauRelease);
+  fVal = COMPRESSOR_KNEE_WIDTH_DEFAULT;
+  this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateKneeWidth);
+  fVal = COMPRESSOR_THRESHOLD_DEFAULT;
+  this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateThreshold);
+  fVal = COMPRESSOR_COMPRESSION_RATIO_DEFAULT;
+  this->SendMsg(static_cast<void*>(&fVal), sizeof(float), CSocketCompressorModeIDs::UpdateCompressionRatio);
 }
 
 void CCompressorModeDialog::ProcessSpinGainCurve()
