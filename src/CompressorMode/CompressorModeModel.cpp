@@ -23,6 +23,7 @@
 #include "Addon/MVC/Model/TParameter.hpp"
 #include "CompressorMode/CompressorModeModel.hpp"
 #include "EnumStrIDs.hpp"
+#include "CompressorMode/CompressorModeDefaults.h"
 
 
 CCompressorModeModel::CCompressorModeModel() :
@@ -56,10 +57,16 @@ int CCompressorModeModel::Create()
   }
 
   // set default values
-  float fVal = 0.0f;
-  fVal = 1.0f;
-  this->SetParameter(CSocketCompressorModeIDs::UpdateTauRelease, static_cast<void*>(&fVal), sizeof(float));
+  float fVal = COMPRESSOR_TAU_ATTACK_DEFAULT;
   this->SetParameter(CSocketCompressorModeIDs::UpdateTauAttack, static_cast<void*>(&fVal), sizeof(float));
+  fVal = COMPRESSOR_TAU_RELEASE_DEFAULT;
+  this->SetParameter(CSocketCompressorModeIDs::UpdateTauRelease, static_cast<void*>(&fVal), sizeof(float));
+  fVal = COMPRESSOR_KNEE_WIDTH_DEFAULT;
+  this->SetParameter(CSocketCompressorModeIDs::UpdateKneeWidth, static_cast<void*>(&fVal), sizeof(float));
+  fVal = COMPRESSOR_THRESHOLD_DEFAULT;
+  this->SetParameter(CSocketCompressorModeIDs::UpdateThreshold, static_cast<void*>(&fVal), sizeof(float));
+  fVal = COMPRESSOR_COMPRESSION_RATIO_DEFAULT;
+  this->SetParameter(CSocketCompressorModeIDs::UpdateCompressionRatio, static_cast<void*>(&fVal), sizeof(float));
 
   if (!CCompressorModeModelMessages::Create(this))
   {

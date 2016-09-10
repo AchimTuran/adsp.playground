@@ -21,14 +21,28 @@
 
 
 
+// tau release
+#define COMPRESSOR_TAU_RELEASE_DEFAULT        1.0f
 #define COMPRESSOR_TAU_RELEASE_MIN            0.1f
 #define COMPRESSOR_TAU_RELEASE_MAX            30.0f
+
+// tau attack
+#define COMPRESSOR_TAU_ATTACK_DEFAULT         1.0f
 #define COMPRESSOR_TAU_ATTACK_MIN             0.1f
 #define COMPRESSOR_TAU_ATTACK_MAX             30.0f
+
+// threshold
+#define COMPRESSOR_THRESHOLD_DEFAULT          0.0f
 #define COMPRESSOR_THRESHOLD_MIN              -120.0f
 #define COMPRESSOR_THRESHOLD_MAX              120.0f
+
+// compression ration
+#define COMPRESSOR_COMPRESSION_RATIO_DEFAULT  9.0f
 #define COMPRESSOR_COMPRESSION_RATIO_MIN      0.0f
 #define COMPRESSOR_COMPRESSION_RATIO_MAX      120.0f
+
+// knee width
+#define COMPRESSOR_KNEE_WIDTH_DEFAULT         0.0f
 #define COMPRESSOR_KNEE_WIDTH_MIN             0.0f
 #define COMPRESSOR_KNEE_WIDTH_MAX             120.0f
  
