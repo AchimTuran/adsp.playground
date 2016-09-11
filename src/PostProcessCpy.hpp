@@ -21,7 +21,7 @@
 
 
 
-#include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
+#include "adsp.template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
 #include "PostProcessCpyModeSettings.hpp"
 
 #include "EnumStrIDs.hpp"

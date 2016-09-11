@@ -20,7 +20,7 @@
 
 
 
-#include "Addon/MVC/Model/TParameter.hpp"
+#include "adsp.template/Addon/MVC/Model/TParameter.hpp"
 #include "CompressorMode/CompressorModeModel.hpp"
 #include "EnumStrIDs.hpp"
 #include "CompressorMode/CompressorModeDefaults.h"

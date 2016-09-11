@@ -22,10 +22,10 @@
 
 #include "CompressorMode/CompressorModeDialogMessages.hpp"
 #include "CompressorMode/CompressorModeDialog.hpp"
-#include "Addon/MessageSystem/Communication/ActorProtocol.h"
-#include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
+
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 
 
 CCompressorModeDialogMessages::CCompressorModeDialogMessages()

@@ -22,9 +22,9 @@
 
 #include "CompressorMode/CompressorMode.hpp"
 
-#include "ADSPHelpers.h"
-#include "include/client.h"
-#include "Addon/Process/AddonProcessManager.hpp"
+#include "adsp.template/ADSPHelpers.h"
+#include "adsp.template/include/client.h"
+#include "adsp.template/Addon/Process/AddonProcessManager.hpp"
 
 #include "asplib/Dynamics/asplib_DynamicsFactory.hpp"
 

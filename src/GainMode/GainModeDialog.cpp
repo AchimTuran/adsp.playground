@@ -27,7 +27,7 @@
 
 #include "EnumStrIDs.hpp"
 
-#include "utils/stdStringUtils.h"
+#include "adsp.template/utils/stdStringUtils.h"
 
 #include <math.h>
 

@@ -21,10 +21,10 @@
 
 
 
-#include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
+#include "adsp.template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/View/IView.hpp"
 #include "GainModeSettings.hpp"
 #include "GainModeMessages.hpp"
-#include "Addon/MVC/Interfaces/View/IView.hpp"
 
 #include "EnumStrIDs.hpp"
 

@@ -21,7 +21,7 @@
 
 
 
-#include "Addon/MVC/Interfaces/View/IKodiGUIView.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/View/IKodiGUIView.hpp"
 #include "CompressorMode/CompressorModeDialogMessages.hpp"
 
 

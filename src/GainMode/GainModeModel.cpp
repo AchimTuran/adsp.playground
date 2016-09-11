@@ -20,7 +20,7 @@
 
 
 
-#include "Addon/MVC/Model/TParameter.hpp"
+#include "adsp.template/Addon/MVC/Model/TParameter.hpp"
 #include "GainMode/GainModeModel.hpp"
 #include "EnumStrIDs.hpp"
 

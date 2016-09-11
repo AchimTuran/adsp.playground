@@ -22,9 +22,11 @@
 
 #include "CompressorMode/CompressorModeControllerMessages.hpp"
 #include "CompressorMode/CompressorModeController.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketForward.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketRangeCheck.hpp"
 #include "EnumStrIDs.hpp"
+
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketForward.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketRangeCheck.hpp"
+
 #include "asplib/Dynamics/asplib_DynamicsOptions.hpp"
 
 #include "CompressorMode/CompressorModeDefaults.h"

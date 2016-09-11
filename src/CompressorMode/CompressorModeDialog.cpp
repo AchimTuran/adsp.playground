@@ -23,13 +23,11 @@
 #include "CompressorMode/CompressorModeDialogSettings.hpp"
 #include "CompressorMode/CompressorModeDialog.hpp"
 #include "CompressorModeEnvironment.hpp"
-#include "adsp.template/Addon/Process/AddonProcessManager.hpp"
-
 #include "CompressorMode/CompressorModeDefaults.h"
-
 #include "EnumStrIDs.hpp"
 
-#include "utils/stdStringUtils.h"
+#include "adsp.template/Addon/Process/AddonProcessManager.hpp"
+#include "adsp.template/utils/stdStringUtils.h"
 
 #include "asplib/Dynamics/asplib_DynamicsOptions.hpp"
 

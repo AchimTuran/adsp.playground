@@ -22,10 +22,10 @@
 
 #include "GainMode/GainModeModelMessages.hpp"
 #include "GainMode/GainModeModel.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
-#include "EnumStrIDs.hpp"
+
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketMemcpy.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 
 
 CGainModeModelMessages::CGainModeModelMessages()

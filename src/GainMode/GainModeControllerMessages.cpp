@@ -22,8 +22,8 @@
 
 #include "GainMode/GainModeControllerMessages.hpp"
 #include "GainMode/GainModeController.hpp"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 
 
 CGainModeControllerMessages::CGainModeControllerMessages()

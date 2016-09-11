@@ -22,8 +22,7 @@
 
 #include "GainMode/GainModeMessages.hpp"
 #include "GainMode/GainMode.hpp"
-#include "Addon/MessageSystem/Communication/ActorProtocol.h"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
 
 

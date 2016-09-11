@@ -22,8 +22,8 @@
 
 #include "CompressorMode/CompressorModeMessages.hpp"
 #include "CompressorMode/CompressorMode.hpp"
-#include "Addon/MessageSystem/Communication/ActorProtocol.h"
-#include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
+#include "adsp.template/Addon/MessageSystem/Communication/ActorProtocol.h"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
 #include "EnumStrIDs.hpp"
 
 

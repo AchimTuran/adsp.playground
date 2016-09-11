@@ -22,8 +22,8 @@
 
 #include "PreProcessCpy.hpp"
 
-#include "ADSPHelpers.h"
-#include "include/client.h"
+#include "adsp.template/ADSPHelpers.h"
+#include "adsp.template/include/client.h"
 
 using namespace ADDON;
 

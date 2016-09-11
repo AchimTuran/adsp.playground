@@ -21,10 +21,10 @@
 
 
 
-#include "AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
+#include "adsp.template/AudioDSP/FactoryADSPModes/FactoryADSPModes.hpp"
+#include "adsp.template/Addon/MVC/Interfaces/View/IView.hpp"
 #include "CompressorModeSettings.hpp"
 #include "CompressorModeMessages.hpp"
-#include "Addon/MVC/Interfaces/View/IView.hpp"
 
 #include "asplib/Dynamics/Interfaces/asplib_IDynamics.hpp"
 #include "asplib/Dynamics/Compressor/asplib_DynamicsCompressorOptions.hpp"

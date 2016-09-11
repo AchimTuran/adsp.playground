@@ -21,7 +21,7 @@
 
 
 
-#include "Addon/Process/AddonProcessManager.hpp"
+#include "adsp.template/Addon/Process/AddonProcessManager.hpp"
 
 #include "GainMode/GainModeModel.hpp"
 #include "GainMode/GainModeController.hpp"

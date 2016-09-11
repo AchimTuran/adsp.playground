@@ -21,7 +21,7 @@
 
 
 
-#include "Addon/MessageSystem/Communication/MessageDispatcher.hpp"
+#include "adsp.template/Addon/MessageSystem/Communication/MessageDispatcher.hpp"
 
 class CGainMode;
 

@@ -5,7 +5,7 @@
 
 #include "EnumStrIDs.hpp"
 
-#include "include/client.h"
+#include "adsp.template/include/client.h"
 
 using namespace ADDON;
 
