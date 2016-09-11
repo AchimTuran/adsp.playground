@@ -29,9 +29,11 @@ git_clone_project(PROJ                KodiThreads
 add_subdirectory(${KodiThreads_SOURCE_DIR} ${KodiThreads_BINARY_DIR})
 set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
 
-add_subdirectory(src/adsp.template)
-set_property(TARGET adsp.template PROPERTY FOLDER "depends")
-#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
+git_clone_project(PROJ                adsp_base
+                  GIT_REPOSITORY      https://github.com/AchimTuran/adsp_base
+                  GIT_TAG             adsp.template_readd)
+add_subdirectory(${adsp_base_SOURCE_DIR} ${adsp_base_BINARY_DIR})
+set_property(TARGET adsp_base PROPERTY FOLDER "depends")
 
 include_directories(${kodiplatform_INCLUDE_DIRS}
                     ${p8-platform_INCLUDE_DIRS}
@@ -119,26 +121,18 @@ set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
 
                               src/EnumStrIDs.cpp
                               src/EnumStrIDs.hpp)
-                              
+
                               #src/CpyModesProcess.cpp
                               #src/CpyModesProcess.hpp)
-                       
+
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES}
             kodi::KodiThreads
-            adsp::adsp.template
+            adsp::adsp_base
             asplib::Core
             asplib::Dynamics
             asplib::Biquad)
-            #winmm.lib)#todo implement switches for Windows
-
-# if(MSVC)
-  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.cpp)
-  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.h)
-  
-  # list(APPEND DEPLIBS winmm.lib)
-# endif()
 
 addon_source_group("${ADSP_PLAYGROUND_SOURCES}")
             
