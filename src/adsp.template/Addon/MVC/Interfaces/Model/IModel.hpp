@@ -24,13 +24,17 @@
 #include "Addon/MVC/Interfaces/Model/IParameter.hpp"
 #include "Addon/MVC/Interfaces/MVCObject.hpp"
 #include "Addon/MessageSystem/Sockets/TSocketClassMethodCallback.hpp"
+#include "adsp.template/utils/stdStringUtils.h"
 
 #include "include/client.h"
 
 #include <vector>
 #include <string>
+#include "kodi/util/XMLUtils.h"
+#include <tinyxml.h>
 
 using namespace ADDON;
+
 
 // TODO: shift method implementations into an cpp file
 class IModel : public MVCObject
@@ -55,6 +59,7 @@ public:
     m_ParameterIDMapping  = nullptr;
     m_MaxParameters       = 0;
     m_ParameterArray      = nullptr;
+    m_XMLFilename = generateFilePath(g_strUserPath, MVCObject::Name + std::string(".xml"));
   }
 
   virtual ~IModel()
@@ -280,7 +285,80 @@ public:
 
   virtual int SaveParameters()
   {
-    // todo implement XML sink
+    try
+    {
+      CSingleLock lock(m_ParameterLock);
+      bool hasChanged = false;
+      for (unsigned int ii = 0; ii < m_ParameterVector.size(); ii++)
+      {
+        if (m_ParameterVector[ii]->HasChanged)
+        {
+          m_ParameterVector[ii]->HasChanged = false;
+          hasChanged = true;
+        }
+      }
+
+      if (m_ParameterVector.size() > 0 && hasChanged)
+      {
+        TiXmlDocument doc;
+        // ToDo: check all TiXml* generations!
+        TiXmlDeclaration *declaration = new TiXmlDeclaration("1.0", "", "");
+        doc.LinkEndChild(declaration);
+        TiXmlComment *autoGenComment = new TiXmlComment();
+        autoGenComment->SetValue(" THIS IS A AUTO GENERTATED FILE. DO NOT EDIT! ");
+        doc.LinkEndChild(autoGenComment);
+        TiXmlNode *mainNode = new TiXmlElement(Name);
+        mainNode = doc.LinkEndChild(mainNode);
+
+        for (unsigned int ii = 0; ii < m_ParameterVector.size(); ii++)
+        {
+          switch (m_ParameterVector[ii]->Type)
+          {// TODO implement more types
+            case TYPE_raw_bytes:
+            case TYPE_float:        XMLUtils::SetFloat(mainNode, m_ParameterVector[ii]->Name.c_str(), *static_cast<float*>(m_ParameterVector[ii]->GetDataPtr()));      break;
+            case TYPE_double:       XMLUtils::SetFloat(mainNode, m_ParameterVector[ii]->Name.c_str(), (float)*static_cast<double*>(m_ParameterVector[ii]->GetDataPtr()));     break;
+            //case TYPE_long_double:
+            case TYPE_bool:         XMLUtils::SetBoolean(mainNode, m_ParameterVector[ii]->Name.c_str(), *static_cast<bool*>(m_ParameterVector[ii]->GetDataPtr()));     break;
+            case TYPE_char:
+            case TYPE_unsigned_char:
+            case TYPE_int:          XMLUtils::SetInt(mainNode, m_ParameterVector[ii]->Name.c_str(), *static_cast<int*>(m_ParameterVector[ii]->GetDataPtr()));          break;
+            case TYPE_unsigned_int: XMLUtils::SetInt(mainNode, m_ParameterVector[ii]->Name.c_str(), *static_cast<unsigned int*>(m_ParameterVector[ii]->GetDataPtr())); break;
+            //case TYPE_short_int:
+            //case TYPE_unsigned_short_int:
+            //case TYPE_long_int:
+            //case TYPE_unsigned_long_int:
+            //case TYPE_long_long_int:
+            //case TYPE_unsigned_long_long_int:
+            //case TYPE_short:
+            //case TYPE_unsigned_short:
+            case TYPE_long: XMLUtils::SetLong(mainNode, m_ParameterVector[ii]->Name.c_str(), *static_cast<long*>(m_ParameterVector[ii]->GetDataPtr()));                break;
+            //case TYPE_unsigned_long:
+            //case TYPE_long_long:
+            //case TYPE_unsigned_long_long:
+            //case TYPE_std_string:
+
+            default:
+              KODI->Log(LOG_ERROR, "%s, %i, Invalid input! Tried to add parameter %s with ID %i, which is already registered in model %s", __FUNCTION__, __LINE__, m_ParameterVector[ii]->Name.c_str(), m_ParameterVector[ii]->ID, Name.c_str());
+              return -1;
+            break;
+          }
+/*
+          doc.LinkEndChild(mainNode);*/
+        }
+
+        if (!doc.SaveFile(m_XMLFilename.c_str()))
+        {
+          KODI->Log(LOG_ERROR, "Couldn't save XML settings to file %s", m_XMLFilename.c_str());
+          return -1;
+        }
+      }
+    }
+    catch(std::bad_alloc &e)
+    {
+      KODI->Log(LOG_ERROR, "%s, %i, Invalid memory allocation accured! Not enough free memory? Exception message: %s\n", __FUNCTION__, __LINE__, __func__, e.what());
+      return -1;
+    }
+
     return 0;
   }
     
@@ -356,4 +434,5 @@ private:
 
   CCriticalSection  m_ParameterLock;
   CParameterSort    m_Sort;
+  std::string m_XMLFilename;
 };

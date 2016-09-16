@@ -25,17 +25,22 @@
 
 #include <memory.h>
 
+// TODO add more macros
+#define CreateFloatParameter(StringClass, ID)       dynamic_cast<IParameter*>(new TParameter<float, TYPE_float>(StringClass::ToString(StringClass::ID), StringClass::ID))
+#define CreateDoubleParameter(StringClass, ID)      dynamic_cast<IParameter*>(new TParameter<double, TYPE_double>(StringClass::ToString(StringClass::ID), StringClass::ID))
+#define CreateIntParameter(StringClass, ID)         dynamic_cast<IParameter*>(new TParameter<int, TYPE_int>(StringClass::ToString(StringClass::ID), StringClass::ID))
+#define CreateUnsignedIntParameter(StringClass, ID) dynamic_cast<IParameter*>(new TParameter<unsigned int, TYPE_unsigned_int>(StringClass::ToString(StringClass::ID), StringClass::ID))
 
-#define CreateTParameter(Type, StringClass, ID) dynamic_cast<IParameter*>(new TParameter<float>(StringClass::ToString(StringClass::ID), StringClass::ID))
 
-
-template<class T>
-class TParameter : public IParameter
+template<class T, TypeIDs_t TID>
+class TParameter :  public IParameter,
+                    public TTypeIDs<T, TID>
 {
 public:
   TParameter(std::string Name, int ID) :
-    IParameter(Name, ID, sizeof(T))
+    IParameter(Name, ID, sizeof(T), TTypeIDs<T, TID>::TypeID, TTypeIDs<T, TID>::TypeIDStr)
   {
+    int id = TTypeIDs<T, TID>::TypeID;
     memset(&m_Data, 0, this->Size);
   }
 

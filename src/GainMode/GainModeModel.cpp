@@ -42,7 +42,7 @@ int CGainModeModel::Create()
 {
   IModel::ParameterVector_t paramVector;
 
-  paramVector.push_back(CreateTParameter(float, CSocketGainModeIDs, UpdateMainGain));
+  paramVector.push_back(CreateFloatParameter(CSocketGainModeIDs, UpdateMainGain));
 
   if (this->SetParameterVector(paramVector) <= 0)
   {

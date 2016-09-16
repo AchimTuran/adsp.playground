@@ -18,8 +18,10 @@
  *  <http://www.gnu.org/licenses/>.
  *
  */
- 
- 
+
+
+
+#include "adsp.template/utils/TTypeIDs.hpp"
 
 #include <string>
 #include <stdint.h>
@@ -28,11 +30,14 @@
 class IParameter
 {
 public:
-  IParameter(std::string Name, int ID, size_t Size) :
+  IParameter(std::string Name, int ID, size_t Size, TypeIDs_t TypeID, std::string TypeIDStr) :
     Name(Name),
     ID(ID),
-    Size(Size)
+    Size(Size),
+    Type(TypeID),
+    TypeStr(TypeIDStr)
   {
+    HasChanged = false;
   }
 
   virtual ~IParameter()
@@ -43,6 +48,9 @@ public:
   const std::string Name;
   const int ID;
   const size_t Size;
+  const TypeIDs_t Type;
+  const std::string TypeStr;
+  bool HasChanged;
 
 
   int Set(int ID, void *Data, size_t Size)
@@ -52,7 +60,13 @@ public:
       return -1;
     }
 
-    return Set(Data);
+    int retValue = Set(Data);
+    if (retValue == 0)
+    {
+      HasChanged = true;
+    }
+
+    return retValue;
   }
 
   int Get(int ID, void *Data, size_t Size)

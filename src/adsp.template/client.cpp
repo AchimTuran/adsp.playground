@@ -47,6 +47,7 @@ using namespace ADDON;
 
 #ifdef TARGET_WINDOWS
 #define snprintf _snprintf
+//#undef CreateDirectory
 #endif
 
 int            m_iStreamsPresent  = 0;
@@ -128,6 +129,12 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   g_strAddonPath  = adspprops->strAddonPath;
 
   ADDON_ReadSettings();
+
+  // create addon user path
+  if (!KODI->DirectoryExists(g_strUserPath.c_str()))
+  {
+    KODI->CreateDirectory(g_strUserPath.c_str());
+  }
 
   m_CurStatus = ADDON_STATUS_OK;
   if (CADSPStreamManager::Create() != AE_DSP_ERROR_NO_ERROR)

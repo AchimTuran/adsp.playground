@@ -1,7 +1,5 @@
 project(adsp.template)
 
-#find_package(p8-platform REQUIRED)
-
 set(SOURCES ADSPHelpers.cpp
             client.cpp
             GUIDialogBase.cpp
@@ -72,7 +70,9 @@ set(HEADERS ADSPHelpers.h
             AudioDSP/Streams/IADSPStreamBuilder.hpp
             AudioDSP/Streams/ADSPStreamBuilderAll.hpp
             
-            utils/stdStringUtils.h)
+            utils/stdStringUtils.h
+            utils/TTypeIDs.hpp
+            utils/TTypeIDs.cpp)
           
 addon_source_group("${SOURCES}")
 addon_source_group("${HEADERS}")
@@ -86,8 +86,10 @@ add_library(adsp::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME}
                            PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
                                   ${CMAKE_CURRENT_SOURCE_DIR}/..
+                                  ${kodiplatform_INCLUDE_DIRS}
                            INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>)
+                                     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+                                     )
                            
 target_link_libraries(${PROJECT_NAME} kodi::KodiThreads)
 

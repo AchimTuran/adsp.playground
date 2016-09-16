@@ -43,12 +43,12 @@ int CCompressorModeModel::Create()
 {
   IModel::ParameterVector_t paramVector;
 
-  paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateTauRelease));
-  paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateTauAttack));
-  paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateThreshold));
-  paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateCompressionRatio));
-  paramVector.push_back(CreateTParameter(float, CSocketCompressorModeIDs, UpdateKneeWidth));
-  paramVector.push_back(CreateTParameter(int,   CSocketCompressorModeIDs, UpdateGainCurve));
+  paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateTauRelease));
+  paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateTauAttack));
+  paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateThreshold));
+  paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateCompressionRatio));
+  paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateKneeWidth));
+  paramVector.push_back(CreateIntParameter(CSocketCompressorModeIDs, UpdateGainCurve));
 
   if (this->SetParameterVector(paramVector) <= 0)
   {
