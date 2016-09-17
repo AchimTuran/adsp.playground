@@ -67,6 +67,7 @@ void CGainModeEnvironment::Process()
   {
     m_GainModeController.ProcessMessages();
     m_GainModeController.ProcessConnectedMessages();
+    m_GainModeModel.SaveParameters();
     CThread::Sleep(100);
   }
 }
