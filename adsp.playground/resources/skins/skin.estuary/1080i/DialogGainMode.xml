@@ -32,7 +32,7 @@
 				<onleft>9000</onleft>
 				<onright>9000</onright>
 				<pagecontrol>60</pagecontrol>
-        <orientation>horizontal</orientation>
+				<orientation>horizontal</orientation>
 <!-- 				<control type="spinctrolex" id="10">
 					<description>Speaker Gain Test</description>
 					<width>1160</width>
@@ -57,204 +57,204 @@
 					<height>3</height>
 					<texture colordiffuse="AAAAAAAA" border="3">dialogs/separator-grey.png</texture>
 				</control> -->
-				<control type="sliderex" id="8000"><!--    AE_DSP_CH_FL-->
+				<control type="sliderex" id="8000"><!--		AE_DSP_CH_FL-->
 					<description>Speaker Distance FL</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35000]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8001"><!--    AE_DSP_CH_FR-->
+				<control type="sliderex" id="8001"><!--		AE_DSP_CH_FR-->
 					<description>Speaker Distance FR</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35001]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8002"><!--    AE_DSP_CH_FC-->
+				<control type="sliderex" id="8002"><!--		AE_DSP_CH_FC-->
 					<description>Speaker Distance Center</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35002]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8003"><!--    AE_DSP_CH_LFE-->
+				<control type="sliderex" id="8003"><!--		AE_DSP_CH_LFE-->
 					<description>Speaker Distance Sub</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35003]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8004"><!--    AE_DSP_CH_BL-->
+				<control type="sliderex" id="8004"><!--		AE_DSP_CH_BL-->
 					<description>Speaker Distance BL</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35004]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8005"><!--    AE_DSP_CH_BR-->
+				<control type="sliderex" id="8005"><!--		AE_DSP_CH_BR-->
 					<description>Speaker Distance BR</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35005]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8006"><!--    AE_DSP_CH_FLOC-->
+				<control type="sliderex" id="8006"><!--		AE_DSP_CH_FLOC-->
 					<description>Speaker Distance FLOC</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35006]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8007"><!--    AE_DSP_CH_FROC-->
+				<control type="sliderex" id="8007"><!--		AE_DSP_CH_FROC-->
 					<description>Speaker Distance FLOC</description>
-          <height>750</height>
+					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35007]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8008"><!--    AE_DSP_CH_BC-->
+				<control type="sliderex" id="8008"><!--		AE_DSP_CH_BC-->
 					<description>Speaker Distance BC</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35008]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-        <control type="sliderex" id="8009"><!--    AE_DSP_CH_SL-->
+				<control type="sliderex" id="8009"><!--		AE_DSP_CH_SL-->
 					<description>Speaker Distance SL</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35009]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="35010"><!--    AE_DSP_CH_SR-->
+				<control type="sliderex" id="35010"><!--		AE_DSP_CH_SR-->
 					<description>Speaker Distance SR</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35010]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8011"><!--    AE_DSP_CH_TFL-->
+				<control type="sliderex" id="8011"><!--		AE_DSP_CH_TFL-->
 					<description>Speaker Distance TFL</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35011]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8012"><!--    AE_DSP_CH_TFR-->
+				<control type="sliderex" id="8012"><!--		AE_DSP_CH_TFR-->
 					<description>Speaker Distance TFR</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35012]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8013"><!--    AE_DSP_CH_TFC-->
+				<control type="sliderex" id="8013"><!--		AE_DSP_CH_TFC-->
 					<description>Speaker Distance TFC</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35013]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8014"><!--    AE_DSP_CH_TC-->
+				<control type="sliderex" id="8014"><!--		AE_DSP_CH_TC-->
 					<description>Speaker Distance Top Center</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35014]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8015"><!--    AE_DSP_CH_TBL-->
+				<control type="sliderex" id="8015"><!--		AE_DSP_CH_TBL-->
 					<description>Speaker Distance TBL</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35015]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8016"><!--    AE_DSP_CH_TBR-->
+				<control type="sliderex" id="8016"><!--		AE_DSP_CH_TBR-->
 					<description>Speaker Distance TBL</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35016]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8017"><!--    AE_DSP_CH_TBC-->
+				<control type="sliderex" id="8017"><!--		AE_DSP_CH_TBC-->
 					<description>Speaker Distance TBC</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35017]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8018"><!--    AE_DSP_CH_BLOC-->
+				<control type="sliderex" id="8018"><!--		AE_DSP_CH_BLOC-->
 					<description>Speaker Distance BLOC</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35018]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
-				<control type="sliderex" id="8019"><!--    AE_DSP_CH_BROC-->
+				<control type="sliderex" id="8019"><!--		AE_DSP_CH_BROC-->
 					<description>Speaker Distance BROC</description>
 					<height>750</height>
 					<width>250</width>
-          <sliderwidth>28</sliderwidth>
-          <sliderheight>600</sliderheight>
+					<sliderwidth>28</sliderwidth>
+					<sliderheight>600</sliderheight>
 					<label>$ADDON[adsp.playground 35019]</label>
-          <orientation>vertical</orientation>
+					<orientation>vertical</orientation>
 					<include>DefaultSettingButton</include>
 				</control>
 			</control>
@@ -273,8 +273,8 @@
 					<aligny>center</aligny>
 					<label>186</label>
 					<font>font12_title</font>
-          <onleft>7999</onleft>
-          <onright>9000</onright>
+					<onleft>7999</onleft>
+					<onright>9000</onright>
 					<onup>9002</onup>
 					<ondown>9002</ondown>
 					<include>DefaultDialogButton</include>
@@ -287,8 +287,8 @@
 					<aligny>center</aligny>
 					<label>222</label>
 					<font>font12_title</font>
-          <onleft>7999</onleft>
-          <onright>9000</onright>
+					<onleft>7999</onleft>
+					<onright>9000</onright>
 					<onup>9001</onup>
 					<ondown>9001</ondown>
 					<include>DefaultDialogButton</include>
