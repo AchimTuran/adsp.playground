@@ -73,7 +73,7 @@ private:
       return -1;
     }
 
-    int id = SocketID;
+    int id = -1;
     if (m_SocketIDLUT)
     {
       bool SocketIDFound = false;
@@ -91,6 +91,13 @@ private:
       if (!SocketIDFound)
       {
         return -1;
+      }
+    }
+    else
+    {
+      if (SocketID < m_MaxSockets)
+      {
+        id = SocketID;
       }
     }
 
