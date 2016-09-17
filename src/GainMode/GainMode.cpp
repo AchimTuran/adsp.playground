@@ -25,6 +25,7 @@
 #include "adsp.template/ADSPHelpers.h"
 #include "adsp.template/include/client.h"
 #include "adsp.template/Addon/Process/AddonProcessManager.hpp"
+#include "EnumStrIDs.hpp"
 
 #include <math.h>
 
@@ -43,7 +44,6 @@ CGainMode::CGainMode() :
         CDispatcherIDs::GainMode,
         CADSPModeIDs::PostProcessingModeGain)
 {
-  m_MainGain = 1.0f;
 }
 
 
@@ -54,6 +54,11 @@ CGainMode::~CGainMode()
 
 AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_Gain[ii] = 1.0f;
+  }
+
   m_InChannels            = Settings.iInChannels;
   m_InChannelPresentFlags = Settings.lInChannelPresentFlags;
 
@@ -106,7 +111,7 @@ unsigned int CGainMode::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned 
     const float *in  = ArrayIn[m_ChannelMappingIdx[ch]];
     for (unsigned int ii = 0; ii < Samples; ii++)
     {
-      out[ii] = m_MainGain*in[ii];
+      out[ii] = m_Gain[ch]*in[ii];
     }
   }
 
@@ -115,15 +120,16 @@ unsigned int CGainMode::ModeProcess(float **ArrayIn, float **ArrayOut, unsigned 
 
 
 // message method callbacks
-int CGainMode::SetMainGain(Message &Msg)
+int CGainMode::SetGain(Message &Msg)
 {
-  if (Msg.size != sizeof(float))
+  if (Msg.size != sizeof(float) || Msg.signal < CSocketGainModeIDs::UpdateGain_FL || Msg.signal > CSocketGainModeIDs::UpdateGain_BROC)
   {
     // TODO: error code
     return -1;
   }
 
-  m_MainGain = dB_to_Gain(*((float*)(Msg.data)));
+  int index = Msg.signal - CSocketGainModeIDs::UpdateGain_FL;
+  m_Gain[index] = dB_to_Gain(*((float*)(Msg.data)));
 
   return 0;
 }

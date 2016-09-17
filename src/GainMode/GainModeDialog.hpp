@@ -41,14 +41,13 @@ private:
   virtual bool OnAction(int actionId);
   virtual void OnClose();
 
-  void ProcessMainGainSlider();
+  void ProcessGainSlider(int Index);
 
-  CAddonGUISettingsSliderControl *m_MainGainSlider;
-  
 private: // MC methods
-  int UpdateMainGain(Message &Msg);
+  int UpdateGain(Message &Msg);
 
 private: // private member variables
-  float m_MainGain;
+  CAddonGUISettingsSliderControl *m_GainSliders[AE_DSP_CH_MAX];
+  float m_Gain[AE_DSP_CH_MAX];
   float m_PageActionValue;
 };

@@ -42,7 +42,26 @@ bool CGainModeDialogMessages::Create(CGainModeDialog *Dialog)
 {
   SocketVector_t sockets;
   
-  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateMainGain, CSocketGainModeIDs, UpdateMainGain));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_FL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_FR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_FC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_LFE));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_BL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_BR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_FLOC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_FROC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_BC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_SL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_SR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TFL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TFR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TFC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TBL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TBR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_TBC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_BLOC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeDialog, Dialog, &CGainModeDialog::UpdateGain, CSocketGainModeIDs, UpdateGain_BROC));
 
   return Dialog->SetSockets(sockets);
 }

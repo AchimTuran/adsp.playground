@@ -21,25 +21,7 @@
 
 
 
-#include "adsp.template/Addon/MVC/Interfaces/Controller/IController.hpp"
-
-#include "GainMode/GainModeControllerMessages.hpp"
-
-class CPostProcessGainModeControllerMessages;
-
-
-class CGainModeController : public IController,
-                            public CGainModeControllerMessages
-{
-  friend class CGainModeControllerMessages;
-
-public:
-  CGainModeController();
-  ~CGainModeController();
-
-  virtual int Create();
-  virtual void Destroy();
-
-private:
-  float m_MainGain;
-};
+ 
+#define GAIN_DEFAULT  0.0f
+#define GAIN_MIN      -90.0f
+#define GAIN_MAX      90.0f

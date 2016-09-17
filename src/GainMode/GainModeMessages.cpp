@@ -40,7 +40,26 @@ bool CGainModeMessages::Create(CGainMode *Mode)
 {
   SocketVector_t sockets;
   
-  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetMainGain, CSocketGainModeIDs, UpdateMainGain));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_FL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_FR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_FC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_LFE));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_FLOC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_FROC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_SL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_SR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TFL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TFR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TFC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TBL));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TBR));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_TBC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BLOC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BROC));
 
   return Mode->SetSockets(sockets);
 }

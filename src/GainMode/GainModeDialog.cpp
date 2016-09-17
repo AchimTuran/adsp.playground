@@ -36,7 +36,26 @@
 #define BUTTON_CANCEL             10051
 #define BUTTON_DEFAULT            10052
 
-#define SLIDER_MAIN_GAIN          8000
+#define SLIDER_FL                 8000
+#define SLIDER_FR                 8001
+#define SLIDER_FC                 8002
+#define SLIDER_LFE                8003
+#define SLIDER_BL                 8004
+#define SLIDER_BR                 8005
+#define SLIDER_FLOC               8006
+#define SLIDER_FROC               8007
+#define SLIDER_BC                 8008
+#define SLIDER_SL                 8009
+#define SLIDER_SR                 8010
+#define SLIDER_TFL                8011
+#define SLIDER_TFR                8012
+#define SLIDER_TFC                8013
+#define SLIDER_TC                 8014
+#define SLIDER_TBL                8015
+#define SLIDER_TBR                8016
+#define SLIDER_TBC                8017
+#define SLIDER_BLOC               8018
+#define SLIDER_BROC               8019
 #define LABEL_MAIN_GAIN_DB_LEVEL  8200
 
 #define MAIN_GAIN_MAX_DB          90.0f
@@ -53,23 +72,32 @@ CGainModeDialog::CGainModeDialog() :
                CDispatcherIDs::GainModeDialog,
                CADSPModeIDs::PostProcessingModeGain)
 {
-  m_MainGain = 0.0f;
+  memset(m_GainSliders, NULL, sizeof(m_GainSliders));
   m_PageActionValue = 0.0f;
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    m_Gain[ii] = 0.0f;
+  }
 }
 
 
 bool CGainModeDialog::OnInit()
 {
-  m_MainGainSlider = GUI->Control_getSettingsSlider(this->m_window, SLIDER_MAIN_GAIN);
-  if (!m_MainGainSlider)
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
   {
-    KODI->Log(ADDON::LOG_ERROR, "%s, %i, Slider with ID: %i (%s) not found!", __FUNCTION__, __LINE__, SLIDER_MAIN_GAIN, "Main Gain");
-    return false;
+    m_GainSliders[ii] = GUI->Control_getSettingsSlider(this->m_window, SLIDER_FL + ii);
+    if (!m_GainSliders[ii])
+    {
+      KODI->Log(ADDON::LOG_ERROR, "%s, %i, Slider with ID: %i (%s) not found!", __FUNCTION__, __LINE__, SLIDER_FL + ii, "Main Gain");
+      return false;
+    }
+    m_GainSliders[ii]->SetFloatRange(MAIN_GAIN_MIN_DB, MAIN_GAIN_MAX_DB);
+    m_GainSliders[ii]->SetFloatValue(m_Gain[ii]);
+    m_GainSliders[ii]->SetVisible(true);
+    //m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
   }
-  m_MainGainSlider->SetFloatRange(MAIN_GAIN_MIN_DB, MAIN_GAIN_MAX_DB);
-  m_MainGainSlider->SetFloatValue(m_MainGain);
-  m_MainGainSlider->SetVisible(true);
-  m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
+  
+  
 
   // TODO: why does GetCurrentSinkFormat fail?
   //AudioEngineFormat sinkFmt;
@@ -115,9 +143,27 @@ bool CGainModeDialog::OnClick(int controlId)
     }
     break;
 
-
-    case SLIDER_MAIN_GAIN:
-      ProcessMainGainSlider();
+    case SLIDER_FL:
+    case SLIDER_FR:
+    case SLIDER_FC:
+    case SLIDER_LFE:
+    case SLIDER_BL:
+    case SLIDER_BR:
+    case SLIDER_FLOC:
+    case SLIDER_FROC:
+    case SLIDER_BC:
+    case SLIDER_SL:
+    case SLIDER_SR:
+    case SLIDER_TFL:
+    case SLIDER_TFR:
+    case SLIDER_TFC:
+    case SLIDER_TC:
+    case SLIDER_TBL:
+    case SLIDER_TBR:
+    case SLIDER_TBC:
+    case SLIDER_BLOC:
+    case SLIDER_BROC:
+      ProcessGainSlider(controlId - SLIDER_FL);
     break;
   }
 
@@ -161,32 +207,43 @@ bool CGainModeDialog::OnAction(int actionId)
 void CGainModeDialog::OnClose()
 {
   CAddonProcessManager::DisconnectObject(this);
-  GUI->Control_releaseSettingsSlider(m_MainGainSlider);
+  for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
+  {
+    if (m_GainSliders[ii])
+    {
+      GUI->Control_releaseSettingsSlider(m_GainSliders[ii]);
+    }
+  }
 }
 
-void CGainModeDialog::ProcessMainGainSlider()
+void CGainModeDialog::ProcessGainSlider(int Index)
 {
   if (m_PageActionValue != 0.0f)
   {
-    m_MainGain += m_PageActionValue;
-    m_MainGainSlider->SetFloatValue(m_MainGain);
-    m_MainGain = m_MainGainSlider->GetFloatValue(); 
+    m_Gain[Index] += m_PageActionValue;
+    m_GainSliders[Index]->SetFloatValue(m_Gain[Index]);
+    m_Gain[Index] = m_GainSliders[Index]->GetFloatValue();
   }
   else
   {
-    m_MainGain = m_MainGainSlider->GetFloatValue();
+    m_Gain[Index] = m_GainSliders[Index]->GetFloatValue();
   }
 
-  m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
-  this->SendMsg(static_cast<void*>(&m_MainGain), sizeof(float), CSocketGainModeIDs::UpdateMainGain);
+  this->SendMsg(static_cast<void*>(&m_Gain[Index]), sizeof(float), CSocketGainModeIDs::UpdateGain_FL + Index);
 }
 
 // private MC callback methods
-int CGainModeDialog::UpdateMainGain(Message &Msg)
+int CGainModeDialog::UpdateGain(Message &Msg)
 {
-  m_MainGain = *(float*)(Msg.data);
-  m_MainGainSlider->SetFloatValue(m_MainGain);
-  m_window->SetControlLabel(LABEL_MAIN_GAIN_DB_LEVEL, float_dB_toString(m_MainGain).c_str());
+  if (Msg.signal < CSocketGainModeIDs::UpdateGain_FL || Msg.signal > CSocketGainModeIDs::UpdateGain_BROC)
+  {
+    return -1;
+  }
+
+  int index = Msg.signal - CSocketGainModeIDs::UpdateGain_FL;
+
+  m_Gain[index] = *(float*)(Msg.data);
+  m_GainSliders[index]->SetFloatValue(m_Gain[index]);
 
   return 0;
 }

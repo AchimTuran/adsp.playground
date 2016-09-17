@@ -51,7 +51,6 @@ public:
   //virtual bool DisconnectDispatcher(MVCObject *Object);
 
 private: // private member methods
-  int InitGainModel();
   virtual void Process();
   
 private: // private member variables

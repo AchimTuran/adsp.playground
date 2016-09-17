@@ -53,29 +53,3 @@ int CGainModeController::Create()
 void CGainModeController::Destroy()
 {
 }
-
-int CGainModeController::SetMainGain(Message &Msg)
-{
-  if (Msg.size != sizeof(float))
-  {
-    // TODO: error code
-    return -1;
-  }
-
-  float gain = *((float*)(Msg.data));
-  if (gain >= MAX_GAIN || gain <= -MAX_GAIN)
-  {
-    // TODO: error code
-    return -1;
-  }
-
-  m_MainGain = gain;
-  if (!this->SendMsg(&m_MainGain, sizeof(float), CSocketGainModeIDs::UpdateMainGain))
-  {
-    // TODO: error code
-    return -1;
-  }
-
-  return 0;
-}
-

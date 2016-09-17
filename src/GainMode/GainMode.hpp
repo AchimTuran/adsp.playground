@@ -56,7 +56,7 @@ public:
   virtual unsigned int ModeProcess(float **ArrayIn, float **ArrayOut, unsigned int Samples);
 
 private:
-  int SetMainGain(Message &Msg);
+  int SetGain(Message &Msg);
 
 private:
   int           m_InChannels;               /*!< @brief the amount of input channels */
@@ -66,5 +66,5 @@ private:
   unsigned long m_ChannelMappingFlags[AE_DSP_CH_MAX];
 
   // Process parameters
-  float m_MainGain;
+  float m_Gain[AE_DSP_CH_MAX];
 };
