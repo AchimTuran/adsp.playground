@@ -23,9 +23,10 @@
 #include "GainMode/GainModeControllerMessages.hpp"
 #include "GainMode/GainModeController.hpp"
 #include "EnumStrIDs.hpp"
-#include "adsp.template/Addon/MessageSystem/Sockets/TSocketRangeCheck.hpp"
 #include "GainModeDefaults.h"
 
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketRangeCheck.hpp"
+#include "adsp.template/Addon/MessageSystem/Sockets/TSocketForward.hpp"
 
 CGainModeControllerMessages::CGainModeControllerMessages()
 {
@@ -60,6 +61,8 @@ bool CGainModeControllerMessages::Create(CGainModeController *Controller)
   sockets.push_back(CreateTSocketRangeCheck(CGainModeController, float, Controller, GAIN_MIN, GAIN_MAX, CSocketGainModeIDs, UpdateGain_TBC));
   sockets.push_back(CreateTSocketRangeCheck(CGainModeController, float, Controller, GAIN_MIN, GAIN_MAX, CSocketGainModeIDs, UpdateGain_BLOC));
   sockets.push_back(CreateTSocketRangeCheck(CGainModeController, float, Controller, GAIN_MIN, GAIN_MAX, CSocketGainModeIDs, UpdateGain_BROC));
+
+  sockets.push_back(CreateTSocketForward(CGainModeController, Controller, CSocketGainModeIDs, RequestModelState));
 
   return Controller->SetSockets(sockets);
 }

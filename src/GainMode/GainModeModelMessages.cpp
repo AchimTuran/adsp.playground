@@ -62,6 +62,7 @@ bool CGainModeModelMessages::Create(CGainModeModel *Model)
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeModel, Model, &CGainModeModel::RequestGain, CSocketGainModeIDs, RequestGain_TBC));
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeModel, Model, &CGainModeModel::RequestGain, CSocketGainModeIDs, RequestGain_BLOC));
   sockets.push_back(CreateTSocketClassMethodCallback(CGainModeModel, Model, &CGainModeModel::RequestGain, CSocketGainModeIDs, RequestGain_BROC));
+  sockets.push_back(CreateTSocketClassMethodCallback(CGainModeModel, Model, &CGainModeModel::RequestModelState, CSocketGainModeIDs, RequestModelState));
 
   return Model->SetSockets(sockets);
 }

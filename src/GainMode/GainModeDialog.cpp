@@ -119,6 +119,11 @@ bool CGainModeDialog::OnInit()
     return false;
   }
 
+  if (!this->SendMsg(nullptr, 0, CSocketGainModeIDs::RequestModelState))
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed send \"%s\" from dispatcher %s to compressor controller", __FUNCTION__, __LINE__, CSocketCompressorModeIDs::ToString(CSocketCompressorModeIDs::RequestModelState), this->Name.c_str());
+  }
+
   return true;
 }
 

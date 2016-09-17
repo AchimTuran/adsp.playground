@@ -42,4 +42,5 @@ public:
 
 private:
   int RequestGain(Message &Msg);
+  int RequestModelState(Message &Msg);
 };

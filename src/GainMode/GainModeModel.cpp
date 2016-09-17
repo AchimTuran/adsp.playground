@@ -123,3 +123,20 @@ int CGainModeModel::RequestGain(Message &Msg)
   return 0;
 }
 
+int CGainModeModel::RequestModelState(Message &Msg)
+{
+  float fVal = 0.0;
+
+  for (int ii = CSocketGainModeIDs::UpdateGain_FL; ii < CSocketGainModeIDs::UpdateGain_BROC; ii++)
+  {
+    this->GetParameter(ii, static_cast<void*>(&fVal), sizeof(float));
+    if (!this->SendMsg(static_cast<void*>(&fVal), sizeof(float), ii))
+    {
+      return -1;
+    }
+  }
+
+  return 0;
+}
+
+
