@@ -48,7 +48,7 @@ int CCompressorModeModel::Create()
   paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateThreshold));
   paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateCompressionRatio));
   paramVector.push_back(CreateFloatParameter(CSocketCompressorModeIDs, UpdateKneeWidth));
-  paramVector.push_back(CreateIntParameter(CSocketCompressorModeIDs, UpdateGainCurve));
+  paramVector.push_back(CreateIntParameter(CSocketCompressorModeIDs,   UpdateGainCurve));
 
   if (this->SetParameterVector(paramVector) <= 0)
   {
