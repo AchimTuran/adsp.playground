@@ -91,6 +91,18 @@ AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP
     return AE_DSP_ERROR_FAILED;
   }
 
+  if (CAddonProcessManager::ConnectObject(this) != 0)
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed to connect message dispachter %s", __FUNCTION__, __LINE__, this->Name.c_str());
+    return AE_DSP_ERROR_FAILED;
+  }
+
+  if (!this->SendMsg(nullptr, 0, CSocketGainModeIDs::RequestModelState))
+  {
+    KODI->Log(LOG_ERROR, "%s, %i, Failed send \"%s\" from dispatcher %s to compressor controller", __FUNCTION__, __LINE__, CSocketGainModeIDs::ToString(CSocketGainModeIDs::RequestModelState), this->Name.c_str());
+    return AE_DSP_ERROR_FAILED;
+  }
+
   return AE_DSP_ERROR_NO_ERROR;
 }
 

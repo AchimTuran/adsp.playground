@@ -61,5 +61,5 @@ bool CGainModeMessages::Create(CGainMode *Mode)
   sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BLOC));
   sockets.push_back(CreateTSocketClassMethodCallback(CGainMode, Mode, &CGainMode::SetGain, CSocketGainModeIDs, UpdateGain_BROC));
 
-  return Mode->SetSockets(sockets);
+  return Mode->SetSockets(sockets, true);
 }
