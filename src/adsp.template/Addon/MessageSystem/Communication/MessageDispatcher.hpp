@@ -38,7 +38,7 @@ public:
   CMessageDispatcher(IProtocol *Protocol, std::string Name, int ID = -1, bool IsMaster = false);
   virtual ~CMessageDispatcher();
 
-  bool SetSockets(SocketVector_t &SocketVector);
+  bool SetSockets(SocketVector_t &SocketVector, bool ForceSockets=false);
   bool AddSocket(ISocket *Socket);
   bool RemoveSocket(int SocketID);
 

@@ -90,7 +90,7 @@ CMessageDispatcher::~CMessageDispatcher()
 }
 
 
-bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
+bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector, bool ForceSockets)
 {
   if (SocketVector.size() <= 0)
   {
@@ -99,7 +99,7 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
   }
 
   CSingleLock lock(m_SocketLock);
-  if (m_Sockets.size() > 0)
+  if (m_Sockets.size() > 0 && !ForceSockets)
   {
     for (int ii = 0; ii < (int)m_Sockets.size(); ii++)
     {
@@ -108,6 +108,10 @@ bool CMessageDispatcher::SetSockets(SocketVector_t &SocketVector)
 
     m_SocketIDs.clear();
     m_Sockets.clear();
+  }
+  else
+  {
+    DestroySockets();
   }
 
   // sort the Socket IDs in a ascending consecutive order
