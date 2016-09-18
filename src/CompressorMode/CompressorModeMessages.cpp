@@ -48,5 +48,5 @@ bool CCompressorModeMessages::Create(CCompressorMode *Mode)
   sockets.push_back(CreateTSocketClassMethodCallback(CCompressorMode, Mode, &CCompressorMode::SetKneeWidth,         CSocketCompressorModeIDs, UpdateKneeWidth));
   sockets.push_back(CreateTSocketClassMethodCallback(CCompressorMode, Mode, &CCompressorMode::SetGainCurve,         CSocketCompressorModeIDs, UpdateGainCurve));
 
-  return Mode->SetSockets(sockets);
+  return Mode->SetSockets(sockets, true);
 }
