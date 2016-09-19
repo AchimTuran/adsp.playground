@@ -31,14 +31,11 @@ set_property(TARGET KodiThreads PROPERTY FOLDER "depends")
 
 add_subdirectory(src/adsp.template)
 set_property(TARGET adsp.template PROPERTY FOLDER "depends")
-#set_target_properties(kodi::KodiThreads PROPERTIES OUTPUT_NAME asplib_${PROJECT_NAME})
 
 include_directories(${kodiplatform_INCLUDE_DIRS}
                     ${p8-platform_INCLUDE_DIRS}
                     ${KODI_INCLUDE_DIR}
                     ${PROJECT_SOURCE_DIR}/src)
-                    #${PROJECT_SOURCE_DIR}/src/template)
-                    #${PROJECT_SOURCE_DIR}/src/KodiThreads)
                                           
 set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
                               #src/channelUpmixer.cpp
@@ -118,11 +115,7 @@ set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
                               src/CompressorModeEnvironment.hpp
 
                               src/EnumStrIDs.cpp
-                              src/EnumStrIDs.hpp)
-                              
-                              #src/CpyModesProcess.cpp
-                              #src/CpyModesProcess.hpp)
-                       
+                              src/EnumStrIDs.hpp)                       
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES}
@@ -131,17 +124,7 @@ set(DEPLIBS ${kodiplatform_LIBRARIES}
             asplib::Core
             asplib::Dynamics
             asplib::Biquad)
-            #winmm.lib)#todo implement switches for Windows
 
-# if(MSVC)
-  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.cpp)
-  # list(APPEND ADSP_TEMPLATE_SOURCES src/KodiThreads/threads/platform/win/Win32Exception.h)
-  
-  # list(APPEND DEPLIBS winmm.lib)
-# endif()
-
-addon_source_group("${ADSP_PLAYGROUND_SOURCES}")
-            
 build_addon(adsp.playground ADSP_PLAYGROUND DEPLIBS)
 
 # For generating the doxy
