@@ -57,6 +57,11 @@ CCompressorMode::~CCompressorMode()
 
 AE_DSP_ERROR CCompressorMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
+  return ModeInitialize(Settings);
+}
+
+AE_DSP_ERROR CCompressorMode::ModeInitialize(const AE_DSP_SETTINGS &Settings)
+{
   if (Settings.iOutFrames <= 0 || Settings.iOutSamplerate <= 0)
   {
     return AE_DSP_ERROR_FAILED;

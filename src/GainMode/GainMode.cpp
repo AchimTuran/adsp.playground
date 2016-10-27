@@ -54,6 +54,11 @@ CGainMode::~CGainMode()
 
 AE_DSP_ERROR CGainMode::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
+  return ModeInitialize(Settings);
+}
+
+AE_DSP_ERROR CGainMode::ModeInitialize(const AE_DSP_SETTINGS &Settings)
+{
   for (int ii = 0; ii < AE_DSP_CH_MAX; ii++)
   {
     m_Gain[ii] = 1.0f;

@@ -40,7 +40,12 @@ CPreProcessCpy::~CPreProcessCpy()
 
 AE_DSP_ERROR CPreProcessCpy::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
-  m_InChannels            = Settings.iInChannels;
+  return ModeInitialize(Settings);
+}
+
+AE_DSP_ERROR CPreProcessCpy::ModeInitialize(const AE_DSP_SETTINGS &Settings)
+{
+  m_InChannels = Settings.iInChannels;
   m_InChannelPresentFlags = Settings.lInChannelPresentFlags;
 
   // reset used channel mapping array

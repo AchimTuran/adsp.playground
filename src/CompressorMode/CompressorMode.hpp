@@ -50,6 +50,7 @@ public:
   ~CCompressorMode();
 
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties);
+  virtual AE_DSP_ERROR ModeInitialize(const AE_DSP_SETTINGS &Settings);
   virtual void ModeDestroy();
 
   // TODO remove

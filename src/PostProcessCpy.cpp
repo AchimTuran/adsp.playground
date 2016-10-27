@@ -40,7 +40,13 @@ CPostProcessCpy::~CPostProcessCpy()
 
 AE_DSP_ERROR CPostProcessCpy::ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties)
 {
-  m_OutChannels            = Settings.iOutChannels;
+  return ModeInitialize(Settings);
+}
+
+
+AE_DSP_ERROR CPostProcessCpy::ModeInitialize(const AE_DSP_SETTINGS &Settings)
+{
+  m_OutChannels = Settings.iOutChannels;
   m_OutChannelPresentFlags = Settings.lOutChannelPresentFlags;
 
   // reset used channel mapping array

@@ -64,7 +64,7 @@ public:
     // If stream settings have changed then copy them and recreate AudioDSP processing mode
     memcpy((void*)&m_StreamSettings, Settings, sizeof(AE_DSP_SETTINGS));
 
-    return ModeCreate(m_StreamSettings, m_StreamProperties);
+    return ModeInitialize(m_StreamSettings);
   }
 
   //!  This gets the current stream settings and properties. 
@@ -93,6 +93,7 @@ public:
 
 // Requiered Create/Destroy Methods
   virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties) = 0;
+  virtual AE_DSP_ERROR ModeInitialize(const AE_DSP_SETTINGS &Settings) = 0;
   virtual void ModeDestroy() = 0;
 
 // Requiered Processing Methods
