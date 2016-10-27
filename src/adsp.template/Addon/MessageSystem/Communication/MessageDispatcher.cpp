@@ -342,6 +342,13 @@ bool CMessageDispatcher::ConnectDispatcher(CMessageDispatcher *Dispatcher)
   {
     CSingleLock lock(m_ConnectionLock);
 
+	int dispatcherIdx = GetDispatcherIdx(Dispatcher->ID);
+	if (dispatcherIdx < 0)
+	{
+		KODI->Log(LOG_DEBUG, "%s, %i, The dispatcher %s with ID %i was already connected to dispatcher %s", __FUNCTION__, __LINE__, Dispatcher->Name.c_str(), Dispatcher->ID, Name.c_str());
+		return false;
+	}
+
     m_Dispatchers.push_back(Dispatcher);
     m_DispatcherIDs.push_back(Dispatcher->ID);
 
