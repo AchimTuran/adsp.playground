@@ -23,8 +23,8 @@
 
 #include "IAddonProcess.hpp"
 #include "Addon/Utils/TCreationStatistics.hpp"
-#include <kodi/kodi_adsp_types.h>
 #include "Addon/MVC/Interfaces/MVCObject.hpp"
+#include <kodi/addon-instance/AudioDSP.h>
 
 #include <map>
 #include <vector>
@@ -68,7 +68,7 @@ public:
 private:
   typedef std::vector<IAddonProcess*> AddonProcessVector_t;
   typedef IAddonProcess* (*AddonProcessCreateCallback)();
-  typedef const AE_DSP_MODES::AE_DSP_MODE& (*ADSPModeSettingsCallback)();
+  typedef const AUDIODSP_ADDON_MODE_DATA& (*ADSPModeSettingsCallback)();
   typedef int(*ADSPModeStatisticCallback)();
   typedef struct AddonProcessCallbacks_t
   {
@@ -111,7 +111,7 @@ public:
     static const AE_DSP_MODES::AE_DSP_MODE m_ModeSettings;
   };
 
-  static AE_DSP_ERROR CreateProcesses();
+  static AUDIODSP_ADDON_ERROR CreateProcesses();
   static void DestroyProcesses();
 
   static int RegisterAddonProcess(const std::string ProcessName, AddonProcessCallbacks_t Callbacks);

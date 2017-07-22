@@ -21,10 +21,10 @@
 
 
 
-#include <kodi/kodi_adsp_types.h>
+#include <kodi/addon-instance/AudioDSP.h>
 
 
-class CCompressorModeSettings: public AE_DSP_MODES::AE_DSP_MODE
+class CCompressorModeSettings : public AUDIODSP_ADDON_MODE_DATA
 {
 public:
   CCompressorModeSettings();

@@ -2,7 +2,7 @@ include(cmake/addon-template-helpers.cmake)
 
 project(adsp.playground C CXX)
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR})
 
@@ -115,7 +115,9 @@ set(ADSP_PLAYGROUND_SOURCES   #src/ADDONOptional.cpp
                               src/CompressorModeEnvironment.hpp
 
                               src/EnumStrIDs.cpp
-                              src/EnumStrIDs.hpp)                       
+                              src/EnumStrIDs.hpp)  
+
+addon_source_group("${ADSP_PLAYGROUND_SOURCES}")
 
 set(DEPLIBS ${kodiplatform_LIBRARIES}
             ${p8-platform_LIBRARIES}

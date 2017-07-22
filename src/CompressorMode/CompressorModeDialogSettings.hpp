@@ -21,10 +21,10 @@
 
 
 
-#include <kodi/kodi_adsp_types.h>
+#include <kodi/addon-instance/AudioDSP.h>
 
 
-class CCompressorModeDialogSettings : public AE_DSP_MENUHOOK
+class CCompressorModeDialogSettings : public AUDIODSP_MENU_HOOK
 {
 public:
   CCompressorModeDialogSettings();

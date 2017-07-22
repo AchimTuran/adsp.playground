@@ -27,20 +27,19 @@
 using namespace std;
 
 
-AE_DSP_ERROR CFactoryADSPModes::Create(int ModeID, AE_DSP_MODE_TYPE ModeType, IADSPMode *&InterfacePtr)
+AUDIODSP_ADDON_ERROR CFactoryADSPModes::Create(int ModeID, IADSPMode *&InterfacePtr)
 {
-  ADSPModeKey_t ADSPModeKey(ModeID, ModeType);
+  ADSPModeKey_t ADSPModeKey(ModeID);
   ADSPModeMap_t::iterator iter = GetADSPModeMap().find(ADSPModeKey);
   if (iter == GetADSPModeMap().end())
   {
     InterfacePtr = NULL;
-    return AE_DSP_ERROR_INVALID_PARAMETERS;
+    return AUDIODSP_ADDON_ERROR_INVALID_PARAMETERS;
   }
 
   InterfacePtr = (*iter).second.CreateADSPMode();
   InterfacePtr->m_ModeID   = ModeID;
-  InterfacePtr->m_ModeType = ModeType;
-  return AE_DSP_ERROR_NO_ERROR;
+  return AUDIODSP_ADDON_ERROR_NO_ERROR;
 }
 
 
@@ -54,19 +53,18 @@ void CFactoryADSPModes::Destroy(IADSPMode *&ADSPMode)
 }
 
 
-int CFactoryADSPModes::RegisterADSPMode(const std::string ModeName, AE_DSP_MODE_TYPE ModeType, ADSPModeCallbacks_t Callbacks)
+int CFactoryADSPModes::RegisterADSPMode(const std::string ModeName, ADSPModeCallbacks_t Callbacks)
 {
   static int modeID=0;
-  ADSPModeKey_t ADSPModeKey(modeID, ModeType);
+  ADSPModeKey_t ADSPModeKey(modeID);
   ADSPModeMap_t::iterator iter = GetADSPModeMap().find(ADSPModeKey);
   if (iter == GetADSPModeMap().end())
   {// only register not yet known products
     GetADSPModeMap()[ADSPModeKey] = Callbacks;
 
-    const AE_DSP_MODES::AE_DSP_MODE& modeSettings = Callbacks.GetADSPModeSettings();
-    ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iUniqueDBModeId  = -1;
-    ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iModeType        = ModeType;
-    ((AE_DSP_MODES::AE_DSP_MODE*)&modeSettings)->iModeNumber      = modeID;
+    const AUDIODSP_ADDON_MODE_DATA& modeSettings = Callbacks.GetADSPModeSettings();
+    ((AUDIODSP_ADDON_MODE_DATA*)&modeSettings)->uiUniqueDBModeId  = -1;
+    ((AUDIODSP_ADDON_MODE_DATA*)&modeSettings)->uiModeNumber = modeID;
   }
 
   GetADSPModeNameMap()[ModeName] = ADSPModeKey;
@@ -75,14 +73,14 @@ int CFactoryADSPModes::RegisterADSPMode(const std::string ModeName, AE_DSP_MODE_
 }
 
 
-AE_DSP_ERROR CFactoryADSPModes::GetAvailableModes(ADSPModeInfoVector_t &ModeInfos)
+AUDIODSP_ADDON_ERROR CFactoryADSPModes::GetAvailableModes(ADSPModeInfoVector_t &ModeInfos)
 {
   ModeInfos.clear();
 
   ADSPModeNameMap_t &modeNameMap = GetADSPModeNameMap();
   if (modeNameMap.size() <= 0)
   {
-    return AE_DSP_ERROR_FAILED;
+    return AUDIODSP_ADDON_ERROR_FAILED;
   }
 
   for (ADSPModeNameMap_t::iterator iter = modeNameMap.begin(); iter != modeNameMap.end(); ++iter)
@@ -90,7 +88,6 @@ AE_DSP_ERROR CFactoryADSPModes::GetAvailableModes(ADSPModeInfoVector_t &ModeInfo
     ADSPModeInfo_t modeInfo;
     modeInfo.ModeName           = iter->first;
     modeInfo.ModeInfo.ModeID    = iter->second.ModeID;
-    modeInfo.ModeInfo.ModeType  = iter->second.ModeType;
 
     ModeInfos.push_back(modeInfo);
   }
@@ -98,23 +95,23 @@ AE_DSP_ERROR CFactoryADSPModes::GetAvailableModes(ADSPModeInfoVector_t &ModeInfo
   // Later modules will need a consecutive mode id order
   sort(ModeInfos.begin(), ModeInfos.end(), ModeIDSort);
 
-  return AE_DSP_ERROR_NO_ERROR;
+  return AUDIODSP_ADDON_ERROR_NO_ERROR;
 }
 
 
-AE_DSP_ERROR CFactoryADSPModes::GetADSPModeSettings(int ModeID, AE_DSP_MODE_TYPE ModeType, AE_DSP_MODES::AE_DSP_MODE &ModeSettings)
+AUDIODSP_ADDON_ERROR CFactoryADSPModes::GetADSPModeSettings(int ModeID, AUDIODSP_ADDON_MODE_DATA &ModeSettings)
 {
-  ADSPModeKey_t ADSPModeKey(ModeID, ModeType);
+  ADSPModeKey_t ADSPModeKey(ModeID);
   ADSPModeMap_t::iterator iter = GetADSPModeMap().find(ADSPModeKey);
   if (iter == GetADSPModeMap().end())
   {
-    return AE_DSP_ERROR_INVALID_PARAMETERS;
+    return AUDIODSP_ADDON_ERROR_INVALID_PARAMETERS;
   }
 
-  const AE_DSP_MODES::AE_DSP_MODE& modeSettings = (*iter).second.GetADSPModeSettings();
-  memcpy(&ModeSettings, &modeSettings, sizeof(AE_DSP_MODES::AE_DSP_MODE));
+  const AUDIODSP_ADDON_MODE_DATA& modeSettings = (*iter).second.GetADSPModeSettings();
+  memcpy(&ModeSettings, &modeSettings, sizeof(AUDIODSP_ADDON_MODE_DATA));
 
-  return AE_DSP_ERROR_NO_ERROR;
+  return AUDIODSP_ADDON_ERROR_NO_ERROR;
 }
 
 

@@ -30,16 +30,16 @@
 CCompressorModeSettings::CCompressorModeSettings()
 {
   strcpy(this->strModeName, CADSPModeIDs::ToString(CADSPModeIDs::PostProcessingModeCompressor));
-
-  this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
+  
+  //this->iModeSupportTypeFlags = AE_DSP_PRSNT_ASTREAM_BASIC | AE_DSP_PRSNT_ASTREAM_MUSIC | AE_DSP_PRSNT_ASTREAM_MOVIE | AE_DSP_PRSNT_ASTREAM_GAME | AE_DSP_PRSNT_ASTREAM_APP | AE_DSP_PRSNT_ASTREAM_MESSAGE | AE_DSP_PRSNT_ASTREAM_PHONE;
   this->bHasSettingsDialog    = true;
   this->bIsDisabled           = true;
-
+  
   this->iModeName         = 30024;
   this->iModeSetupName    = 30025;
   this->iModeDescription  = 30026;
   this->iModeHelp         = 30027;
-
+  
   strcpy(this->strOwnModeImage,       "img1.jpg");
   strcpy(this->strOverrideModeImage,  "img1.jpg");
 }

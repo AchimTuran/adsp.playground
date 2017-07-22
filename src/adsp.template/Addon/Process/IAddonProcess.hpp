@@ -20,8 +20,6 @@
  */
 
 
-#include "kodi/kodi_adsp_types.h"
-
 #include "Addon/MVC/Interfaces/MVCObject.hpp"
 
 #include <list>
@@ -49,8 +47,8 @@ public:
   const int ConnectionID;
 
 // Fixed public methods
-  virtual AE_DSP_ERROR Create() = 0;
-  virtual AE_DSP_ERROR Destroy() = 0;
+  virtual AUDIODSP_ADDON_ERROR Create() = 0;
+  virtual AUDIODSP_ADDON_ERROR Destroy() = 0;
 
   virtual bool ConnectObject(MVCObject *Object)
   {

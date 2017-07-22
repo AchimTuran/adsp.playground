@@ -21,10 +21,10 @@
 
 
 
-#include <kodi/kodi_adsp_types.h>
+#include <kodi/addon-instance/AudioDSP.h>
 
 
-class CGainModeDialogSettings : public AE_DSP_MENUHOOK
+class CGainModeDialogSettings : public AUDIODSP_ADDON_MODE_DATA
 {
 public:
   CGainModeDialogSettings();

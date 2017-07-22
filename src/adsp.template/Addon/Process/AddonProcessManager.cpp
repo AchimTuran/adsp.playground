@@ -34,13 +34,13 @@ using namespace ADDON;
 bool CAddonProcessManager::m_IsCreated = false;
 
 
-AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
+AUDIODSP_ADDON_ERROR CAddonProcessManager::CreateProcesses()
 {
   if (GetProcessMap().size() <= 0)
   {
     KODI->Log(LOG_NOTICE, "%s, %i, Tried to create CAddonProcessManager without any registered AddonProcesses. Consequently CAddonProcessManager will be disabled.", __FUNCTION__, __LINE__);
 
-    return AE_DSP_ERROR_IGNORE_ME;
+    return AUDIODSP_ADDON_ERROR_IGNORE_ME;
   }
 
   AddonProcessVector_t &addonProcesses = GetAddonProcessVector();
@@ -55,8 +55,8 @@ AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
       KODI->Log(LOG_NOTICE, "%s, %i, Could not retrieve AddonProcess name! Please contact the author of this add-on with this log file.", __FUNCTION__, __LINE__);
     }
 
-    AE_DSP_ERROR err = process->Create();
-    if (err != AE_DSP_ERROR_NO_ERROR)
+    AUDIODSP_ADDON_ERROR err = process->Create();
+    if (err != AUDIODSP_ADDON_ERROR_NO_ERROR)
     {
       delete process;
       process = NULL;
@@ -74,7 +74,7 @@ AE_DSP_ERROR CAddonProcessManager::CreateProcesses()
 
   m_IsCreated = true;
 
-  return AE_DSP_ERROR_NO_ERROR;
+  return AUDIODSP_ADDON_ERROR_NO_ERROR;
 }
 
 
@@ -86,8 +86,8 @@ void CAddonProcessManager::DestroyProcesses()
     if (addonProcesses[ii])
     {
       addonProcesses[ii]->DisconnectAll();
-      AE_DSP_ERROR err = addonProcesses[ii]->Destroy();
-      if (err != AE_DSP_ERROR_NO_ERROR)
+      AUDIODSP_ADDON_ERROR err = addonProcesses[ii]->Destroy();
+      if (err != AUDIODSP_ADDON_ERROR_NO_ERROR)
       {
         KODI->Log(LOG_ERROR, "%s, %i, An error occured during AddonProcess destruction! Please contact the author of this add-on with this log file.", __FUNCTION__, __LINE__);
       }

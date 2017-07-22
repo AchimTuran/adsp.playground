@@ -28,8 +28,7 @@
 CCompressorModeDialogSettings::CCompressorModeDialogSettings()
 {
   this->iHookId              = CADSPModeIDs::PostProcessingModeCompressor;
-  this->category             = AE_DSP_MENUHOOK_POST_PROCESS;
+  this->category             = AUDIODSP_ADDON_MENUHOOK_MODE;
   this->iLocalizedStringId   = 30021;
   this->iRelevantModeId      = CADSPModeIDs::PostProcessingModeCompressor;
-  this->bNeedPlayback        = false;
 }

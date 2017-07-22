@@ -20,7 +20,7 @@
  */
 
 
-#include "kodi/kodi_adsp_types.h"
+#include "kodi/addon-instance/AudioDSP.h"
 
 #include "adsp.template/ADSPHelpers.h"
 
@@ -46,54 +46,13 @@ public:
 
 
 // Fixed public methods
-  AE_DSP_ERROR Create(const AE_DSP_SETTINGS *Settings, const AE_DSP_STREAM_PROPERTIES *pProperties)
+  AUDIODSP_ADDON_ERROR Create(AUDIODSP_ADDON_AUDIO_FORMAT m_inputFormat, AUDIODSP_ADDON_AUDIO_FORMAT m_outputFormat, const AUDIODSP_ADDON_STREAM_PROPERTIES *pProperties)
   {
-    memcpy((void*)&m_StreamSettings, Settings, sizeof(AE_DSP_SETTINGS));
-    memcpy((void*)&m_StreamProperties, pProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
-
-    return ModeCreate(m_StreamSettings, m_StreamProperties);
+    return ModeCreate(m_inputFormat, m_outputFormat, m_streamProperties);
   }
-
-  AE_DSP_ERROR Initialize(const AE_DSP_SETTINGS *Settings)
-  {
-    if (!CADSPHelpers::CmpStreamSettings(*Settings, m_StreamSettings))
-    {
-      return AE_DSP_ERROR_NO_ERROR;
-    }
-
-    // If stream settings have changed then copy them and recreate AudioDSP processing mode
-    memcpy((void*)&m_StreamSettings, Settings, sizeof(AE_DSP_SETTINGS));
-
-    return ModeInitialize(m_StreamSettings);
-  }
-
-  //!  This gets the current stream settings and properties. 
-  /*!
-  * Get stream settings and properties. For details see  and AE_DSP_STREAM_PROPERTIES structures.
-  * If the add-on operate with buffered arrays and the output size can be higher as
-  * the input it becomes asked about needed size before any PostProcess call.
-  * @param pSettings Stream settings for details see AE_DSP_SETTINGS.
-  * @param pProperties Stream properties for details see AE_DSP_STREAM_PROPERTIES.
-  * @return AE_DSP_ERROR_INVALID_PARAMETERS: if your input parameters were invalid.
-  * AE_DSP_ERROR_NO_ERROR: if all was ok.
-  */
-  AE_DSP_ERROR GetStreamInfos(const AE_DSP_SETTINGS& Settings, const AE_DSP_STREAM_PROPERTIES& Properties, void *CustomStreamInfos = NULL)
-  {
-    memcpy((void*)&Settings, &m_StreamSettings, sizeof(AE_DSP_SETTINGS));
-    memcpy((void*)&Properties, &m_StreamProperties, sizeof(AE_DSP_STREAM_PROPERTIES));
-
-    //if (CustomStreamInfos)
-    //{
-    //  return GetCustomStreamInfos(CustomStreamInfos);
-    //}
-
-    return AE_DSP_ERROR_NO_ERROR;
-  }
-
 
 // Requiered Create/Destroy Methods
-  virtual AE_DSP_ERROR ModeCreate(const AE_DSP_SETTINGS &Settings, const AE_DSP_STREAM_PROPERTIES &Properties) = 0;
-  virtual AE_DSP_ERROR ModeInitialize(const AE_DSP_SETTINGS &Settings) = 0;
+  virtual AUDIODSP_ADDON_ERROR ModeCreate(AUDIODSP_ADDON_AUDIO_FORMAT m_inputFormat, AUDIODSP_ADDON_AUDIO_FORMAT m_outputFormat, const AUDIODSP_ADDON_STREAM_PROPERTIES &pProperties) = 0;
   virtual void ModeDestroy() = 0;
 
 // Requiered Processing Methods
@@ -108,7 +67,7 @@ public:
 
   virtual float GetDelay()
   {
-    return (float)m_StreamSettings.iInFrames / (float)m_StreamSettings.iInSamplerate;
+    return (float)m_inputFormat.frameSize / (float)m_inputFormat.frameSize;
   }
 
   //! This method checks the input stream and can filter processing mode types.
@@ -122,22 +81,22 @@ public:
   * have only a mode id once. For example see adspProcessingModeIDs in
   * templateConfiguration.h
   * @param UniqueDBModeID The Mode unique id generated from dsp database.
-  * @return AE_DSP_ERROR_NO_ERROR if the properties were fetched successfully.
-  * If the stream is not supported the ADSP addon must return AE_DSP_ERROR_IGNORE_ME.
+  * @return AUDIODSP_ADDON_ERROR_NO_ERROR if the properties were fetched successfully.
+  * If the stream is not supported the ADSP addon must return AUDIODSP_ADDON_ERROR_IGNORE_ME.
   * @remarks By default this method accept all processing types.
   * If you wanna filter processing mode types then you have to overload this method in
   * your processing class.
   */
-  virtual AE_DSP_ERROR StreamIsModeSupported(AE_DSP_MODE_TYPE Type, unsigned int ModeID, int UniqueDBModeID)
+  virtual AUDIODSP_ADDON_ERROR StreamIsModeSupported(unsigned int ModeID, int UniqueDBModeID)
   {
     UniqueDBModeID; // prevent compiler warnings, because adsp.template doesn't use this information
 
-    if (Type != m_ModeType || ModeID != m_ModeID)
+    if (ModeID != m_ModeID)
     {
-      return AE_DSP_ERROR_IGNORE_ME;
+      return AUDIODSP_ADDON_ERROR_IGNORE_ME;
     }
 
-    return AE_DSP_ERROR_NO_ERROR;
+    return AUDIODSP_ADDON_ERROR_NO_ERROR;
   }
 
 
@@ -162,32 +121,33 @@ public:
 // Optional Resampling Methods
   virtual int ResamplingRate()
   {
-    return m_StreamSettings.iProcessSamplerate;
+    return m_inputFormat.sampleRate;
   }
 
 protected:
   unsigned int      m_ModeID;
-  AE_DSP_MODE_TYPE  m_ModeType;
   ////! ToDo: description.
   ///*!
   //* Returns ToDo!
   //* @return ToDo!
   //* @remarks ToDo!
   //*/
-  //virtual AE_DSP_ERROR GetCustomStreamInfos(void *CustomStreamSettings)
+  //virtual AUDIODSP_ADDON_ERROR GetCustomStreamInfos(void *CustomStreamSettings)
   //{
-  //  return AE_DSP_ERROR_NO_ERROR;
+  //  return AUDIODSP_ADDON_ERROR_NO_ERROR;
   //}
 
 private:
   void ResetStreamSettings()
   {
-    memset(&m_StreamSettings, 0, sizeof(AE_DSP_SETTINGS));
-    memset(&m_StreamProperties, 0, sizeof(AE_DSP_STREAM_PROPERTIES));
+    memset(&m_inputFormat, 0, sizeof(AUDIODSP_ADDON_AUDIO_FORMAT));
+    memset(&m_outputFormat, 0, sizeof(AUDIODSP_ADDON_AUDIO_FORMAT));
+    memset(&m_streamProperties, 0, sizeof(AUDIODSP_ADDON_STREAM_PROPERTIES));
   }
 
   //! Used stream settings for details see AE_DSP_SETTINGS.
-  AE_DSP_SETTINGS m_StreamSettings;
+  AUDIODSP_ADDON_AUDIO_FORMAT m_inputFormat;
+  AUDIODSP_ADDON_AUDIO_FORMAT m_outputFormat;
   //! Used stream properties for details see AE_DSP_STREAM_PROPERTIES.
-  AE_DSP_STREAM_PROPERTIES m_StreamProperties;
+  AUDIODSP_ADDON_STREAM_PROPERTIES m_streamProperties;
 };

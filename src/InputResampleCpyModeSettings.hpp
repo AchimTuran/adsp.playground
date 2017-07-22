@@ -21,10 +21,10 @@
 
 
 
-#include <kodi/kodi_adsp_types.h>
+#include <kodi/addon-instance/AudioDSP.h>
 
 
-class CInputResampleCpyModeSettings: public AE_DSP_MODES::AE_DSP_MODE
+class CInputResampleCpyModeSettings : public AUDIODSP_ADDON_MODE_DATA
 {
 public:
   CInputResampleCpyModeSettings();
