@@ -48,20 +48,12 @@ using namespace ADDON;
 
 #ifdef TARGET_WINDOWS
 #define snprintf _snprintf
-//#undef CreateDirectory
+#undef CreateDirectory
 #endif
 
 int            m_iStreamsPresent  = 0;
 bool           m_bCreated         = false;
 ADDON_STATUS   m_CurStatus        = ADDON_STATUS_UNKNOWN;
-
-/* User adjustable settings are saved here.
- * Default values are defined inside client.h
- * and exported to the other source files.
- */
-std::string   g_strUserPath       = "";
-std::string   g_strAddonPath      = "";
-
 
 CHelper_libXBMC_addon       *KODI         = NULL;
 CHelper_libKODI_guilib      *GUI          = NULL;
@@ -83,7 +75,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     return ADDON_STATUS_UNKNOWN;
   }
 
-  AE_DSP_PROPERTIES* adspprops = (AE_DSP_PROPERTIES*)props;
+  void* adspprops = (void*)props;
 
   KODI = new CHelper_libXBMC_addon;
   if (!KODI->RegisterMe(hdl))
@@ -104,15 +96,15 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   SetKodiThreadsLogger(loc_KodiLoggerCallback);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
-  g_strUserPath   = adspprops->strUserPath;
-  g_strAddonPath  = adspprops->strAddonPath;
+  g_strUserPath   = "";//adspprops->strUserPath;
+  g_strAddonPath  = "";//adspprops->strAddonPath;
 
   ADDON_ReadSettings();
 
   // create addon user path
-  if (!KODI->DirectoryExists(g_strUserPath.c_str()))
+  if (!kodi::vfs::DirectoryExists(kodi::GetBaseUserPath()))
   {
-    CreateDirectory(g_strUserPath.c_str());
+    kodi::vfs::CreateDirectory(kodi::GetBaseUserPath());
   }
 
   m_CurStatus = ADDON_STATUS_OK;
